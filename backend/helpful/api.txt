@@ -1,0 +1,5 @@
+# not used now
+http://localhost:3000/v1/access/login
+
+
+http://localhost:3000/v1/vacancies/subscribe

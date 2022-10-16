@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:14
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./docker/postgres.Dockerfile
+      shm_size: 512mb
+    shm_size: 512mb
+    environment:
+      POSTGRES_USER: ts_backend_admin
+      POSTGRES_PASSWORD: super_secret_pWd
+      POSTGRES_DB: ts_backend_db
+    networks:
+      - default
+    volumes:
+      - ./db/pgdata:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+  app:
+    image: sanarisan/ts-backend-v2:1
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./docker/app.Dockerfile
+    stop_signal: SIGINT
+    stop_grace_period: 60s
+    networks:
+      - default
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
