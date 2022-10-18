@@ -12,6 +12,12 @@ declare global {
       JWT_SECRET: string;
       JWT_EXP: string;
       PORT: string;
+      // db
+      DB_HOST: string;
+      DB_PORT: string;
+      DB_DATABASE_NAME: string;
+      DB_USER: string;
+      DB_PASSWORD: string;
       // production
       CORS_URL_PROD: string;
       BUILD_PATH: string;

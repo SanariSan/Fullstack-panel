@@ -1,107 +1,159 @@
--- drop table IF EXISTS System_User_System_Group;
--- drop table IF EXISTS System_Group;
--- -- 
--- drop table IF EXISTS Search_Query_Vacancy;
--- drop table IF EXISTS Search_Query;
--- drop table IF EXISTS Vacancy;
--- --
--- drop table IF EXISTS Token;
--- drop table IF EXISTS System_User;
--- --
+DROP TABLE IF EXISTS Proxy;
+-- 
+DROP TABLE IF EXISTS System_User_System_Group;
+DROP TABLE IF EXISTS System_Group;
+-- 
+DROP TABLE IF EXISTS Search_Query_Vacancy_HH;
+DROP TABLE IF EXISTS Search_Query;
+DROP TABLE IF EXISTS Vacancy_HH;
+--
+DROP TABLE IF EXISTS Token;
+DROP TABLE IF EXISTS System_User;
+--
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- 
-CREATE OR REPLACE FUNCTION upd_timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS $$ BEGIN NEW.modified = CURRENT_TIMESTAMP;
+CREATE
+OR REPLACE FUNCTION Upd_Timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS $$ BEGIN
+  NEW .Modified = CURRENT_TIMESTAMP;
 RETURN NEW;
 END;
 $$;
 -- 
 CREATE TABLE IF NOT EXISTS System_User (
-  id serial,
-  uuid_ uuid NOT NULL DEFAULT uuid_generate_v4(),
-  login varchar(64) UNIQUE NOT NULL,
-  password varchar(64) NOT NULL,
-  telegramId varchar(64),
-  hhToken varchar(255),
-  createdOn timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
+  Id SERIAL,
+  Uuid_ UUID UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
+  Login VARCHAR(64) UNIQUE NOT NULL,
+  PASSWORD VARCHAR(64) NOT NULL,
+  TelegramId VARCHAR(64),
+  HHToken VARCHAR(255),
+  CreatedOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (Id)
 );
-CREATE TRIGGER modifiedUpd BEFORE
-UPDATE ON System_User FOR EACH ROW EXECUTE PROCEDURE upd_timestamp();
+CREATE
+OR REPLACE TRIGGER Modified_Upd BEFORE
+UPDATE
+  ON System_User FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
 -- 
 CREATE TABLE IF NOT EXISTS System_Group (
-  id serial,
-  name varchar(64) UNIQUE NOT NULL,
-  PRIMARY KEY (id)
+  Id SERIAL,
+  NAME VARCHAR(64) UNIQUE NOT NULL,
+  Mask VARCHAR(4) UNIQUE NOT NULL,
+  PRIMARY KEY (Id)
 );
 -- 
 CREATE TABLE IF NOT EXISTS System_User_System_Group (
-  userId integer NOT NULL,
-  groupId integer NOT NULL,
-  PRIMARY KEY (userId, groupId),
-  FOREIGN KEY (userId) REFERENCES System_User (id) ON DELETE CASCADE,
-  FOREIGN KEY (groupId) REFERENCES System_Group (id) ON DELETE CASCADE
+  User_Id INTEGER NOT NULL,
+  Group_Id INTEGER NOT NULL,
+  PRIMARY KEY (User_Id, Group_Id),
+  FOREIGN KEY (User_Id) REFERENCES System_User (Id) ON
+  DELETE
+    CASCADE,
+    FOREIGN KEY (Group_Id) REFERENCES System_Group (Id) ON
+  DELETE
+    CASCADE
 );
 -- 
 CREATE TABLE IF NOT EXISTS Token (
-  id serial,
-  userId integer NOT NULL,
-  accessSignature varchar(255) UNIQUE NOT NULL,
-  refreshSignature varchar(255) UNIQUE NOT NULL,
-  modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  FOREIGN KEY (userId) REFERENCES System_User (id) ON DELETE CASCADE
+  Id SERIAL,
+  User_Id INTEGER NOT NULL,
+  Access_Signature VARCHAR(255) UNIQUE NOT NULL,
+  Refresh_Signature VARCHAR(255) UNIQUE NOT NULL,
+  Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (Id),
+  FOREIGN KEY (User_Id) REFERENCES System_User (Id) ON
+  DELETE
+    CASCADE
 );
-CREATE TRIGGER modifiedUpd BEFORE
-UPDATE ON Token FOR EACH ROW EXECUTE PROCEDURE upd_timestamp();
+CREATE
+OR REPLACE TRIGGER Modified_Upd BEFORE
+UPDATE
+  ON Token FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
 -- 
 CREATE TABLE IF NOT EXISTS Search_Query (
-  id serial,
-  userId integer NOT NULL,
-  searchText varchar(255) NOT NULL,
-  searchParams varchar(255) NOT NULL,
-  isAknowledged boolean NOT NULL DEFAULT false,
-  lastAknowledged timestamp DEFAULT CURRENT_TIMESTAMP,
-  notifyPostedHoursAgoMax int DEFAULT 96,
-  uuid_ uuid NOT NULL DEFAULT uuid_generate_v4(),
-  modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  FOREIGN KEY (userId) REFERENCES System_User (id) ON DELETE CASCADE
+  Id SERIAL,
+  Uuid_ UUID NOT NULL DEFAULT uuid_generate_v4(),
+  User_Id INTEGER NOT NULL,
+  Search_Text VARCHAR(255) NOT NULL,
+  Search_Params VARCHAR(255) NOT NULL,
+  Is_Aknowledged BOOLEAN NOT NULL DEFAULT FALSE,
+  Last_Aknowledged TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  Notify_Posted_Hours_Ago_Max INTEGER DEFAULT 96,
+  Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (Id),
+  FOREIGN KEY (User_Id) REFERENCES System_User (Id) ON
+  DELETE
+    CASCADE
 );
-CREATE TRIGGER modifiedUpd BEFORE
-UPDATE ON Search_Query FOR EACH ROW EXECUTE PROCEDURE upd_timestamp();
+CREATE
+OR REPLACE TRIGGER Modified_Upd BEFORE
+UPDATE
+  ON Search_Query FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
 -- 
-CREATE TABLE IF NOT EXISTS Vacancy (
-  id serial,
-  hash uuid UNIQUE NOT NULL,
-  vacancyHHId integer NOT NULL,
-  title varchar(64) NOT NULL,
-  snippetRequirement varchar(64) DEFAULT '',
-  snippetResponsibility varchar(64) DEFAULT '',
-  hasTest boolean NOT NULL,
-  responseLetterRequired boolean NOT NULL,
-  publishedAt varchar(64) NOT NULL,
-  createdAt varchar(64) NOT NULL,
-  areaId integer NOT NULL,
-  areaName varchar(64) NOT NULL,
-  salaryCurrencyId integer NOT NULL,
-  salaryFrom integer DEFAULT 0,
-  salaryTo integer DEFAULT 0,
-  addressRaw varchar(64) DEFAULT '',
-  scheduleId varchar(64) NOT NULL,
-  scheduleName varchar(64) NOT NULL,
-  employerName varchar(64) NOT NULL,
-  employerUrl varchar(64) NOT NULL,
-  modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS Vacancy_HH (
+  Id SERIAL,
+  Vacancy_HH_Id INTEGER NOT NULL,
+  -- md5 hash of all fields below
+  HASH VARCHAR(32) UNIQUE NOT NULL,
+  Title VARCHAR(64) NOT NULL,
+  Created_At VARCHAR(64) NOT NULL,
+  Published_At VARCHAR(64) NOT NULL,
+  Has_Test BOOLEAN NOT NULL,
+  Response_Letter_Required BOOLEAN NOT NULL,
+  Area_Id INTEGER NOT NULL,
+  Area_Name VARCHAR(64) NOT NULL,
+  Schedule_Id VARCHAR(64) NOT NULL,
+  Schedule_Name VARCHAR(64) NOT NULL,
+  Employer_Url VARCHAR(64) NOT NULL,
+  Employer_Name VARCHAR(64) NOT NULL,
+  Description_Full VARCHAR(64),
+  Snippet_Requirement VARCHAR(64),
+  Snippet_Responsibility VARCHAR(64),
+  Salary_Currency_Id INTEGER,
+  Salary_From INTEGER,
+  Salary_To INTEGER,
+  Address_Raw VARCHAR(64),
+  Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (Id)
 );
-CREATE TRIGGER modifiedUpd BEFORE
-UPDATE ON Vacancy FOR EACH ROW EXECUTE PROCEDURE upd_timestamp();
+CREATE
+OR REPLACE TRIGGER Modified_Upd BEFORE
+UPDATE
+  ON Vacancy_HH FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
 -- 
-CREATE TABLE IF NOT EXISTS Search_Query_Vacancy (
-  searchQueryId integer NOT NULL,
-  vacancyId integer NOT NULL,
-  PRIMARY KEY (searchQueryId, vacancyId),
-  FOREIGN KEY (searchQueryId) REFERENCES Search_Query (id) ON DELETE CASCADE,
-  FOREIGN KEY (vacancyId) REFERENCES Vacancy (id) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS Search_Query_Vacancy_HH (
+  Search_Query_Id INTEGER NOT NULL,
+  Vacancy_Id INTEGER NOT NULL,
+  PRIMARY KEY (Search_Query_Id, Vacancy_Id),
+  FOREIGN KEY (Search_Query_Id) REFERENCES Search_Query (Id) ON
+  DELETE
+    CASCADE,
+    FOREIGN KEY (Vacancy_Id) REFERENCES Vacancy_HH (Id) ON
+  DELETE
+    CASCADE
 );
+-- 
+CREATE TABLE IF NOT EXISTS Proxy (
+  Ip VARCHAR(64) NOT NULL,
+  Port VARCHAR(64) NOT NULL,
+  Uuid_ UUID UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
+  Last_Successful_Req TIMESTAMP,
+  Added TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (Ip, Port)
+);
+-- 
+-- 
+--
+INSERT INTO
+  System_Group (NAME, Mask)
+VALUES
+  ('admin', '1111');
+INSERT INTO
+  System_Group (NAME, Mask)
+VALUES
+  ('user', '0001');
+--
+INSERT INTO
+  Proxy (Ip, Port)
+VALUES
+  ('192.168.1.123', '80');
