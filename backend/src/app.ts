@@ -1,9 +1,12 @@
-import { writeFileSync } from 'fs';
-import { randomInt } from 'node:crypto';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { stringify } from 'node:querystring';
+import { publishLog } from './access-layer/events/pubsub';
+import { DB } from './core/db';
 import { Request } from './core/services';
+import { ELOG_LEVEL } from './general.type';
 import { parseResponse } from './helpers/services';
-import { setupCli, setupErrorHandle, setupExpress, setupValidateEnv } from './setup';
+import { setupCli, setupDb, setupErrorHandle, setupExpress, setupValidateEnv } from './setup';
 
 async function getVak() {
   const response = await Request.get({
@@ -51,7 +54,10 @@ async function apiVacansy() {
   return parseResponse({ response });
 }
 
-async function main() {
+async function test() {
+  const resp = await DB.one<string>('SELECT * FROM Proxy WHERE Ip LIKE $1', ['192.%']);
+  publishLog(ELOG_LEVEL.WARN, resp);
+
   // const r = await apiVacansy();
   // writeFileSync(
   //   `./vacText${randomInt(240)}.js`,
@@ -65,19 +71,11 @@ async function init() {
   setupValidateEnv();
   setupErrorHandle();
   setupCli();
+  await setupDb();
   setupExpress();
 
-  void main();
+  await test();
   // setupDashboard();
-
-  // await initDB();
-  // await main();
-
-  // await examplePromptCLI();
-  // await exampleRequests();
-  // exampleErrors();
-  // examplePubsub();
-  // exampleLogging();
 }
 
 void init();
