@@ -1,4 +1,4 @@
-import { ValueTypeError } from '../core/error';
+import { ValueTypeError } from '../modules/core/error';
 import { NoEnvValueError } from './error';
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
@@ -20,9 +20,8 @@ export function setupValidateEnv() {
   }
   if (Number.isNaN(Number(process.env.JWT_EXP))) {
     throw new ValueTypeError('JWT_EXP', {
-      expectedType: 'number',
-      actualType: typeof process.env.JWT_EXP,
-      value: process.env.JWT_EXP,
+      expectedValue: 'number',
+      actualValue: process.env.JWT_EXP,
     });
   }
   if (process.env.PORT === undefined) {
@@ -30,9 +29,17 @@ export function setupValidateEnv() {
   }
   if (Number.isNaN(Number(process.env.PORT))) {
     throw new ValueTypeError('PORT', {
-      expectedType: 'number',
-      actualType: typeof process.env.PORT,
-      value: process.env.PORT,
+      expectedValue: 'number',
+      actualValue: process.env.PORT,
+    });
+  }
+  if (process.env.DEFAULT_SOCKS_URL === undefined) {
+    throw new NoEnvValueError('DEFAULT_SOCKS_URL');
+  }
+  if (!/^socks:\/{2}(?:\d{1,3}.){3}\d{1,3}:\d{1,5}$/.test(process.env.DEFAULT_SOCKS_URL)) {
+    throw new ValueTypeError('DEFAULT_SOCKS_URL', {
+      expectedValue: 'socks://xxx.yyy.xxx.yyy:xxxxx',
+      actualValue: process.env.DEFAULT_SOCKS_URL,
     });
   }
   if (process.env.CORS_URL_PROD === undefined) {
@@ -52,9 +59,8 @@ export function setupValidateEnv() {
   }
   if (Number.isNaN(Number(process.env.DB_PORT))) {
     throw new ValueTypeError('DB_PORT', {
-      expectedType: 'number',
-      actualType: typeof process.env.DB_PORT,
-      value: process.env.DB_PORT,
+      expectedValue: 'number',
+      actualValue: process.env.DB_PORT,
     });
   }
   if (process.env.DB_DATABASE_NAME === undefined) {

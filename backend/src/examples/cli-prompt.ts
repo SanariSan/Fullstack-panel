@@ -4,8 +4,7 @@ import {
   validateEmailDefault,
   validateNumDefault,
   validatePassDefault,
-} from '../access-layer/cli-prompts';
-import type { TObjectAny } from '../general.type';
+} from '../modules/access-layer/cli-prompts';
 
 async function examplePromptCLI() {
   const confirmPromptResult = await cliPrompt<boolean>({
@@ -36,7 +35,7 @@ async function examplePromptCLI() {
     default: 'e@mail.ru',
     validate: validateEmailDefault,
   });
-  const checkboxPromptResult = await cliPrompt<Array<string | TObjectAny>>({
+  const checkboxPromptResult = await cliPrompt<Array<string | Record<string, unknown>>>({
     type: 'checkbox',
     message: 'checkbox',
     choices: [

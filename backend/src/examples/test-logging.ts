@@ -1,5 +1,5 @@
-import { publishError, publishLog } from '../access-layer/events/pubsub';
-import { NoDataError } from '../core/services/error';
+import { publishError, publishLog } from '../modules/access-layer/events/pubsub';
+import { NoDataError } from '../modules/core/services/error';
 import { ELOG_LEVEL } from '../general.type';
 import { duplicateNTimes, randomHexSync, rndIntInRange, sleep } from '../helpers/util';
 
@@ -17,7 +17,7 @@ function exampleLogging() {
   async function pubLogs() {
     await sleep(1000);
     void pubLogs();
-    publishLog(ELOG_LEVEL.INFO, `${duplicateNTimes(rndIntInRange(1, 3), randomHexSync())}`);
+    publishLog(ELOG_LEVEL.INFO, `${duplicateNTimes(randomHexSync(), rndIntInRange(1, 3))}`);
   }
   void pubLogs();
 

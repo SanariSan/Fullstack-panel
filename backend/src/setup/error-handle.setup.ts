@@ -1,4 +1,4 @@
-import { publishErrorUnexpected } from '../access-layer/events/pubsub';
+import { publishErrorUnexpected } from '../modules/access-layer/events/pubsub';
 import { ELOG_LEVEL } from '../general.type';
 
 function setupErrorHandle() {

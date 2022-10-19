@@ -1,14 +1,13 @@
-import { GenericError } from '../../core/error';
-import type { TObjectUnknown } from '../../general.type';
+import { GenericError } from '../../modules/core/error';
 
 class NoEnvValueError extends GenericError {
   public name: string;
 
   public description: string;
 
-  public miscellaneous?: TObjectUnknown;
+  public miscellaneous?: Record<string, unknown>;
 
-  constructor(message: string, miscellaneous?: TObjectUnknown) {
+  constructor(message: string, miscellaneous?: Record<string, unknown>) {
     super(message);
 
     this.name = 'NoEnvValueError';

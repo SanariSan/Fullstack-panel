@@ -1,5 +1,5 @@
-import { publishError, publishLog } from '../../access-layer/events/pubsub';
-import { DB } from '../../core/db';
+import { publishError, publishLog } from '../../modules/access-layer/events/pubsub';
+import { DB } from '../../modules/core/db';
 import { ELOG_LEVEL } from '../../general.type';
 import { sleep } from '../../helpers/util';
 import { DbConnectionError } from '../error/db-connection.error';

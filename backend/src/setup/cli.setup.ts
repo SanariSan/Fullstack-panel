@@ -1,5 +1,5 @@
 import { EventEmitter } from 'node:events';
-import { cliStartPolling, cliSubscribeChannel } from '../access-layer/logger/cli';
+import { cliStartPolling, cliSubscribeChannel } from '../modules/access-layer/logger/cli';
 
 function setupCli() {
   // tweak listeners amount
