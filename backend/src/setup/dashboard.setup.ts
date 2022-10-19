@@ -1,6 +1,9 @@
 import { EventEmitter } from 'node:events';
-import { dashboardShow, dashboardWidgetGet } from '../access-layer/dashboard';
-import { dashboardStartPolling, dashboardSubscribeChannel } from '../access-layer/logger/dashboard';
+import { dashboardShow, dashboardWidgetGet } from '../modules/access-layer/dashboard';
+import {
+  dashboardStartPolling,
+  dashboardSubscribeChannel,
+} from '../modules/access-layer/logger/dashboard';
 
 function setupDashboard() {
   const MainWidget = dashboardWidgetGet('main');

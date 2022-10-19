@@ -1,7 +1,56 @@
-import { publishError } from '../access-layer/events/pubsub';
-import { sendJson, sendMultipart, sendQs } from '../access-layer/services/sample';
-import type { GenericError } from '../core/error';
+import type { AxiosError } from 'axios';
+import { stringify } from 'querystring';
+import { publishError } from '../modules/access-layer/events/pubsub';
+import type { GenericError } from '../modules/core/error';
 import { ELOG_LEVEL } from '../general.type';
+import { Request } from '../modules/access-layer/services';
+import { BadStatusError } from '../modules/core/services/error';
+import { makeForm, parseResponse } from '../helpers/services';
+
+async function sendJson() {
+  const response = await Request.post({
+    host: 'https://postman-echo.com',
+    path: '/post',
+    data: { foo: 1, bar: 2, baz: 3 },
+  }).catch((error: Readonly<unknown>) => {
+    // later parse error more carefully + move error to local services dir from core
+    throw new BadStatusError((error as AxiosError).code ?? '');
+  });
+
+  return parseResponse({ response });
+}
+
+async function sendQs() {
+  const response = await Request.post({
+    host: 'https://postman-echo.com',
+    path: '/post',
+    data: stringify({ foo: 1, bar: 2, baz: 3 }),
+  }).catch((error: Readonly<unknown>) => {
+    // later parse error more carefully + move error to local services dir from core
+    throw new BadStatusError((error as AxiosError).code ?? '');
+  });
+
+  return parseResponse({ response });
+}
+
+async function sendMultipart() {
+  const form = makeForm({ obj: { foo: 1, bar: 2, baz: 3 } });
+  const response = await Request.post({
+    host: 'https://postman-echo.com',
+    path: '/post',
+    data: form,
+    headers: {
+      ...form.getHeaders(),
+    },
+  }).catch((error: Readonly<unknown>) => {
+    // later parse error more carefully + move error to local services dir from core
+    throw new BadStatusError((error as AxiosError).code ?? '');
+  });
+
+  return parseResponse({ response });
+}
+
+// ----------------------------------------------------------------
 
 async function exampleRequests() {
   const respJson = await sendJson().catch((error) => {

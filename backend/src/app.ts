@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { stringify } from 'node:querystring';
-import { publishLog } from './access-layer/events/pubsub';
-import { DB } from './core/db';
-import { Request } from './core/services';
 import { ELOG_LEVEL } from './general.type';
 import { parseResponse } from './helpers/services';
+import { publishLog } from './modules/access-layer/events/pubsub';
+import { Request } from './modules/access-layer/services';
+import { DB } from './modules/core/db';
 import { setupCli, setupDb, setupErrorHandle, setupExpress, setupValidateEnv } from './setup';
 
 async function getVak() {

@@ -1,5 +1,5 @@
-import type { IPublishEntity } from '../access-layer/events/pubsub';
-import { publishCustom, Sub } from '../access-layer/events/pubsub';
+import type { IPublishEntity } from '../modules/access-layer/events/pubsub';
+import { publishCustom, Sub } from '../modules/access-layer/events/pubsub';
 import { ELOG_LEVEL } from '../general.type';
 
 function testCb({ channel, logLevel, message }: IPublishEntity) {

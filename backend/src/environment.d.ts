@@ -1,4 +1,4 @@
-import type { TApiVersion } from './logic/express/routers';
+import type { TApiVersion } from './server/routers';
 
 // no undefined options because running validate .env values fn on app launch
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -12,6 +12,7 @@ declare global {
       JWT_SECRET: string;
       JWT_EXP: string;
       PORT: string;
+      DEFAULT_SOCKS_URL: string;
       // db
       DB_HOST: string;
       DB_PORT: string;
