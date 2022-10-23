@@ -12,17 +12,20 @@ export function setupValidateEnv() {
   if (process.env.API_VERSION === undefined) {
     throw new NoEnvValueError('API_VERSION');
   }
-  if (process.env.JWT_SECRET === undefined) {
-    throw new NoEnvValueError('JWT_SECRET');
-  }
-  if (process.env.JWT_EXP === undefined) {
-    throw new NoEnvValueError('JWT_EXP');
-  }
-  if (Number.isNaN(Number(process.env.JWT_EXP))) {
-    throw new ValueTypeError('JWT_EXP', {
-      expectedValue: 'number',
-      actualValue: process.env.JWT_EXP,
-    });
+  // if (process.env.JWT_SECRET === undefined) {
+  //   throw new NoEnvValueError('JWT_SECRET');
+  // }
+  // if (process.env.JWT_EXP === undefined) {
+  //   throw new NoEnvValueError('JWT_EXP');
+  // }
+  // if (Number.isNaN(Number(process.env.JWT_EXP))) {
+  //   throw new ValueTypeError('JWT_EXP', {
+  //     expectedValue: 'number',
+  //     actualValue: process.env.JWT_EXP,
+  //   });
+  // }
+  if (process.env.COOKIE_SECRET === undefined) {
+    throw new NoEnvValueError('COOKIE_SECRET');
   }
   if (process.env.PORT === undefined) {
     throw new NoEnvValueError('PORT');

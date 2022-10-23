@@ -2,9 +2,9 @@
 
 import { stringify } from 'node:querystring';
 import { ELOG_LEVEL } from './general.type';
-import { parseResponse } from './helpers/services';
+import { parseResponse } from './helpers/request';
 import { publishLog } from './modules/access-layer/events/pubsub';
-import { Request } from './modules/access-layer/services';
+import { Request } from './modules/access-layer/request';
 import { DB } from './modules/core/db';
 import { setupCli, setupDb, setupErrorHandle, setupExpress, setupValidateEnv } from './setup';
 
@@ -55,9 +55,8 @@ async function apiVacansy() {
 }
 
 async function test() {
-  const resp = await DB.one<string>('SELECT * FROM Proxy WHERE Ip LIKE $1', ['192.%']);
-  publishLog(ELOG_LEVEL.WARN, resp);
-
+  // const resp = await DB.one<string>('SELECT * FROM Proxy WHERE Ip LIKE $1', ['192.%']);
+  // publishLog(ELOG_LEVEL.WARN, resp);
   // const r = await apiVacansy();
   // writeFileSync(
   //   `./vacText${randomInt(240)}.js`,

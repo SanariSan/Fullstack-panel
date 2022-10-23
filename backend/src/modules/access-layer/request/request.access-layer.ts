@@ -1,6 +1,6 @@
-import type { IGenericRequest } from '../../core/services';
-import { requestGeneric } from '../../core/services';
-import type { TBindedMethodHostRequest, TBindedMethodRequest } from './services.type';
+import type { IGenericRequest } from '../../core/request';
+import { requestGeneric } from '../../core/request';
+import type { TBindedMethodHostRequest, TBindedMethodRequest } from './request.type';
 
 const Request = {
   get: ({ host, path, data, headers, ...args }: TBindedMethodRequest) =>

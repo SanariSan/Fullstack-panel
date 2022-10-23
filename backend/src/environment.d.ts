@@ -11,6 +11,7 @@ declare global {
       API_VERSION: TApiVersion;
       JWT_SECRET: string;
       JWT_EXP: string;
+      COOKIE_SECRET: string;
       PORT: string;
       DEFAULT_SOCKS_URL: string;
       // db

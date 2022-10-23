@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS Proxy;
 -- 
-DROP TABLE IF EXISTS System_User_System_Group;
-DROP TABLE IF EXISTS System_Group;
+DROP TABLE IF EXISTS System_User_System_Role;
+DROP TABLE IF EXISTS System_Role;
 -- 
 DROP TABLE IF EXISTS Search_Query_Vacancy_HH;
 DROP TABLE IF EXISTS Search_Query;
@@ -56,10 +56,10 @@ CREATE TABLE IF NOT EXISTS System_User (
   Id SERIAL,
   -- Uuid_ UUID UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
   Login VARCHAR(64) UNIQUE NOT NULL,
-  Password VARCHAR(64) NOT NULL,
-  TelegramId VARCHAR(64),
-  HHToken VARCHAR(255),
-  CreatedOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  Password_Hash VARCHAR(255) NOT NULL,
+  Telegram_Id VARCHAR(64),
+  HH_Token VARCHAR(255),
+  Created_On TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (Id)
 );
@@ -68,21 +68,21 @@ OR REPLACE TRIGGER Modified_Upd BEFORE
 UPDATE
   ON System_User FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
 -- 
-CREATE TABLE IF NOT EXISTS System_Group (
+CREATE TABLE IF NOT EXISTS System_Role (
   Id SERIAL,
   NAME VARCHAR(64) UNIQUE NOT NULL,
   Mask VARCHAR(4) UNIQUE NOT NULL,
   PRIMARY KEY (Id)
 );
 -- 
-CREATE TABLE IF NOT EXISTS System_User_System_Group (
+CREATE TABLE IF NOT EXISTS System_User_System_Role (
   User_Id INTEGER NOT NULL,
-  Group_Id INTEGER NOT NULL,
-  PRIMARY KEY (User_Id, Group_Id),
+  Role_Id INTEGER NOT NULL,
+  PRIMARY KEY (User_Id, Role_Id),
   FOREIGN KEY (User_Id) REFERENCES System_User (Id) ON
   DELETE
     CASCADE,
-    FOREIGN KEY (Group_Id) REFERENCES System_Group (Id) ON
+    FOREIGN KEY (Role_Id) REFERENCES System_Role (Id) ON
   DELETE
     CASCADE
 );
@@ -181,36 +181,52 @@ CREATE TABLE IF NOT EXISTS Proxy (
 -- 
 BEGIN
 ;
+-- pwd = pwd123456 | bcrypt secret = auto, 12 rounds
 INSERT INTO
-  System_User (Login, Password)
+  System_User (Login, Password_Hash)
 VALUES
-  (rndStr(10), CONCAT('pwd-', rndStr(20)));
+  (
+    rndStr(10),
+    '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
+  );
 INSERT INTO
-  System_User (Login, Password)
+  System_User (Login, Password_Hash)
 VALUES
-  (rndStr(10), CONCAT('pwd-', rndStr(20)));
+  (
+    rndStr(10),
+    '$2a$12$LxcmMFGVW6u0qXPVP.fDBeteTBpy2mq7TvCYQYVdWjJ6QF4f2xfti'
+  );
 INSERT INTO
-  System_User (Login, Password)
+  System_User (Login, Password_Hash)
 VALUES
-  (rndStr(10), CONCAT('pwd-', rndStr(20)));
+  (
+    rndStr(10),
+    '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
+  );
 INSERT INTO
-  System_User (Login, Password)
+  System_User (Login, Password_Hash)
 VALUES
-  (rndStr(10), CONCAT('pwd-', rndStr(20)));
+  (
+    rndStr(10),
+    '$2a$12$LxcmMFGVW6u0qXPVP.fDBeteTBpy2mq7TvCYQYVdWjJ6QF4f2xfti'
+  );
 INSERT INTO
-  System_User (Login, Password)
+  System_User (Login, Password_Hash)
 VALUES
-  (rndStr(10), CONCAT('pwd-', rndStr(20)));
+  (
+    rndStr(10),
+    '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
+  );
 END;
 -- 
 BEGIN
 ;
 INSERT INTO
-  System_Group (NAME, Mask)
+  System_Role (NAME, Mask)
 VALUES
   ('admin', '1111');
 INSERT INTO
-  System_Group (NAME, Mask)
+  System_Role (NAME, Mask)
 VALUES
   ('user', '0001');
 END;

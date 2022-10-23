@@ -1,7 +1,7 @@
-import { publishError, publishLog } from '../../modules/access-layer/events/pubsub';
-import { DB } from '../../modules/core/db';
 import { ELOG_LEVEL } from '../../general.type';
 import { sleep } from '../../helpers/util';
+import { DB } from '../../modules/access-layer/db';
+import { publishError, publishLog } from '../../modules/access-layer/events/pubsub';
 import { DbConnectionError } from '../error/db-connection.error';
 
 export async function setupDb() {
