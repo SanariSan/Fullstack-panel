@@ -1,23 +1,23 @@
 import type { Request } from 'express';
+import type { Session } from 'express-session';
+
+type TSessionCustomFields = {
+  userId?: number;
+  login?: string;
+  isAuthenticated?: boolean;
+};
 
 type TRequestNarrowed = Omit<Request, 'body'> & {
   body?: Record<string, unknown> | string;
-};
-
-type TRequestValidatedTokenAccess = TRequestNarrowed & {
-  headers: {
-    authorization: string;
-  };
-};
-type TRequestValidatedTokenRefresh = TRequestNarrowed & {
-  body: {
-    refreshToken: string;
+} & {
+  session: Session & {
+    user?: TSessionCustomFields;
   };
 };
 
 type TRequestValidatedCredentials = TRequestNarrowed & {
   body: {
-    email: string;
+    login: string;
     password: string;
   };
 };
@@ -28,24 +28,13 @@ type TRequestValidatedCredentialsChange = TRequestNarrowed & {
   };
 };
 
-// TODO: change Record<string, unknown> to typed object, when token prm format is stable
-type TRequestTokenPayload = TRequestNarrowed & {
-  accessTokenPayloadPrm: Record<string, unknown>;
-};
-
 type TRequest =
   | TRequestNarrowed
-  | TRequestValidatedTokenAccess
-  | TRequestValidatedTokenRefresh
   | TRequestValidatedCredentials
-  | TRequestValidatedCredentialsChange
-  | TRequestTokenPayload;
+  | TRequestValidatedCredentialsChange;
 
 export type {
   TRequestNarrowed,
-  TRequestTokenPayload,
-  TRequestValidatedTokenAccess,
-  TRequestValidatedTokenRefresh,
   TRequestValidatedCredentials,
   TRequestValidatedCredentialsChange,
   TRequest,

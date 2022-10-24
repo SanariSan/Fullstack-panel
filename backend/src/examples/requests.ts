@@ -3,9 +3,9 @@ import { stringify } from 'querystring';
 import { publishError } from '../modules/access-layer/events/pubsub';
 import type { GenericError } from '../modules/core/error';
 import { ELOG_LEVEL } from '../general.type';
-import { Request } from '../modules/access-layer/services';
-import { BadStatusError } from '../modules/core/services/error';
-import { makeForm, parseResponse } from '../helpers/services';
+import { Request } from '../modules/access-layer/request';
+import { BadStatusError } from '../modules/core/request/error';
+import { makeForm, parseResponse } from '../helpers/request';
 
 async function sendJson() {
   const response = await Request.post({

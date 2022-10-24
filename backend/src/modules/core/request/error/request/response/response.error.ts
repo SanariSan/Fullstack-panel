@@ -1,6 +1,6 @@
-import { ServicesError } from '../services.error';
+import { RequestGenericError } from '../request-generic.error';
 
-class ResponseError extends ServicesError {
+class ResponseError extends RequestGenericError {
   public name: string;
 
   public description: string;

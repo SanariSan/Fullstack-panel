@@ -17,16 +17,7 @@ export function validateBySchemaAsyncMW(
         return;
       })
       .catch((error: ValidationError) => {
-        // closer look on error
-        // console.dir(error, { depth: 10, color: true });
-        next(new ExpressError(error.message));
-        // TODO: error parse + publish
-        //
-        // ErrorReport
-        // const { details } = error as Err;
-        //   const a = error as ErrorReport;
-        //   const message = details.map((el, i) => `${el.message.replace(/"/g, '')}`).join(';');
-        //   Logger.debug(details);
-        //   next(new BadRequestError(message));
+        const messages = JSON.stringify(error.details.map((el) => el.message));
+        next(new ExpressError(messages));
       });
 }

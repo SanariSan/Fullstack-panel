@@ -1,20 +1,17 @@
 import type { NextFunction, Response } from 'express';
-import { jwtDecode } from '../../../modules/access-layer/jwt';
+import { ELOG_LEVEL } from '../../../general.type';
+import { publishLog } from '../../../modules/access-layer/events/pubsub';
+import type { TRequestNarrowed } from '../../express.type';
 
-import type { TRequestTokenPayload, TRequestValidatedTokenAccess } from '../../express.type';
-
-export async function authentificateMW(
-  req: TRequestValidatedTokenAccess,
-  res: Response,
-  next: NextFunction,
-): Promise<void> {
-  const reqMutable = req as TRequestValidatedTokenAccess & TRequestTokenPayload;
-
-  const token = req.headers.authorization.split(' ')[1];
-  const accessTokenPayload = await jwtDecode(token);
-
-  // TODO: change TObjectUnknown to typed object, when token prm format is stable
-  reqMutable.accessTokenPayloadPrm = JSON.parse(accessTokenPayload.prm) as Record<string, unknown>;
+export function authentificateMW(req: TRequestNarrowed, res: Response, next: NextFunction): void {
+  if (req.session.user === undefined || req.session.user.isAuthenticated !== true) {
+    publishLog(ELOG_LEVEL.DEBUG, `User not authenticated, no session`);
+    res.status(403).send({
+      isAuthenticated: false,
+    });
+    return;
+  }
 
   next();
+  return;
 }

@@ -1,4 +1,5 @@
 import express from 'express';
+import { createServer } from 'http';
 import { ELOG_LEVEL } from '../../general.type';
 import { publishError, publishLog } from '../../modules/access-layer/events/pubsub';
 import { setupErrorHandleExpress } from './error-handler.setup';
@@ -7,14 +8,13 @@ import { setupSettingsExpress } from './settings.setup';
 
 export function setupExpress() {
   const app = express();
+  const server = createServer(app);
 
   setupSettingsExpress(app);
   setupRoutersExpress(app);
   setupErrorHandleExpress(app);
 
-  publishLog(ELOG_LEVEL.WARN, Number(process.env.PORT));
-
-  const server = app
+  server
     .listen(Number(process.env.PORT), () => {
       publishLog(ELOG_LEVEL.WARN, `Server running on port : ${process.env.PORT}`);
     })
