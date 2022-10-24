@@ -1,8 +1,10 @@
 import { Router } from 'express';
+import { accessLogoutCTR } from '../../../../controllers';
 import {
   asyncHandleMW,
   authentificateMW,
   EVALIDATION_TARGET,
+  syncHandleMW,
   validateBySchemaAsyncMW,
 } from '../../../../middleware';
 import { SCHEME_AUTHENTICATION } from '../../../../schemes';
@@ -14,11 +16,8 @@ logoutR.delete(
   asyncHandleMW(
     validateBySchemaAsyncMW(SCHEME_AUTHENTICATION.tokenAccess, EVALIDATION_TARGET.HEADER),
   ),
-  asyncHandleMW(authentificateMW),
-  // asyncHandleMW(StickRepos),
-  // asyncHandleMW<
-  //   TRequestValidatedTokenAccess & TRequestTokenPayload
-  // >(accessLogoutMW),
+  syncHandleMW(authentificateMW),
+  asyncHandleMW(accessLogoutCTR),
 );
 
 export { logoutR };

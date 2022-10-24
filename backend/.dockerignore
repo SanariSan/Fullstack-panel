@@ -163,6 +163,7 @@ sketch
 
 ./logs/**/*
 ignore/**/*
+*.ignore
 *.ignore*
 dist*
 *.http

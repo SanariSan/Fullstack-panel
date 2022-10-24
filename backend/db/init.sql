@@ -1,20 +1,20 @@
 DROP TABLE IF EXISTS Proxy;
 -- 
-DROP TABLE IF EXISTS System_User_System_Role;
-DROP TABLE IF EXISTS System_Role;
+DROP TABLE IF EXISTS SystemUserSystemRole;
+DROP TABLE IF EXISTS SystemRole;
 -- 
-DROP TABLE IF EXISTS Search_Query_Vacancy_HH;
-DROP TABLE IF EXISTS Search_Query;
-DROP TABLE IF EXISTS Vacancy_HH;
+DROP TABLE IF EXISTS SearchQueryVacancyHH;
+DROP TABLE IF EXISTS SearchQuery;
+DROP TABLE IF EXISTS VacancyHH;
 --
 DROP TABLE IF EXISTS Token;
-DROP TABLE IF EXISTS System_User;
+DROP TABLE IF EXISTS SystemUser;
 --
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- 
 CREATE
-OR REPLACE FUNCTION Upd_Timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS $$ BEGIN
-  NEW .Modified = CURRENT_TIMESTAMP;
+OR REPLACE FUNCTION updTimestamp() RETURNS TRIGGER LANGUAGE plpgsql AS $$ BEGIN
+  NEW .modified = CURRENT_TIMESTAMP;
 RETURN NEW;
 END;
 $$;
@@ -39,7 +39,7 @@ END;
 $$;
 -- 
 CREATE
-OR REPLACE FUNCTION epochSecsHoursAgoInRange(hoursMin INTEGER, hoursMax INTEGER) RETURNS DECIMAL LANGUAGE plpgsql AS $$ BEGIN
+OR REPLACE FUNCTION epochHoursAgoInRange(hoursMin INTEGER, hoursMax INTEGER) RETURNS DECIMAL LANGUAGE plpgsql AS $$ BEGIN
   RETURN (
     EXTRACT(
       epoch
@@ -52,127 +52,102 @@ OR REPLACE FUNCTION epochSecsHoursAgoInRange(hoursMin INTEGER, hoursMax INTEGER)
 END;
 $$;
 -- 
-CREATE TABLE IF NOT EXISTS System_User (
-  Id SERIAL,
-  -- Uuid_ UUID UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
-  Login VARCHAR(64) UNIQUE NOT NULL,
-  Password_Hash VARCHAR(255) NOT NULL,
-  Telegram_Id VARCHAR(64),
-  HH_Token VARCHAR(255),
-  Created_On TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (Id)
+CREATE TABLE IF NOT EXISTS SystemUser (
+  id SERIAL,
+  -- uuid_ UUID UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
+  login VARCHAR(64) UNIQUE NOT NULL,
+  passwordHash VARCHAR(255) NOT NULL,
+  telegramId VARCHAR(64),
+  hhToken VARCHAR(255),
+  createdOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
 );
 CREATE
-OR REPLACE TRIGGER Modified_Upd BEFORE
+OR REPLACE TRIGGER modifiedUpd BEFORE
 UPDATE
-  ON System_User FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
+  ON SystemUser FOR EACH ROW EXECUTE PROCEDURE updTimestamp();
 -- 
-CREATE TABLE IF NOT EXISTS System_Role (
-  Id SERIAL,
-  NAME VARCHAR(64) UNIQUE NOT NULL,
-  Mask VARCHAR(4) UNIQUE NOT NULL,
-  PRIMARY KEY (Id)
+CREATE TABLE IF NOT EXISTS SystemRole (
+  id SERIAL,
+  roleName VARCHAR(64) UNIQUE NOT NULL,
+  mask VARCHAR(4) UNIQUE NOT NULL,
+  PRIMARY KEY (id)
 );
 -- 
-CREATE TABLE IF NOT EXISTS System_User_System_Role (
-  User_Id INTEGER NOT NULL,
-  Role_Id INTEGER NOT NULL,
-  PRIMARY KEY (User_Id, Role_Id),
-  FOREIGN KEY (User_Id) REFERENCES System_User (Id) ON
+CREATE TABLE IF NOT EXISTS SystemUserSystemRole (
+  userId INTEGER NOT NULL,
+  roleId INTEGER NOT NULL,
+  PRIMARY KEY (userId, roleId),
+  FOREIGN KEY (userId) REFERENCES SystemUser (id) ON
   DELETE
     CASCADE,
-    FOREIGN KEY (Role_Id) REFERENCES System_Role (Id) ON
+    FOREIGN KEY (roleId) REFERENCES SystemRole (id) ON
   DELETE
     CASCADE
 );
 -- 
-CREATE TABLE IF NOT EXISTS Token (
-  Id SERIAL,
-  User_Id INTEGER NOT NULL,
-  Access_Signature VARCHAR(255) UNIQUE NOT NULL,
-  Refresh_Signature VARCHAR(255) UNIQUE NOT NULL,
-  Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (Id),
-  FOREIGN KEY (User_Id) REFERENCES System_User (Id) ON
-  DELETE
-    CASCADE
-);
-CREATE
-OR REPLACE TRIGGER Modified_Upd BEFORE
-UPDATE
-  ON Token FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
--- 
-CREATE TABLE IF NOT EXISTS Search_Query (
-  Id SERIAL,
-  Uuid_ UUID NOT NULL DEFAULT uuid_generate_v4(),
-  User_Id INTEGER NOT NULL,
-  Search_Text VARCHAR(255) NOT NULL,
-  Search_Params VARCHAR(255) NOT NULL,
-  Is_Aknowledged BOOLEAN NOT NULL DEFAULT FALSE,
-  Last_Aknowledged TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  Notify_Posted_Sec_Ago_Max INTEGER DEFAULT (24 * 60 * 60 * 1000),
-  Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (Id),
-  FOREIGN KEY (User_Id) REFERENCES System_User (Id) ON
+CREATE TABLE IF NOT EXISTS SearchQuery (
+  id SERIAL,
+  uuid_ UUID NOT NULL DEFAULT uuid_generate_v4(),
+  userId INTEGER NOT NULL,
+  searchText VARCHAR(255) NOT NULL,
+  searchParams VARCHAR(255) NOT NULL,
+  isAknowledged BOOLEAN NOT NULL DEFAULT FALSE,
+  lastAknowledged TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  notifyPostedSecAgoMax INTEGER DEFAULT (24 * 60 * 60),
+  modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (userId) REFERENCES SystemUser (id) ON
   DELETE
     CASCADE
 );
 CREATE
-OR REPLACE TRIGGER Modified_Upd BEFORE
+OR REPLACE TRIGGER modifiedUpd BEFORE
 UPDATE
-  ON Search_Query FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
+  ON SearchQuery FOR EACH ROW EXECUTE PROCEDURE updTimestamp();
 -- 
-CREATE TABLE IF NOT EXISTS Vacancy_HH (
-  Id SERIAL,
-  Vacancy_HH_Id INTEGER NOT NULL,
+CREATE TABLE IF NOT EXISTS VacancyHH (
+  id SERIAL,
+  hhId INTEGER NOT NULL,
   -- md5 hash of all fields below
-  Hash_MD5 VARCHAR(32) UNIQUE NOT NULL,
-  Title VARCHAR(64) NOT NULL,
-  Created_At VARCHAR(64) NOT NULL,
-  --   Published_At VARCHAR(64) NOT NULL,
-  Has_Test BOOLEAN NOT NULL,
-  Response_Letter_Required BOOLEAN NOT NULL,
-  Area_Id INTEGER NOT NULL,
-  Area_Name VARCHAR(64) NOT NULL,
-  Schedule_Id VARCHAR(64) NOT NULL,
-  Schedule_Name VARCHAR(64) NOT NULL,
-  Employer_Url VARCHAR(64) NOT NULL,
-  Employer_Name VARCHAR(64) NOT NULL,
-  Description_Full VARCHAR(64),
-  Snippet_Requirement VARCHAR(64),
-  Snippet_Responsibility VARCHAR(64),
-  Salary_Currency_Id INTEGER,
-  Salary_From INTEGER,
-  Salary_To INTEGER,
-  Address_Raw VARCHAR(64),
-  Modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (Id)
+  hashMD5 VARCHAR(32) UNIQUE NOT NULL,
+  title VARCHAR(64) NOT NULL,
+  createdAt VARCHAR(64) NOT NULL,
+  publishedAt VARCHAR(64) NOT NULL,
+  hasTest BOOLEAN NOT NULL,
+  responseLetterRequired BOOLEAN NOT NULL,
+  areaId INTEGER NOT NULL,
+  -- areaName VARCHAR(64) NOT NULL,
+  scheduleId VARCHAR(64) NOT NULL,
+  -- Schedule_Name VARCHAR(64) NOT NULL,
+  employerUrl VARCHAR(64) NOT NULL,
+  employerName VARCHAR(64) NOT NULL,
+  descriptionFull VARCHAR(64),
+  snippetRequirement VARCHAR(64),
+  snippetResponsibility VARCHAR(64),
+  salaryCurrencyId INTEGER,
+  salaryFrom INTEGER,
+  salaryTo INTEGER,
+  addressRaw VARCHAR(64),
+  modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
 );
 CREATE
-OR REPLACE TRIGGER Modified_Upd BEFORE
+OR REPLACE TRIGGER modifiedUpd BEFORE
 UPDATE
-  ON Vacancy_HH FOR EACH ROW EXECUTE PROCEDURE Upd_Timestamp();
+  ON VacancyHH FOR EACH ROW EXECUTE PROCEDURE updTimestamp();
 -- 
-CREATE TABLE IF NOT EXISTS Search_Query_Vacancy_HH (
-  Search_Query_Id INTEGER NOT NULL,
-  Vacancy_Id INTEGER NOT NULL,
-  PRIMARY KEY (Search_Query_Id, Vacancy_Id),
-  FOREIGN KEY (Search_Query_Id) REFERENCES Search_Query (Id) ON
+CREATE TABLE IF NOT EXISTS SearchQueryVacancyHH (
+  searchQueryId INTEGER NOT NULL,
+  vacancyId INTEGER NOT NULL,
+  PRIMARY KEY (searchQueryId, vacancyId),
+  FOREIGN KEY (searchQueryId) REFERENCES SearchQuery (id) ON
   DELETE
     CASCADE,
-    FOREIGN KEY (Vacancy_Id) REFERENCES Vacancy_HH (Id) ON
+    FOREIGN KEY (vacancyId) REFERENCES VacancyHH (id) ON
   DELETE
     CASCADE
-);
--- 
-CREATE TABLE IF NOT EXISTS Proxy (
-  Ip VARCHAR(64) NOT NULL,
-  Port VARCHAR(64) NOT NULL,
-  Uuid_ UUID UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
-  Last_Successful_Req TIMESTAMP,
-  Added TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (Ip, Port)
 );
 -- 
 -- 
@@ -183,35 +158,35 @@ BEGIN
 ;
 -- pwd = pwd123456 | bcrypt secret = auto, 12 rounds
 INSERT INTO
-  System_User (Login, Password_Hash)
+  SystemUser (login, passwordHash)
 VALUES
   (
     rndStr(10),
     '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
   );
 INSERT INTO
-  System_User (Login, Password_Hash)
+  SystemUser (login, passwordHash)
 VALUES
   (
     rndStr(10),
     '$2a$12$LxcmMFGVW6u0qXPVP.fDBeteTBpy2mq7TvCYQYVdWjJ6QF4f2xfti'
   );
 INSERT INTO
-  System_User (Login, Password_Hash)
+  SystemUser (login, passwordHash)
 VALUES
   (
     rndStr(10),
     '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
   );
 INSERT INTO
-  System_User (Login, Password_Hash)
+  SystemUser (login, passwordHash)
 VALUES
   (
     rndStr(10),
     '$2a$12$LxcmMFGVW6u0qXPVP.fDBeteTBpy2mq7TvCYQYVdWjJ6QF4f2xfti'
   );
 INSERT INTO
-  System_User (Login, Password_Hash)
+  SystemUser (login, passwordHash)
 VALUES
   (
     rndStr(10),
@@ -222,11 +197,11 @@ END;
 BEGIN
 ;
 INSERT INTO
-  System_Role (NAME, Mask)
+  SystemRole (roleName, mask)
 VALUES
   ('admin', '1111');
 INSERT INTO
-  System_Role (NAME, Mask)
+  SystemRole (roleName, mask)
 VALUES
   ('user', '0001');
 END;
@@ -234,7 +209,7 @@ END;
 BEGIN
 ;
 INSERT INTO
-  Search_Query (User_Id, Search_Text, Search_Params)
+  SearchQuery (userId, searchText, searchParams)
 VALUES
   (
     1,
@@ -242,7 +217,7 @@ VALUES
     CONCAT('Options - ', rndStr(8))
   );
 INSERT INTO
-  Search_Query (User_Id, Search_Text, Search_Params)
+  SearchQuery (userId, searchText, searchParams)
 VALUES
   (
     1,
@@ -250,7 +225,7 @@ VALUES
     CONCAT('Options - ', rndStr(8))
   );
 INSERT INTO
-  Search_Query (User_Id, Search_Text, Search_Params)
+  SearchQuery (userId, searchText, searchParams)
 VALUES
   (
     2,
@@ -258,7 +233,7 @@ VALUES
     CONCAT('Options - ', rndStr(8))
   );
 INSERT INTO
-  Search_Query (User_Id, Search_Text, Search_Params)
+  SearchQuery (userId, searchText, searchParams)
 VALUES
   (
     3,
@@ -266,7 +241,7 @@ VALUES
     CONCAT('Options - ', rndStr(8))
   );
 INSERT INTO
-  Search_Query (User_Id, Search_Text, Search_Params)
+  SearchQuery (userId, searchText, searchParams)
 VALUES
   (
     3,
@@ -274,7 +249,7 @@ VALUES
     CONCAT('Options - ', rndStr(8))
   );
 INSERT INTO
-  Search_Query (User_Id, Search_Text, Search_Params)
+  SearchQuery (userId, searchText, searchParams)
 VALUES
   (
     3,
@@ -282,7 +257,7 @@ VALUES
     CONCAT('Options - ', rndStr(8))
   );
 INSERT INTO
-  Search_Query (User_Id, Search_Text, Search_Params)
+  SearchQuery (userId, searchText, searchParams)
 VALUES
   (
     4,
@@ -294,32 +269,30 @@ END;
 BEGIN
 ;
 INSERT INTO
-  Vacancy_HH (
-    Vacancy_HH_Id,
-    Hash_MD5,
-    Title,
-    Created_At,
-    Has_Test,
-    Response_Letter_Required,
-    Area_Id,
-    Area_Name,
-    Schedule_Id,
-    Schedule_Name,
-    Employer_Url,
-    Employer_Name,
-    Snippet_Requirement
+  VacancyHH (
+    hhId,
+    hashMD5,
+    title,
+    createdAt,
+    publishedAt,
+    hasTest,
+    responseLetterRequired,
+    areaId,
+    scheduleId,
+    employerUrl,
+    employerName,
+    snippetRequirement
   )
 VALUES
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
     CONCAT('Some title - ', rndStr(12)),
-    to_timestamp(epochSecsHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
     FALSE,
     FALSE,
     rndIntInRange(1, 500),
-    rndstr(10),
-    rndstr(10),
     rndstr(10),
     CONCAT(
       'https://hh.ru/employer/',
@@ -329,32 +302,30 @@ VALUES
     rndstr(100)
   );
 INSERT INTO
-  Vacancy_HH (
-    Vacancy_HH_Id,
-    Hash_MD5,
-    Title,
-    Created_At,
-    Has_Test,
-    Response_Letter_Required,
-    Area_Id,
-    Area_Name,
-    Schedule_Id,
-    Schedule_Name,
-    Employer_Url,
-    Employer_Name,
-    Snippet_Requirement
+  VacancyHH (
+    hhId,
+    hashMD5,
+    title,
+    createdAt,
+    publishedAt,
+    hasTest,
+    responseLetterRequired,
+    areaId,
+    scheduleId,
+    employerUrl,
+    employerName,
+    snippetRequirement
   )
 VALUES
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
     CONCAT('Some title - ', rndStr(12)),
-    to_timestamp(epochSecsHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
     FALSE,
     FALSE,
     rndIntInRange(1, 500),
-    rndstr(10),
-    rndstr(10),
     rndstr(10),
     CONCAT(
       'https://hh.ru/employer/',
@@ -364,32 +335,30 @@ VALUES
     rndstr(100)
   );
 INSERT INTO
-  Vacancy_HH (
-    Vacancy_HH_Id,
-    Hash_MD5,
-    Title,
-    Created_At,
-    Has_Test,
-    Response_Letter_Required,
-    Area_Id,
-    Area_Name,
-    Schedule_Id,
-    Schedule_Name,
-    Employer_Url,
-    Employer_Name,
-    Snippet_Requirement
+  VacancyHH (
+    hhId,
+    hashMD5,
+    title,
+    createdAt,
+    publishedAt,
+    hasTest,
+    responseLetterRequired,
+    areaId,
+    scheduleId,
+    employerUrl,
+    employerName,
+    snippetRequirement
   )
 VALUES
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
     CONCAT('Some title - ', rndStr(12)),
-    to_timestamp(epochSecsHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
     FALSE,
     FALSE,
     rndIntInRange(1, 500),
-    rndstr(10),
-    rndstr(10),
     rndstr(10),
     CONCAT(
       'https://hh.ru/employer/',
@@ -399,32 +368,30 @@ VALUES
     rndstr(100)
   );
 INSERT INTO
-  Vacancy_HH (
-    Vacancy_HH_Id,
-    Hash_MD5,
-    Title,
-    Created_At,
-    Has_Test,
-    Response_Letter_Required,
-    Area_Id,
-    Area_Name,
-    Schedule_Id,
-    Schedule_Name,
-    Employer_Url,
-    Employer_Name,
-    Snippet_Requirement
+  VacancyHH (
+    hhId,
+    hashMD5,
+    title,
+    createdAt,
+    publishedAt,
+    hasTest,
+    responseLetterRequired,
+    areaId,
+    scheduleId,
+    employerUrl,
+    employerName,
+    snippetRequirement
   )
 VALUES
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
     CONCAT('Some title - ', rndStr(12)),
-    to_timestamp(epochSecsHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
     FALSE,
     FALSE,
     rndIntInRange(1, 500),
-    rndstr(10),
-    rndstr(10),
     rndstr(10),
     CONCAT(
       'https://hh.ru/employer/',
@@ -434,32 +401,30 @@ VALUES
     rndstr(100)
   );
 INSERT INTO
-  Vacancy_HH (
-    Vacancy_HH_Id,
-    Hash_MD5,
-    Title,
-    Created_At,
-    Has_Test,
-    Response_Letter_Required,
-    Area_Id,
-    Area_Name,
-    Schedule_Id,
-    Schedule_Name,
-    Employer_Url,
-    Employer_Name,
-    Snippet_Requirement
+  VacancyHH (
+    hhId,
+    hashMD5,
+    title,
+    createdAt,
+    publishedAt,
+    hasTest,
+    responseLetterRequired,
+    areaId,
+    scheduleId,
+    employerUrl,
+    employerName,
+    snippetRequirement
   )
 VALUES
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
     CONCAT('Some title - ', rndStr(12)),
-    to_timestamp(epochSecsHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
     FALSE,
     FALSE,
     rndIntInRange(1, 500),
-    rndstr(10),
-    rndstr(10),
     rndstr(10),
     CONCAT(
       'https://hh.ru/employer/',
@@ -469,32 +434,30 @@ VALUES
     rndstr(100)
   );
 INSERT INTO
-  Vacancy_HH (
-    Vacancy_HH_Id,
-    Hash_MD5,
-    Title,
-    Created_At,
-    Has_Test,
-    Response_Letter_Required,
-    Area_Id,
-    Area_Name,
-    Schedule_Id,
-    Schedule_Name,
-    Employer_Url,
-    Employer_Name,
-    Snippet_Requirement
+  VacancyHH (
+    hhId,
+    hashMD5,
+    title,
+    createdAt,
+    publishedAt,
+    hasTest,
+    responseLetterRequired,
+    areaId,
+    scheduleId,
+    employerUrl,
+    employerName,
+    snippetRequirement
   )
 VALUES
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
     CONCAT('Some title - ', rndStr(12)),
-    to_timestamp(epochSecsHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
     FALSE,
     FALSE,
     rndIntInRange(1, 500),
-    rndstr(10),
-    rndstr(10),
     rndstr(10),
     CONCAT(
       'https://hh.ru/employer/',
@@ -504,32 +467,30 @@ VALUES
     rndstr(100)
   );
 INSERT INTO
-  Vacancy_HH (
-    Vacancy_HH_Id,
-    Hash_MD5,
-    Title,
-    Created_At,
-    Has_Test,
-    Response_Letter_Required,
-    Area_Id,
-    Area_Name,
-    Schedule_Id,
-    Schedule_Name,
-    Employer_Url,
-    Employer_Name,
-    Snippet_Requirement
+  VacancyHH (
+    hhId,
+    hashMD5,
+    title,
+    createdAt,
+    publishedAt,
+    hasTest,
+    responseLetterRequired,
+    areaId,
+    scheduleId,
+    employerUrl,
+    employerName,
+    snippetRequirement
   )
 VALUES
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
     CONCAT('Some title - ', rndStr(12)),
-    to_timestamp(epochSecsHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
+    to_timestamp(epochHoursAgoInRange(1, 48)) AT TIME ZONE 'UTC',
     FALSE,
     FALSE,
     rndIntInRange(1, 500),
-    rndstr(10),
-    rndstr(10),
     rndstr(10),
     CONCAT(
       'https://hh.ru/employer/',
@@ -543,60 +504,52 @@ END;
 BEGIN
 ;
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (1, 1);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (1, 2);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (1, 3);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (2, 2);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (2, 4);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (2, 7);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (3, 4);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (4, 6);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (4, 7);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (5, 1);
 INSERT INTO
-  Search_Query_Vacancy_HH (Search_Query_Id, Vacancy_Id)
+  SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
   (5, 2);
 END;
 -- 
-BEGIN
-;
-INSERT INTO
-  Proxy (Ip, Port)
-VALUES
-  ('192.168.1.123', '80');
-END;
--- 
--- SELECT * FROM System_User;
--- SELECT * FROM Search_Query;
--- SELECT * FROM Search_Query_Vacancy_HH;
--- SELECT * FROM Vacancy_HH;
+-- SELECT * FROM SystemUser;
+-- SELECT * FROM SearchQuery;
+-- SELECT * FROM SearchQueryVacancyHH;
+-- SELECT * FROM VacancyHH;

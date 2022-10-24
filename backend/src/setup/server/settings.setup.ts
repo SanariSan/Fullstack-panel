@@ -13,7 +13,8 @@ function setupSettingsExpress(app: Express) {
 
   app.use(helmet());
   // origin: true for mirroring Front 'Origin' header back
-  app.use(cors({ origin: corsUrl, credentials: true, optionsSuccessStatus: 204 }));
+  // origin: corsUrl for static env url
+  app.use(cors({ origin: true, credentials: true, optionsSuccessStatus: 204 }));
   app.use(express.json({ limit: '100mb' }));
   app.use(express.urlencoded({ limit: '100mb', extended: false }));
   app.set('env', process.env.NODE_ENV);

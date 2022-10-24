@@ -1,16 +1,21 @@
 # POST http://localhost:3000/v1/vacancies/subscribe HTTP/1.1
+
+# GET http://localhost:3000/v1/access/login HTTP/1.1
+
+# DELETE  http://localhost:3000/v1/access/logout HTTP/1.1
+
 # POST http://localhost:3000/v1/access/register HTTP/1.1
 # content-type: application/json
 
 # {
-# "login": "bdeb23547",
-# "password": "$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6"
+# "login": "Xbda7102f4",
+# "password": "pwd123456"
 # }
 
-POST http://localhost:3000/v1/access/login HTTP/1.1
-content-type: application/json
+# POST http://localhost:3000/v1/access/login HTTP/1.1
+# content-type: application/json
 
-{
-"login": "bdeb23547",
-"password": "pwd123456"
-}
+# {
+# "login": "bda7102f4",
+# "password": "pwd123456"
+# }

@@ -10,17 +10,17 @@ services:
       shm_size: 512mb
     shm_size: 512mb
     environment:
-      POSTGRES_USER: ts_backend_admin
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: super_secret_pWd
-      POSTGRES_DB: ts_backend_db
+      POSTGRES_DB: postgres
     networks:
       - default
     volumes:
       - ./db/pgdata:/var/lib/postgresql/data
     ports:
-      - '5433:5432'
+      - '5435:5432'
   app:
-    image: sanarisan/ts-backend-v2:1
+    image: sanarisan/jobber:1
     restart: always
     build:
       context: ./

@@ -1,9 +1,9 @@
 import { hash } from 'bcryptjs';
 import type { NextFunction, Response } from 'express';
-import { ELOG_LEVEL } from '../../../general.type';
-import { DB } from '../../../modules/access-layer/db';
-import { publishLog } from '../../../modules/access-layer/events/pubsub';
-import type { TRequestValidatedCredentials } from '../../express.type';
+import { ELOG_LEVEL } from '../../../../general.type';
+import { DB } from '../../../../modules/access-layer/db';
+import { publishLog } from '../../../../modules/access-layer/events/pubsub';
+import type { TRequestValidatedCredentials } from '../../../express.type';
 
 export const accessRegisterCTR = async (
   req: TRequestValidatedCredentials,
@@ -12,33 +12,22 @@ export const accessRegisterCTR = async (
 ) => {
   // console.log(req.session.id);
   // console.dir(req.session, { depth: 5 });
-
-  if (req.session.user && req.session.user.isAuthenticated === true) {
-    publishLog(ELOG_LEVEL.WARN, 'User already authenticated');
-    res.setHeader('Location', '/');
-    res.json({
-      login: req.session.user.login,
-      isAuthenticated: true,
-    });
-    return;
-  }
-
   const { login, password } = req.body;
 
   const possibleUserId = await DB.any<Record<'id', number>>(
-    'SELECT s.id FROM System_User AS s WHERE s.Login = $1',
+    'SELECT s.id FROM SystemUser AS s WHERE s.Login = $1',
     [login],
   );
 
   if (possibleUserId.length > 0) {
-    publishLog(ELOG_LEVEL.WARN, 'User exists');
+    publishLog(ELOG_LEVEL.DEBUG, `User exists: ${login}`);
     res.status(400).send('User exists');
     return;
   }
 
   const hashedPassword = await hash(password, 12);
   const createdUser = await DB.any<{ id: number; login: string }>(
-    'INSERT INTO System_User(Login, Password_Hash) VALUES($1, $2) RETURNING id, login',
+    'INSERT INTO SystemUser(login, passwordHash) VALUES($1, $2) RETURNING id, login',
     [login, hashedPassword],
   )
     .then((result) => result[0])
@@ -72,19 +61,9 @@ export const accessRegisterCTR = async (
     });
   });
 
-  res.setHeader('Location', '/');
   res.json({
     login: createdUser.login,
     isAuthenticated: true,
   });
   return;
 };
-
-// import { jwtEncode } from '../../../modules/access-layer/jwt';
-// const accessToken = await jwtEncode({});
-// const refreshToken = await jwtEncode({});
-
-// return new SuccessResponse('Signup Successful', {
-//   user: userData,
-//   tokens: { accessToken, refreshToken },
-// }).send(res);

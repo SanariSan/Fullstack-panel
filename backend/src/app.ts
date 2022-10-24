@@ -54,8 +54,7 @@ async function apiVacansy() {
   return parseResponse({ response });
 }
 
-async function test() {
-  // const resp = await DB.one<string>('SELECT * FROM Proxy WHERE Ip LIKE $1', ['192.%']);
+function test() {
   // publishLog(ELOG_LEVEL.WARN, resp);
   // const r = await apiVacansy();
   // writeFileSync(
@@ -63,6 +62,7 @@ async function test() {
   //   `const r = ${JSON.stringify(r.response.data, undefined, 2)};`,
   // );
   // console.dir(r.response, { depth: 10 });
+  // console.log(123);
 }
 
 /* eslint-disable @typescript-eslint/require-await */
@@ -73,7 +73,7 @@ async function init() {
   await setupDb();
   setupExpress();
 
-  await test();
+  test();
   // setupDashboard();
 }
 
