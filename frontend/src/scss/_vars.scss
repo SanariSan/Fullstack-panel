@@ -1,0 +1,85 @@
+$font-def: 'Roboto', 'Helvetica Neue', sans-serif;
+$font-alt: 'Roboto Medium', 'Helvetica Neue', sans-serif;
+
+$font-size-def: 1em;
+$font-size-small: 0.75rem;
+$font-size-big: 1.25rem;
+
+$font-size-h1: 2em;
+$font-size-h2: 1.5em;
+$font-size-h3: 1.17em;
+$font-size-h4: $font-size-def;
+$font-size-h5: 0.83em;
+$font-size-h6: 0.75em;
+$margin-h1: 0.67em 0;
+$margin-h2: 0.75em 0;
+$margin-h3: 0.83em 0;
+$margin-h4: 1.12em 0;
+$margin-h5: 1.5em 0;
+$margin-h6: 1.67em 0;
+
+$white-color: #ffffff;
+$white-soft-color: rgb(255, 255, 246);
+$black-color: #000000;
+$black-soft-color: rgb(25, 25, 25);
+$purple-color: #4d4291;
+$purple-alt-color: #958bb6; //#8272c7;
+$purple-light-color: #fbf8ff; //#f6ebff; //#f6f6ff;
+$gray-dark-color: #1d1d1d;
+$accent-color: #00c89d;
+
+$header-day-color: $purple-color;
+$bg-day-color: $purple-light-color;
+$text-day-accent: $accent-color; //$purple-color;
+$text-day-color: $black-soft-color;
+$text-day-alt-color: $white-soft-color;
+$text-day-inactive-color: lighten($text-day-color, 25%);
+$text-day-inactive-alt-color: darken($text-day-alt-color, 25%);
+
+$header-night-color: $gray-dark-color;
+$bg-night-color: $gray-dark-color; //maybe darken $light-purple-color
+$text-night-accent: $accent-color; //$purple-alt-color; //maybe lighten later $purple-color
+$text-night-color: $white-soft-color;
+$text-night-alt-color: $black-soft-color;
+$text-night-inactive-color: darken($text-night-color, 25%);
+$text-night-inactive-alt-color: lighten($text-night-alt-color, 25%);
+
+// vars for custom media query MIXINS
+
+// value and higher
+// Small tablets and large smartphones (landscape view)
+$screen-xs-min: 0px;
+// Small tablets (portrait view)
+$screen-sm-min: 576px;
+// Tablets and small desktops
+$screen-md-min: 768px;
+// Large tablets and desktops
+$screen-lg-min: 1092px;
+// Big screens
+$screen-xl-min: 1400px;
+// Very big screens (~2k resolution)
+$screen-xxl-min: 1800px;
+
+// Customization Bootstrap grid vars from "app/libs/bootstrap/scss/_variables.scss"
+$grid-gutter-width: 1.5rem;
+$grid-columns: 12;
+// value and higher
+$grid-breakpoints: (
+  xs: $screen-xs-min,
+  sm: $screen-sm-min,
+  md: $screen-md-min,
+  lg: $screen-lg-min,
+  xl: $screen-xl-min,
+  xxl: $screen-xxl-min,
+);
+// 95% from breakpoints values
+$reduce-multiplier: 0.95;
+$container-max-widths: (
+  sm: $screen-sm-min * $reduce-multiplier,
+  md: $screen-md-min * $reduce-multiplier,
+  lg: $screen-lg-min * $reduce-multiplier,
+  xl: $screen-xl-min * $reduce-multiplier,
+  xxl: $screen-xxl-min * $reduce-multiplier,
+);
+
+$gutter: $grid-gutter-width;
