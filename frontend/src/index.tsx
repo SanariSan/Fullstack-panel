@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { App } from './app';
 import { GlobalHistoryCatcherContainer } from './containers/history-catcher';
+import { ThemeControllerContainer, ThemeWrapperContainer } from './containers/theme';
 import './index.scss';
 import { StoreToolkit } from './store';
 
@@ -15,10 +16,18 @@ const root = createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <Provider store={StoreToolkit}>
-      <Router history={history}>
-        <GlobalHistoryCatcherContainer />
-        <App />
-      </Router>
+      <ThemeWrapperContainer>
+        <ThemeControllerContainer />
+        <Router history={history}>
+          <GlobalHistoryCatcherContainer />
+          <div
+            id="bg"
+            className="themed"
+            style={{ position: 'fixed', zIndex: '-1', width: '100vw', height: '100vh' }}
+          />
+          <App />
+        </Router>
+      </ThemeWrapperContainer>
     </Provider>
   </React.StrictMode>,
 );

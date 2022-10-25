@@ -18,31 +18,31 @@ $margin-h4: 1.12em 0;
 $margin-h5: 1.5em 0;
 $margin-h6: 1.67em 0;
 
-$white-color: #ffffff;
-$white-soft-color: rgb(255, 255, 246);
-$black-color: #000000;
-$black-soft-color: rgb(25, 25, 25);
-$purple-color: #4d4291;
-$purple-alt-color: #958bb6; //#8272c7;
-$purple-light-color: #fbf8ff; //#f6ebff; //#f6f6ff;
-$gray-dark-color: #1d1d1d;
-$accent-color: #00c89d;
+$color-white: #ffffff;
+$color-white-soft: rgb(255, 255, 246);
+$color-black: #000000;
+$color-black-soft: rgb(25, 25, 25);
+$color-purple: #4d4291;
+$color-purple-alt: #958bb6; //#8272c7;
+$color-purple-light: #fbf8ff; //#f6ebff; //#f6f6ff;
+$color-gray-dark: #1d1d1d;
+$color-accent: #00c89d;
 
-$header-day-color: $purple-color;
-$bg-day-color: $purple-light-color;
-$text-day-accent: $accent-color; //$purple-color;
-$text-day-color: $black-soft-color;
-$text-day-alt-color: $white-soft-color;
-$text-day-inactive-color: lighten($text-day-color, 25%);
-$text-day-inactive-alt-color: darken($text-day-alt-color, 25%);
+$header-color-light: $color-purple;
+$bg-color-light: $color-purple-light;
+$text-color-accent-light: $color-accent; //$color-purple
+$text-color-light: $color-black-soft;
+$text-color-alt-ligth: $color-white-soft;
+$text-color-inactive-light: lighten($text-color-light, 25%);
+$text-color-inactive-alt-light: darken($text-color-alt-ligth, 25%);
 
-$header-night-color: $gray-dark-color;
-$bg-night-color: $gray-dark-color; //maybe darken $light-purple-color
-$text-night-accent: $accent-color; //$purple-alt-color; //maybe lighten later $purple-color
-$text-night-color: $white-soft-color;
-$text-night-alt-color: $black-soft-color;
-$text-night-inactive-color: darken($text-night-color, 25%);
-$text-night-inactive-alt-color: lighten($text-night-alt-color, 25%);
+$header-color-dark: $color-gray-dark;
+$bg-color-dark: $color-gray-dark; //maybe darken $light-purple-color
+$text-color-accent-dark: $color-accent; //$purple-alt-color; //maybe lighten later $color-purple
+$text-color-dark: $color-white-soft;
+$text-color-alt-dark: $color-black-soft;
+$text-color-inactive-dark: darken($text-color-dark, 25%);
+$text-color-inactive-alt-dark: lighten($text-color-alt-dark, 25%);
 
 // vars for custom media query MIXINS
 
@@ -50,15 +50,15 @@ $text-night-inactive-alt-color: lighten($text-night-alt-color, 25%);
 // Small tablets and large smartphones (landscape view)
 $screen-xs-min: 0px;
 // Small tablets (portrait view)
-$screen-sm-min: 576px;
+$screen-sm-min: 319px;
 // Tablets and small desktops
-$screen-md-min: 768px;
+$screen-md-min: 767px;
 // Large tablets and desktops
-$screen-lg-min: 1092px;
+$screen-lg-min: 1023px;
 // Big screens
-$screen-xl-min: 1400px;
+$screen-xl-min: 1439px;
 // Very big screens (~2k resolution)
-$screen-xxl-min: 1800px;
+$screen-xxl-min: 1799px;
 
 // Customization Bootstrap grid vars from "app/libs/bootstrap/scss/_variables.scss"
 $grid-gutter-width: 1.5rem;

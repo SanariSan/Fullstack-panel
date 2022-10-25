@@ -1,3 +1,3 @@
-type TLocalStorageKey = 'accessToken' | 'refreshToken' | 'storageInfo' | 'translate';
+type TLocalStorageKey = 'globalTheme';
 
 export type { TLocalStorageKey };
