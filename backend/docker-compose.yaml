@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   postgres:
-    image: postgres:14
+    image: sanarisan/job_sniper_postgres:1
     restart: always
     build:
       context: ./
@@ -20,7 +20,7 @@ services:
     ports:
       - '5435:5432'
   app:
-    image: sanarisan/jobber:1
+    image: sanarisan/job-sniper:1
     restart: always
     build:
       context: ./
