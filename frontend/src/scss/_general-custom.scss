@@ -28,13 +28,6 @@ h6 {
   margin: $margin-h6;
 }
 
-.themed {
-  @include themify() {
-    background: themed('bg');
-    color: themed('text-color');
-  }
-}
-
 #root {
   width: 100%;
   height: 100%;

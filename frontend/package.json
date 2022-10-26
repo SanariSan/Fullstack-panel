@@ -1,5 +1,5 @@
 {
-  "name": "front",
+  "name": "job-sniper-front",
   "version": "1.0.0",
   "main": "./logic/index.js",
   "author": "SanariSan <SanariSan@users.noreply.github.com>",

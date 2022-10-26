@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getLSValue } from '../../../helpers/browser';
+import { getLSValue, setLSValue } from '../../../helpers/browser';
 
 /* eslint-disable no-param-reassign */
 
@@ -13,7 +13,9 @@ const themeSlice = createSlice({
   } as TThemeInitState,
   reducers: {
     setTheme(state, action: { payload: { theme: TThemeOptions } }) {
-      state.type = action.payload.theme;
+      const { theme } = action.payload;
+      setLSValue('globalTheme', theme);
+      state.type = theme;
     },
   },
 });

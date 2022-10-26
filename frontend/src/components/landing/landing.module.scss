@@ -1,9 +1,9 @@
 @import '../../scss/index.custom';
 
 .dark {
-  color: $text-color-accent-dark;
+  @include darkThemeAlt;
 }
 
 .light {
-  color: $text-color-light;
+  @include lightTheme;
 }
