@@ -7,7 +7,7 @@ import { App } from './app';
 import { GlobalHistoryCatcherContainer } from './containers/history-catcher';
 import { ThemeControllerContainer } from './containers/theme-controller';
 import './index.scss';
-import { StoreToolkit } from './store';
+import { Store } from './store';
 
 const history = createBrowserHistory();
 const rootElement = document.querySelector('#root') as Element;
@@ -15,7 +15,7 @@ const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <Provider store={StoreToolkit}>
+    <Provider store={Store}>
       <ThemeControllerContainer />
       <Router history={history}>
         <GlobalHistoryCatcherContainer />

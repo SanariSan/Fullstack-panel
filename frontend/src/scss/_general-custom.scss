@@ -1,6 +1,7 @@
 body {
   font-size: $font-size-def;
   font-family: $font-def;
+  @include darkTheme;
 }
 
 h1 {
@@ -35,7 +36,7 @@ h6 {
 }
 
 * {
-  // box-sizing: border-box;
+  box-sizing: border-box;
   // outline: 1px solid lightseagreen !important;
   // background: rgba(141, 234, 255, 0.1);
 }

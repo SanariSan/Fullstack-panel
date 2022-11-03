@@ -9,7 +9,9 @@ type TThemeInitState = { type: TThemeOptions };
 const themeSlice = createSlice({
   name: 'theme',
   initialState: {
-    type: getLSValue('globalTheme') ?? 'light',
+    type:
+      getLSValue('globalTheme') ??
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
   } as TThemeInitState,
   reducers: {
     setTheme(state, action: { payload: { theme: TThemeOptions } }) {
