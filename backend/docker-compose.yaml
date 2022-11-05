@@ -10,15 +10,15 @@ services:
       shm_size: 512mb
     shm_size: 512mb
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: super_secret_pWd
-      POSTGRES_DB: postgres
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_DB: '${DB_DATABASE_NAME}'
     networks:
       - default
     volumes:
       - ./db/pgdata:/var/lib/postgresql/data
     ports:
-      - '5435:5432'
+      - '${DB_PORT_PROD}:5432'
   app:
     image: sanarisan/job-sniper:1
     restart: always
@@ -32,4 +32,4 @@ services:
     depends_on:
       - postgres
     ports:
-      - '3000:3000'
+      - '${PORT}:3000'
