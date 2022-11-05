@@ -10,10 +10,10 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "---additional": "---------------------------------------------------------------",
-    "format": "./node_modules/prettier/bin-prettier.js -w --config ./.prettierrc .",
-    "lint": "./node_modules/.bin/eslint --ext .ts,.tsx,.js,.jsx .",
-    "lint-quiet": "./node_modules/.bin/eslint --quiet --ext .ts,.tsx,.js,.jsx .",
-    "lint-fix": "./node_modules/.bin/eslint --fix --ext .ts,.tsx,.js,.jsx ."
+    "format": "node ./node_modules/prettier/bin-prettier.js -w --config ./.prettierrc .",
+    "lint": "node ./node_modules/.bin/eslint --ext .ts,.tsx,.js,.jsx .",
+    "lint-quiet": "node ./node_modules/.bin/eslint --quiet --ext .ts,.tsx,.js,.jsx .",
+    "lint-fix": "node ./node_modules/.bin/eslint --fix --ext .ts,.tsx,.js,.jsx ."
   },
   "eslintConfig": {
     "extends": "react-app"

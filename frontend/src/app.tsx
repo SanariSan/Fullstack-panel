@@ -9,7 +9,12 @@ import { LandingContainer } from './containers/landing';
 import { LoginContainer } from './containers/login';
 import { RegisterContainer } from './containers/register';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
-import { themeSelector, userAuthSelector, userLoadingSelector } from './store';
+import {
+  checkUserSessionStatusAsync,
+  themeSelector,
+  userAuthSelector,
+  userLoadingSelector,
+} from './store';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -18,14 +23,16 @@ const App: FC = () => {
   const loadingStatus = useAppSelector(userLoadingSelector);
   const [isLoadingDelayed, setIsLoadingDelayed] = useState(true);
 
-  console.log(loadingStatus);
-  console.log(authStatus);
-
-  // useEffect(() => {
-  //   void dispatch(fetchUserStatus());
-  // }, []);
+  // console.log(loadingStatus);
+  // console.log(authStatus);
 
   useEffect(() => {
+    void dispatch(checkUserSessionStatusAsync());
+  }, []);
+
+  useEffect(() => {
+    console.log(loadingStatus);
+
     if (loadingStatus !== 'loading') {
       setTimeout(() => {
         setIsLoadingDelayed(false);
@@ -37,7 +44,7 @@ const App: FC = () => {
     <>
       <textarea
         readOnly
-        value={`isAuthenticated: ${authStatus}`}
+        value={`loadingStatus: ${loadingStatus}\nisAuthenticated: ${authStatus}`}
         style={{ position: 'fixed', bottom: 0 }}
       />
       <Container fluid className={'h-100 d-flex align-items-center justify-content-center'}>

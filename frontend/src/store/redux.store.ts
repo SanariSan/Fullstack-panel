@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import { rootWatcher } from './sagas';
-import { fetchTodo, notes, theme, user } from './slices';
+import { notes, theme, user } from './slices';
 
 const sagaMiddleware = createSagaMiddleware();
 const Store = configureStore({
   reducer: {
     notes,
-    fetchTodo,
+    // fetchTodo,
     theme,
     user,
   },

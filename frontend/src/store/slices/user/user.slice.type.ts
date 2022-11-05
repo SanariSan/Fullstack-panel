@@ -1,7 +1,9 @@
+type TUserLoadinStatus = 'idle' | 'loading' | 'success' | 'failure';
+
 type TUserInitState = {
   isAuthenticated: boolean;
   login: string;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  loadingStatus: TUserLoadinStatus;
   error: string | undefined;
 };
 
@@ -9,4 +11,4 @@ type TUserInitialStateThunk = {
   user: TUserInitState;
 };
 
-export type { TUserInitState, TUserInitialStateThunk };
+export type { TUserLoadinStatus, TUserInitState, TUserInitialStateThunk };

@@ -1,8 +1,23 @@
-import { all } from 'redux-saga/effects';
-import { userWatcher } from './user.saga';
+import { all, call, spawn } from 'redux-saga/effects';
+import { userSessionStatusWatcher } from './user';
 
 function* rootWatcher() {
-  yield all([userWatcher()]);
+  const sagas = [userSessionStatusWatcher];
+
+  yield all(
+    sagas.map((saga) =>
+      spawn(function* detachedGenerator() {
+        while (true) {
+          try {
+            yield call(saga);
+            break;
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }),
+    ),
+  );
 }
 
 export { rootWatcher };

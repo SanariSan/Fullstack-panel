@@ -1,7 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { request } from '../../../services';
+import { createSlice } from '@reduxjs/toolkit';
 import { USER_INIT_STATE } from './user.slice.const';
-import type { TUserInitialStateThunk, TUserInitState } from './user.slice.type';
 
 /* eslint-disable no-param-reassign */
 
@@ -9,43 +7,43 @@ const userSlice = createSlice({
   name: 'user',
   initialState: USER_INIT_STATE,
   reducers: {
-    setProp(state, action: { payload: Partial<TUserInitState> }) {
-      const { payload } = action;
-      state.isAuthenticated = payload.isAuthenticated ?? state.isAuthenticated;
-      state.login = payload.login ?? state.login;
+    setUserLoadStatusIdle(state) {
+      state.loadingStatus = 'idle';
     },
-    setSuccess(state, action) {
-      console.log(`userSlice | ${JSON.stringify(action)}`);
-      state.status = 'succeeded';
+    setUserLoadStatusLoading(state) {
+      state.loadingStatus = 'loading';
+    },
+    setUserLoadStatusFailure(state, action: { payload: { error: unknown }; type: string }) {
+      state.loadingStatus = 'failure';
+      state.error = JSON.stringify(action.payload.error);
+      console.log(action.payload.error);
+    },
+    setUserSessionCheckStatus(
+      state,
+      action: { payload: { isAuthenticated: boolean; login?: string }; type: string },
+    ) {
+      state.loadingStatus = 'success';
       state.isAuthenticated = action.payload.isAuthenticated;
       state.login = action.payload.login ?? state.login;
     },
-    getUserAsync(state, action: { payload: any }) {
-      state.status = 'loading';
-    },
+    checkUserSessionStatusAsync() {},
   },
-  // extraReducers(builder) {
-  //   builder.addCase('user/', (state) => {
-  //   });
-  // },
-  // extraReducers(builder) {
-  //   builder
-  //     .addCase(fetchUserStatus.pending, (state) => {
-  //       state.status = 'loading';
-  //     })
-  //     .addCase(fetchUserStatus.fulfilled, (state, action) => {
-  //       state.status = 'succeeded';
-  //       state.isAuthenticated = action.payload.isAuthenticated;
-  //       state.login = action.payload.login ?? state.login;
-  //     })
-  //     .addCase(fetchUserStatus.rejected, (state, action) => {
-  //       state.status = 'failed';
-  //       state.error = action.error.message;
-  //     });
-  // },
 });
 
 const user = userSlice.reducer;
-const { setProp, setSuccess, getUserAsync } = userSlice.actions;
+const {
+  setUserLoadStatusIdle,
+  setUserLoadStatusLoading,
+  setUserLoadStatusFailure,
+  setUserSessionCheckStatus,
+  checkUserSessionStatusAsync,
+} = userSlice.actions;
 
-export { user, setProp, setSuccess, getUserAsync };
+export {
+  user,
+  setUserLoadStatusIdle,
+  setUserLoadStatusLoading,
+  setUserLoadStatusFailure,
+  setUserSessionCheckStatus,
+  checkUserSessionStatusAsync,
+};

@@ -1,14 +1,18 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { FC } from 'react';
 import type { FormikHelpers } from 'formik';
 import { LoginComponent } from '../../components/login';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { getUserAsync, themeSelector } from '../../store';
+import { checkUserSessionStatusAsync, themeSelector } from '../../store';
 // import { request } from '../../services';
 
 const LoginContainer: FC = () => {
   const theme = useAppSelector(themeSelector);
   const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   void dispatch(getUserLoginStatusAsync());
+  // });
 
   const onFormSubmit = useCallback(
     // (
@@ -23,8 +27,9 @@ const LoginContainer: FC = () => {
     // ) => {
     (e: any) => {
       e.preventDefault();
+      void dispatch(checkUserSessionStatusAsync());
       // actions.resetForm();
-      void dispatch(getUserAsync('test'));
+      // void dispatch(getUserLoginStatusAsync());
       // req => set user status
       // all that do in thunk
 
