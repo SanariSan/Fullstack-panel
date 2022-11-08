@@ -27,11 +27,7 @@ const App: FC = () => {
   // console.log(authStatus);
 
   useEffect(() => {
-    void dispatch(checkUserSessionStatusAsync());
-  }, []);
-
-  useEffect(() => {
-    console.log(loadingStatus);
+    console.log(`loadingStatus ${loadingStatus} = ${Date.now()}`);
 
     if (loadingStatus !== 'loading') {
       setTimeout(() => {
@@ -39,6 +35,10 @@ const App: FC = () => {
       }, 300);
     }
   }, [loadingStatus]);
+
+  useEffect(() => {
+    void dispatch(checkUserSessionStatusAsync());
+  }, []);
 
   return (
     <>

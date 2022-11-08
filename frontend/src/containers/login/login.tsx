@@ -4,7 +4,6 @@ import type { FormikHelpers } from 'formik';
 import { LoginComponent } from '../../components/login';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { checkUserSessionStatusAsync, themeSelector } from '../../store';
-// import { request } from '../../services';
 
 const LoginContainer: FC = () => {
   const theme = useAppSelector(themeSelector);
@@ -27,7 +26,9 @@ const LoginContainer: FC = () => {
     // ) => {
     (e: any) => {
       e.preventDefault();
-      void dispatch(checkUserSessionStatusAsync());
+      console.log('ok');
+      console.log(e);
+      // void dispatch(checkUserSessionStatusAsync());
       // actions.resetForm();
       // void dispatch(getUserLoginStatusAsync());
       // req => set user status

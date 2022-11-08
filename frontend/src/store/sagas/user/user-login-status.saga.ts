@@ -27,7 +27,11 @@ function* checkUserSessionStatusWorker(action: { type: string }) {
     )) as TSafeReturn<Response>;
 
     if (fetchStatus.error !== undefined) {
-      yield put(setUserLoadStatusFailure({ error: fetchStatus.error }));
+      yield put(setUserLoadStatusFailure({ error: String(fetchStatus.error) }));
+
+      // if no delay used - setIdle instantly overrides failure
+      yield delay(1);
+      yield put(setUserLoadStatusIdle());
       return;
     }
 
@@ -40,19 +44,22 @@ function* checkUserSessionStatusWorker(action: { type: string }) {
     }>;
 
     if (jsonParse.error !== undefined) {
-      yield put(setUserLoadStatusFailure({ error: jsonParse.error }));
+      yield put(setUserLoadStatusFailure({ error: String(jsonParse.error) }));
+
+      // if no delay used - setIdle instantly overrides failure
+      yield delay(1);
+      yield put(setUserLoadStatusIdle());
       return;
     }
 
+    // if no delay used - setIdle instantly overrides success
     yield put(setUserSessionCheckStatus(jsonParse.response));
-
-    // if no delay used - setIdle from finally block instantly overrides success
     yield delay(1);
+    yield put(setUserLoadStatusIdle());
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();
     }
-    yield put(setUserLoadStatusIdle());
   }
 }
 
