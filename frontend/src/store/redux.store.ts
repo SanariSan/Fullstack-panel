@@ -7,9 +7,9 @@ const sagaMiddleware = createSagaMiddleware();
 const Store = configureStore({
   reducer: {
     notes,
-    // fetchTodo,
     theme,
     user,
+    // fetchTodo,
   },
   /* eslint-disable unicorn/prefer-spread */
   // because concat preserves types, spread not

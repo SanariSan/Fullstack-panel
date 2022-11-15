@@ -1,8 +1,8 @@
 import { all, call, spawn } from 'redux-saga/effects';
-import { userSessionStatusWatcher } from './user';
+import { userAuthRootWatcher, userSessionWatcher } from './user';
 
 function* rootWatcher() {
-  const sagas = [userSessionStatusWatcher];
+  const sagas = [userAuthRootWatcher, userSessionWatcher];
 
   yield all(
     sagas.map((saga) =>

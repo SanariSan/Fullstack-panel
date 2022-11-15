@@ -1,66 +1,63 @@
-import { ErrorMessage, Formik } from 'formik';
-import { object, string } from 'yup';
+import { ErrorMessage, Field, Form as FormikForm } from 'formik';
 import type { FC } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { Button, Form } from 'react-bootstrap';
+import type { TLogin } from './login.type';
 
-type TLogin = {
-  theme: string;
-  onSubmit: (...args) => void;
-};
-
-const formSchema = object({
-  username: string()
-    .required('Username required')
-    .min(6, 'Username too short')
-    .max(28, 'Username too long!'),
-  password: string()
-    .required('Password required')
-    .min(6, 'Password too short')
-    .max(28, 'Password too long!'),
-});
-
-const LoginComponent: FC<TLogin> = ({ theme, onSubmit }) => (
-  <Formik
-    initialValues={{ username: '', password: '' }}
-    validationSchema={formSchema}
+const LoginComponent: FC<TLogin> = ({ onSubmit, isLoading, errors, theme }) => (
+  <Container
+    as={FormikForm}
     onSubmit={onSubmit}
+    className={'h-100 d-flex align-items-center justify-content-center'}
   >
-    <Container
-      as={Form}
-      onSubmit={onSubmit}
-      className={'h-100 d-flex align-items-center justify-content-center'}
-    >
-      <Row className="w-100 d-flex justify-content-center">
-        <Col xs={6}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              name="username"
-              aria-label="username"
-              placeholder="Enter username"
-            />
-            <Form.Text className="text-muted">We'll never share your name.</Form.Text>
-          </Form.Group>
-          <ErrorMessage name="username" component={'div'} />
-
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" name="password" placeholder="Password" />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
+    <Row className="w-100 d-flex justify-content-center">
+      <Col xs={6}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            as={Field}
+            className="mb-1"
+            isInvalid={errors.username !== undefined}
+            type="text"
+            name="username"
+            aria-label="username"
+            placeholder="Enter username"
+          />
+          <ErrorMessage name="username">
+            {(errorMessage: string) => (
+              <Form.Text className="ms-1 text-danger">{errorMessage}</Form.Text>
+            )}
+          </ErrorMessage>
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            as={Field}
+            className="mb-1"
+            isInvalid={errors.password !== undefined}
+            type="password"
+            name="password"
+            placeholder="Password"
+          />
+          <ErrorMessage name="password">
+            {(errorMessage: string) => (
+              <Form.Text className="ms-1 text-danger">{errorMessage}</Form.Text>
+            )}
+          </ErrorMessage>
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check as={Field} type="checkbox" name="checkbox1" label="Check to continue" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicSubmit">
+          <Button variant="primary" type="submit" disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Submit'}
           </Button>
-        </Col>
-      </Row>
-    </Container>
-  </Formik>
+        </Form.Group>
+      </Col>
+    </Row>
+  </Container>
 );
 
 export { LoginComponent };
