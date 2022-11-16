@@ -27,9 +27,10 @@ function setupSettingsExpress(app: Express) {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        secure: process.env.ENVIRONMENT === 'production' ? true : 'auto',
-        sameSite: process.env.ENVIRONMENT === 'production' ? 'none' : 'lax',
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        // secure: process.env.ENVIRONMENT === 'production' ? 'auto' : 'auto',
+        secure: false,
+        sameSite: process.env.ENVIRONMENT === 'production' ? 'none' : 'none',
       },
     }),
   );
