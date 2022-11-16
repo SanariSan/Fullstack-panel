@@ -173,5 +173,7 @@ ignore
 dist*
 build
 *.http
+.vscode
+
 *.env*
 !.env.copy

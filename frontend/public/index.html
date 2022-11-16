@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <style type="text/css">
+      @media (prefers-color-scheme: light) {
+        body {
+          background-color: #fbf8ff;
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #1d1d1d;
+        }
+      }
+    </style>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,6 +46,15 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!-- <script type="text/javascript" async="">
+      const v = window.localStorage.getItem('globalTheme');
+
+      if (v === 'light') {
+        document.getElementsByTagName('body')[0].style['background-color'] = '#fbf8ff';
+      } else if (v === 'dark') {
+        document.getElementsByTagName('body')[0].style['background-color'] = '#1d1d1d';
+      }
+    </script> -->
     <div id="root"></div>
   </body>
 </html>

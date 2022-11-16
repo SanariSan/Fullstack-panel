@@ -1,18 +1,17 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ThemeControllerComponent } from '../../../components/theme-controller';
-import { useAppDispatch } from '../../../hooks/redux';
-import { setTheme, themeSelector } from '../../../store';
+import { ThemeControllerComponent } from '../../components/theme-controller';
+import { useAppDispatch } from '../../hooks/redux';
+import { setTheme, themeSelector } from '../../store';
 
 type TThemeOptions = ReturnType<typeof themeSelector>;
 
-const themeOptions = [
+const themeOptions: Array<Record<'value', TThemeOptions>> = [
   {
-    name: 'light',
-    value: 'light' as TThemeOptions,
+    value: 'light',
   },
-  { name: 'dark', value: 'dark' as TThemeOptions },
+  { value: 'dark' },
 ];
 
 const ThemeControllerContainer: FC = () => {

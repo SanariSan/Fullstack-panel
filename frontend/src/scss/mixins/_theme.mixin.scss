@@ -1,26 +1,28 @@
-@mixin themify() {
-  @each $theme, $map in $themes {
-    .theme--#{$theme} & {
-      $theme-map: () !global;
-      @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
-        $theme-map: map-merge(
-          $theme-map,
-          (
-            $key: $value,
-          )
-        ) !global;
-      }
-
-      @debug $theme;
-      @debug $theme-map;
-
-      @content;
-      $theme-map: null !global;
-    }
-  }
+@mixin animate {
+  transition-property: background-color, color;
+  transition-duration: 0.5s;
 }
 
-@function themed($key) {
-  @return map-get($theme-map, $key);
+@mixin lightTheme {
+  @include animate;
+  background-color: map-get($lightTheme, background-color);
+  color: map-get($lightTheme, color);
+}
+
+@mixin lightThemeAlt {
+  @include animate;
+  background-color: map-get($lightThemeAlt, background-color);
+  color: map-get($lightThemeAlt, color);
+}
+
+@mixin darkTheme {
+  @include animate;
+  background-color: map-get($darkTheme, background-color);
+  color: map-get($darkTheme, color);
+}
+
+@mixin darkThemeAlt {
+  @include animate;
+  background-color: map-get($darkThemeAlt, background-color);
+  color: map-get($darkThemeAlt, color);
 }

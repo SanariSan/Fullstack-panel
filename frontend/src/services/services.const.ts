@@ -1,14 +1,12 @@
-const DEFAULT_FETCH_HEADERS = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; rv:83.0) Gecko/20100101 Firefox/83.0',
+const DEFAULT_FETCH_HEADERS: HeadersInit = {
   Connection: 'keep-alive',
+  'Content-Type': 'application/json',
 };
 
-const DEFAULT_FETCH_OPTIONS: {
-  method: string;
-  redirect?: 'manual' | 'error' | 'follow';
-} = {
+const DEFAULT_FETCH_OPTIONS: RequestInit = {
   method: 'GET',
   redirect: 'manual',
+  credentials: 'include',
 };
 
 export { DEFAULT_FETCH_HEADERS, DEFAULT_FETCH_OPTIONS };

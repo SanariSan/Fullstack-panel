@@ -5,12 +5,11 @@ interface IRequestOptions {
   method?: TRequestMethod;
   headers?: HeadersInit;
   body?: BodyInit | null | undefined;
-  fetchOtions?: RequestInit & { method: TRequestMethod };
+  fetchOtions?: RequestInit;
   timeoutMS?: number;
   attemptDelayMS?: number;
   attemptDelayGrowthMS?: number;
   maxAttempts?: number;
-  abortController?: AbortController;
   abortSignal?: AbortSignal;
 }
 
