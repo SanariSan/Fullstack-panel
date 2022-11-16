@@ -1,4 +1,4 @@
-import { call, cancelled, delay, put, takeLatest } from 'redux-saga/effects';
+import { call, cancelled, put, takeLatest } from 'redux-saga/effects';
 import type { TSafeReturn } from '../../../../helpers/sagas';
 import { safe } from '../../../../helpers/sagas';
 import { request } from '../../../../services';
@@ -6,7 +6,6 @@ import {
   checkUserSessionAsync,
   setUserInfo,
   setUserSessionCheckLoadStatusFailure,
-  setUserSessionCheckLoadStatusIdle,
   setUserSessionCheckLoadStatusLoading,
   setUserSessionCheckLoadStatusSuccess,
 } from '../../../slices';
@@ -29,10 +28,6 @@ function* checkUserSessionWorker(action: { type: string }) {
 
     if (fetchStatus.error !== undefined) {
       yield put(setUserSessionCheckLoadStatusFailure({ error: String(fetchStatus.error) }));
-
-      // if no delay used - setIdle instantly overrides failure
-      yield delay(1);
-      yield put(setUserSessionCheckLoadStatusIdle());
       return;
     }
 
@@ -46,18 +41,12 @@ function* checkUserSessionWorker(action: { type: string }) {
 
     if (jsonParse.error !== undefined) {
       yield put(setUserSessionCheckLoadStatusFailure({ error: String(jsonParse.error) }));
-
-      // if no delay used - setIdle instantly overrides failure
-      yield delay(1);
-      yield put(setUserSessionCheckLoadStatusIdle());
       return;
     }
 
     // if no delay used - setIdle instantly overrides success
     yield put(setUserSessionCheckLoadStatusSuccess(jsonParse.response));
-    // yield put(setUserInfo(jsonParse.response));
-    yield delay(1);
-    yield put(setUserSessionCheckLoadStatusIdle());
+    yield put(setUserInfo(jsonParse.response));
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();

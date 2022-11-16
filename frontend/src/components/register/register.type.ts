@@ -1,8 +1,8 @@
 import type { FormikProps } from 'formik';
 
-type TProps = FormikProps<{ username; password }>;
+type TProps = FormikProps<{ username; password; passwordRe }>;
 
-type TLogin = {
+type TRegister = {
   [TKey in keyof TProps]: TProps[TKey];
 } & {
   theme: string;
@@ -11,4 +11,4 @@ type TLogin = {
   handleSubmit: React.FormEventHandler<HTMLFormElement>;
 };
 
-export type { TLogin };
+export type { TRegister };

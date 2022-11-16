@@ -9,6 +9,7 @@ const userSessionSlice = createSlice({
   reducers: {
     setUserSessionCheckLoadStatusIdle(state) {
       state.loadingStatus = 'idle';
+      state.isAuthenticated = 'idle';
     },
     setUserSessionCheckLoadStatusLoading(state) {
       state.loadingStatus = 'loading';

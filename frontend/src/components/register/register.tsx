@@ -4,9 +4,9 @@ import { Button, Form } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import type { TLogin } from './login.type';
+import type { TRegister } from './register.type';
 
-const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }) => {
+const RegisterComponent: FC<TRegister> = ({ isLoading, theme, onChangeRoute, ...rest }) => {
   const { handleSubmit, errors, touched } = rest;
 
   return (
@@ -17,10 +17,8 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }
     >
       <Row className="w-100 d-flex justify-content-center">
         <Col xs={6}>
-          <Form.Group className="mb-3" controlId="Header">
-            <h2 style={{ textAlign: 'center' }}>Login</h2>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <h2 style={{ textAlign: 'center' }}>Register</h2>
+          <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
               as={Field}
@@ -37,7 +35,7 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }
               )}
             </ErrorMessage>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="formPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
               as={Field}
@@ -53,10 +51,26 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }
               )}
             </ErrorMessage>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Group className="mb-3" controlId="formPasswordRe">
+            <Form.Label>Password again</Form.Label>
+            <Form.Control
+              as={Field}
+              className="mb-1"
+              isInvalid={touched.passwordRe !== undefined && errors.passwordRe !== undefined}
+              type="password"
+              name="passwordRe"
+              placeholder="Password"
+            />
+            <ErrorMessage name="passwordRe">
+              {(errorMessage: string) => (
+                <Form.Text className="ms-1 text-danger">{errorMessage}</Form.Text>
+              )}
+            </ErrorMessage>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formCheckbox">
             <Form.Check as={Field} type="checkbox" name="checkbox1" label="Check to continue" />
           </Form.Group>
-          <Form.Group className="mb-3 d-flex justify-content-center" controlId="formBasicSubmit">
+          <Form.Group className="mb-3 d-flex justify-content-center" controlId="formSubmit">
             <Button variant="primary" type="submit" className="me-1" disabled={isLoading}>
               {isLoading ? 'Loading...' : 'Submit'}
             </Button>
@@ -67,7 +81,7 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }
               disabled={isLoading}
               onClick={onChangeRoute}
             >
-              Register instead
+              Login instead
             </Button>
           </Form.Group>
         </Col>
@@ -76,4 +90,4 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }
   );
 };
 
-export { LoginComponent };
+export { RegisterComponent };
