@@ -104,16 +104,3 @@ Fullstack notify utility to let you hunt vacancies as fast as possible. Features
 - get-query | получить запросы пользователя по id
 
 3. notify-service | Уведомление пользователя - проверка новых вакансий в бд, отправка уведомлений в телеграм (бг процесс) если включено, отметка что вакансии не просмотрены (сравнение времени просмотра, всегда). Ендпоинт - отметка что вакансии просмотрены (установка времени просмотра).
-
-## Usage <a name = "usage"></a>
-
-```
-docker-compose up --build
-```
-
-Only db:
-
-```
-docker build -t sanarisan/job_sniper_postgres:1 -f $pwd/docker/postgres.Dockerfile .
-docker run -d --rm --name job_sniper_postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=super_secret_pWd -e POSTGRES_DB=postgres -v $pwd/db/pgdata:/var/lib/postgresql/data -p 5435:5432 --shm-size=512mb sanarisan/job_sniper_postgres:1
-```
