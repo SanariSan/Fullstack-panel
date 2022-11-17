@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import { sleep } from '../helpers/util';
-import { DEFAULT_FETCH_HEADERS, DEFAULT_FETCH_OPTIONS } from './services.const';
-import type { IRequestOptions } from './services.type';
+import { DEFAULT_FETCH_HEADERS, DEFAULT_FETCH_OPTIONS } from './request-base.services.const';
+import type { IRequestOptions } from './request-base.services.type';
 
 /**
  * Logic is following:

@@ -7,7 +7,6 @@ type TLogin = {
 } & {
   theme: string;
   isLoading: boolean;
-  onChangeRoute: (...args) => void;
   handleSubmit: React.FormEventHandler<HTMLFormElement>;
 };
 

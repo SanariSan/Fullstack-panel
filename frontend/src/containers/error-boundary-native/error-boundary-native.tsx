@@ -6,22 +6,35 @@ type TProps = {
 };
 
 type TState = {
+  hasError: boolean;
   error?: Error | undefined;
   errorInfo?: ErrorInfo | undefined;
 };
 
-class ErrorBoundary extends Component<TProps, TState> {
+class ErrorBoundaryNativeContainer extends Component<TProps, TState> {
   public state: TState = {
+    hasError: false,
     error: undefined,
     errorInfo: undefined,
   };
 
+  static getDerivedStateFromError(error: Error) {
+    return {
+      hasError: true,
+      error,
+    };
+  }
+
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    this.setState({ error, errorInfo });
+    this.setState({ hasError: true, error, errorInfo });
   }
 
   render() {
-    if (this.state.error !== undefined && this.state.errorInfo !== undefined) {
+    if (
+      this.state.hasError &&
+      this.state.error !== undefined &&
+      this.state.errorInfo !== undefined
+    ) {
       return (
         <div>
           <h2>Error in component lifecycle</h2>
@@ -38,4 +51,4 @@ class ErrorBoundary extends Component<TProps, TState> {
   }
 }
 
-export { ErrorBoundary };
+export { ErrorBoundaryNativeContainer };

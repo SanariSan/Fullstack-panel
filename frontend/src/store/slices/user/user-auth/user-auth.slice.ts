@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { USER_AUTH_INIT_STATE } from './user-auth.slice.const';
+import type { TIsAuthenticated, TLoadingStatus } from './user-auth.slice.type';
 
 /* eslint-disable no-param-reassign */
 
@@ -7,46 +8,53 @@ const userAuthSlice = createSlice({
   name: 'userAuth',
   initialState: USER_AUTH_INIT_STATE,
   reducers: {
-    setUserAuthLoadStatusIdle(state) {
-      state.loadingStatus = 'idle';
+    setUserIsAuthenticated(state, action: { payload: { status: TIsAuthenticated }; type: string }) {
+      state.isAuthenticated = action.payload.status;
     },
-    setUserAuthLoadStatusLoading(state) {
-      state.loadingStatus = 'loading';
+    setUserAuthLoadStatus(
+      state,
+      action: { payload: { status: TLoadingStatus; error?: unknown }; type: string },
+    ) {
+      state.loadingStatus = action.payload.status;
+
+      if (action.payload.status === 'failure' && action.payload.error !== undefined) {
+        state.error = JSON.stringify(action.payload.error);
+      }
     },
-    setUserAuthLoadStatusFailure(state, action: { payload: { error: unknown }; type: string }) {
-      state.loadingStatus = 'failure';
-      state.error = JSON.stringify(action.payload.error);
-    },
-    setUserAuthLoadStatusSuccess(state, action: { payload: undefined; type: string }) {
-      state.loadingStatus = 'success';
+    checkUserSessionAsync() {
+      // saga
     },
     registerUserAsync(
       state,
       action: { payload: { login: string; password: string }; type: string },
-    ) {},
-    loginUserAsync(
-      state,
-      action: { payload: { login: string; password: string }; type: string },
-    ) {},
+    ) {
+      // saga
+    },
+    loginUserAsync(state, action: { payload: { login: string; password: string }; type: string }) {
+      // saga
+    },
+    logoutUserAsync() {
+      // saga
+    },
   },
 });
 
 const userAuth = userAuthSlice.reducer;
 const {
-  setUserAuthLoadStatusIdle,
-  setUserAuthLoadStatusLoading,
-  setUserAuthLoadStatusFailure,
-  setUserAuthLoadStatusSuccess,
+  setUserIsAuthenticated,
+  setUserAuthLoadStatus,
+  checkUserSessionAsync,
   registerUserAsync,
   loginUserAsync,
+  logoutUserAsync,
 } = userAuthSlice.actions;
 
 export {
   userAuth,
-  setUserAuthLoadStatusIdle,
-  setUserAuthLoadStatusLoading,
-  setUserAuthLoadStatusFailure,
-  setUserAuthLoadStatusSuccess,
+  setUserIsAuthenticated,
+  setUserAuthLoadStatus,
+  checkUserSessionAsync,
   registerUserAsync,
   loginUserAsync,
+  logoutUserAsync,
 };

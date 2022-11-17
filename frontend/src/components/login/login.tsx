@@ -4,23 +4,35 @@ import { Button, Form } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { changeRoute } from '../../containers/history-catcher';
 import type { TLogin } from './login.type';
 
-const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }) => {
+const LoginComponent: FC<TLogin> = ({ theme, isLoading, ...rest }) => {
   const { handleSubmit, errors, touched } = rest;
 
   return (
-    <Container
-      as={FormikForm}
-      onSubmit={handleSubmit}
-      className={'h-100 d-flex align-items-center justify-content-center'}
-    >
-      <Row className="w-100 d-flex justify-content-center">
-        <Col xs={6}>
-          <Form.Group className="mb-3" controlId="Header">
-            <h2 style={{ textAlign: 'center' }}>Login</h2>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+    <Container as={FormikForm} onSubmit={handleSubmit} className={'h-100'}>
+      <Row className="w-100" style={{ height: '5%' }}>
+        <Col>
+          <Button
+            variant="primary"
+            type="button"
+            className="ms-1"
+            disabled={isLoading}
+            onClick={() => {
+              changeRoute('/');
+            }}
+          >
+            Home
+          </Button>
+        </Col>
+      </Row>
+      <Row className="w-100" style={{ height: '25%' }}></Row>
+      <Row className="w-100" style={{ height: '40%' }}>
+        <Col xs={4}></Col>
+        <Col xs={4} className="d-flex flex-column justify-content-center">
+          <h2 style={{ textAlign: 'center' }}>Log in</h2>
+          <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
               as={Field}
@@ -37,7 +49,7 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }
               )}
             </ErrorMessage>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="formPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
               as={Field}
@@ -53,25 +65,29 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, onChangeRoute, ...rest }
               )}
             </ErrorMessage>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Group className="mb-3" controlId="formCheckbox">
             <Form.Check as={Field} type="checkbox" name="checkbox1" label="Check to continue" />
           </Form.Group>
-          <Form.Group className="mb-3 d-flex justify-content-center" controlId="formBasicSubmit">
+          <Form.Group className="mb-3 d-flex justify-content-center" controlId="formSubmit">
             <Button variant="primary" type="submit" className="me-1" disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Submit'}
+              {isLoading ? 'Loading...' : 'Log in'}
             </Button>
             <Button
               variant="secondary"
               type="button"
               className="ms-1"
               disabled={isLoading}
-              onClick={onChangeRoute}
+              onClick={() => {
+                changeRoute('/register');
+              }}
             >
-              Register instead
+              Sign up instead
             </Button>
           </Form.Group>
         </Col>
+        <Col xs={4}></Col>
       </Row>
+      <Row className="w-100" style={{ height: '30%' }}></Row>
     </Container>
   );
 };
