@@ -1,8 +1,11 @@
-type TLoadinStatus = 'idle' | 'loading' | 'success' | 'failure';
+type TLoadingStatus = 'idle' | 'loading' | 'success' | 'failure';
+
+type TIsAuthenticated = 'idle' | boolean;
 
 type TUserAuthInitState = {
-  loadingStatus: TLoadinStatus;
+  isAuthenticated: TIsAuthenticated;
+  loadingStatus: TLoadingStatus;
   error: string | undefined;
 };
 
-export type { TUserAuthInitState };
+export type { TUserAuthInitState, TIsAuthenticated, TLoadingStatus };

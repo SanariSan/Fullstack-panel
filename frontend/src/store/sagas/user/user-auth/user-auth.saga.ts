@@ -1,18 +1,25 @@
-import { all, call, cancelled, put, takeLatest } from 'redux-saga/effects';
+import { all, call, cancelled, delay, put, takeLatest } from 'redux-saga/effects';
 import type { TSafeReturn } from '../../../../helpers/sagas';
 import { safe } from '../../../../helpers/sagas';
 import { request } from '../../../../services';
 import {
+  checkUserSessionAsync,
   loginUserAsync,
+  logoutUserAsync,
   registerUserAsync,
-  setUserAuthLoadStatusFailure,
-  setUserAuthLoadStatusLoading,
-  setUserAuthLoadStatusSuccess,
+  setUserAuthLoadStatus,
   setUserInfo,
-  setUserSessionCheckLoadStatusSuccess,
+  setUserIsAuthenticated,
 } from '../../../slices';
 
 type TAuthBody = { login: string; password: string };
+
+async function checkUserSession(abortSignal: AbortSignal) {
+  return request({
+    url: `http://127.0.0.1:3000/v1/access/login`,
+    abortSignal,
+  });
+}
 
 async function loginUser({ body, abortSignal }: { body: TAuthBody; abortSignal: AbortSignal }) {
   return request({
@@ -32,17 +39,25 @@ async function registerUser({ body, abortSignal }: { body: TAuthBody; abortSigna
   });
 }
 
-function* loginUserWorker(action: { type: string; payload: TAuthBody }) {
+async function logoutUser(abortSignal: AbortSignal) {
+  return request({
+    url: `http://127.0.0.1:3000/v1/access/logout`,
+    method: 'DELETE',
+    abortSignal,
+  });
+}
+
+function* checkUserSessionWorker(action: { type: string }) {
   const abortController = new AbortController();
   try {
-    yield put(setUserAuthLoadStatusLoading());
+    yield delay(1000);
 
     const fetchStatus = (yield safe(
-      call(loginUser, { body: action.payload, abortSignal: abortController.signal }),
+      call(checkUserSession, abortController.signal),
     )) as TSafeReturn<Response>;
 
     if (fetchStatus.error !== undefined) {
-      yield put(setUserAuthLoadStatusFailure({ error: String(fetchStatus.error) }));
+      yield put(setUserIsAuthenticated({ status: false }));
       return;
     }
 
@@ -55,12 +70,52 @@ function* loginUserWorker(action: { type: string; payload: TAuthBody }) {
     }>;
 
     if (jsonParse.error !== undefined) {
-      yield put(setUserAuthLoadStatusFailure({ error: String(jsonParse.error) }));
+      yield put(setUserIsAuthenticated({ status: false }));
       return;
     }
 
-    yield put(setUserAuthLoadStatusSuccess());
-    yield put(setUserSessionCheckLoadStatusSuccess(jsonParse.response));
+    // todo: STRICT CHECK PARSED JSON FIELDS
+
+    yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
+    yield put(setUserInfo(jsonParse.response));
+  } finally {
+    if ((yield cancelled()) as boolean) {
+      abortController.abort();
+    }
+  }
+}
+
+function* loginUserWorker(action: { type: string; payload: TAuthBody }) {
+  const abortController = new AbortController();
+  try {
+    yield put(setUserAuthLoadStatus({ status: 'loading' }));
+
+    const fetchStatus = (yield safe(
+      call(loginUser, { body: action.payload, abortSignal: abortController.signal }),
+    )) as TSafeReturn<Response>;
+
+    if (fetchStatus.error !== undefined) {
+      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
+      return;
+    }
+
+    /* eslint-disable @typescript-eslint/unbound-method */
+    const jsonParse = (yield safe(
+      call([fetchStatus.response, fetchStatus.response.json]),
+    )) as TSafeReturn<{
+      isAuthenticated: boolean;
+      login?: string;
+    }>;
+
+    if (jsonParse.error !== undefined) {
+      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
+      return;
+    }
+
+    // todo: STRICT CHECK PARSED JSON FIELDS
+
+    yield put(setUserAuthLoadStatus({ status: 'success' }));
+    yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
     yield put(setUserInfo(jsonParse.response));
   } finally {
     if ((yield cancelled()) as boolean) {
@@ -72,14 +127,14 @@ function* loginUserWorker(action: { type: string; payload: TAuthBody }) {
 function* registerUserWorker(action: { type: string; payload: TAuthBody }) {
   const abortController = new AbortController();
   try {
-    yield put(setUserAuthLoadStatusLoading());
+    yield put(setUserAuthLoadStatus({ status: 'loading' }));
 
     const fetchStatus = (yield safe(
       call(registerUser, { body: action.payload, abortSignal: abortController.signal }),
     )) as TSafeReturn<Response>;
 
     if (fetchStatus.error !== undefined) {
-      yield put(setUserAuthLoadStatusFailure({ error: String(fetchStatus.error) }));
+      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
       return;
     }
 
@@ -92,18 +147,57 @@ function* registerUserWorker(action: { type: string; payload: TAuthBody }) {
     }>;
 
     if (jsonParse.error !== undefined) {
-      yield put(setUserAuthLoadStatusFailure({ error: String(jsonParse.error) }));
+      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
       return;
     }
 
-    yield put(setUserAuthLoadStatusSuccess());
-    yield put(setUserSessionCheckLoadStatusSuccess(jsonParse.response));
+    // todo: STRICT CHECK PARSED JSON FIELDS
+
+    yield put(setUserAuthLoadStatus({ status: 'success' }));
+    yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
     yield put(setUserInfo(jsonParse.response));
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();
     }
   }
+}
+
+function* logoutUserWorker(action: { type: string }) {
+  const abortController = new AbortController();
+  try {
+    const fetchStatus = (yield safe(
+      call(logoutUser, abortController.signal),
+    )) as TSafeReturn<Response>;
+
+    if (fetchStatus.error !== undefined) {
+      return;
+    }
+
+    /* eslint-disable @typescript-eslint/unbound-method */
+    const jsonParse = (yield safe(
+      call([fetchStatus.response, fetchStatus.response.json]),
+    )) as TSafeReturn<{
+      isAuthenticated: boolean;
+    }>;
+
+    if (jsonParse.error !== undefined) {
+      return;
+    }
+
+    // todo: STRICT CHECK PARSED JSON FIELDS
+
+    yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
+    yield put(setUserInfo({ login: undefined }));
+  } finally {
+    if ((yield cancelled()) as boolean) {
+      abortController.abort();
+    }
+  }
+}
+
+function* userSessionWatcher() {
+  yield takeLatest(checkUserSessionAsync, checkUserSessionWorker);
 }
 
 function* userLoginWatcher() {
@@ -114,8 +208,17 @@ function* userRegisterWatcher() {
   yield takeLatest(registerUserAsync, registerUserWorker);
 }
 
+function* userLogoutWatcher() {
+  yield takeLatest(logoutUserAsync, logoutUserWorker);
+}
+
 function* userAuthRootWatcher() {
-  yield all([call(userLoginWatcher), call(userRegisterWatcher)]);
+  yield all([
+    call(userSessionWatcher),
+    call(userLoginWatcher),
+    call(userRegisterWatcher),
+    call(userLogoutWatcher),
+  ]);
 }
 
 export { userAuthRootWatcher };

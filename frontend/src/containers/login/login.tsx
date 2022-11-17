@@ -6,7 +6,6 @@ import { LoginComponent } from '../../components/login';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { loginUserAsync, themeSelector, userAuthLoadingStatusSelector } from '../../store';
 import { FormSubmitControlContainer } from '../form-submit-control';
-import { changeRoute } from '../history-catcher';
 import { INITIAL_VALUES, VALIDATION_SCHEMA } from './login.const';
 import type { TFormValues } from './login.type';
 
@@ -30,9 +29,6 @@ const LoginContainer: FC = () => {
           <LoginComponent
             theme={theme}
             isLoading={userAuthLoadingState === 'loading'}
-            onChangeRoute={() => {
-              changeRoute('/register');
-            }}
             {...formikConfig}
           />
           <FormSubmitControlContainer isLoading={userAuthLoadingState === 'loading'} />

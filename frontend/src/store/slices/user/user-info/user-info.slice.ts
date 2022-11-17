@@ -8,7 +8,7 @@ const userInfoSlice = createSlice({
   initialState: USER_INFO_INIT_STATE,
   reducers: {
     setUserInfo(state, action: { payload: { login?: string }; type: string }) {
-      state.login = action.payload.login ?? state.login;
+      state.login = action.payload.login ?? '';
     },
   },
 });

@@ -4,20 +4,34 @@ import { Button, Form } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { changeRoute } from '../../containers/history-catcher';
 import type { TRegister } from './register.type';
 
-const RegisterComponent: FC<TRegister> = ({ isLoading, theme, onChangeRoute, ...rest }) => {
+const RegisterComponent: FC<TRegister> = ({ isLoading, theme, ...rest }) => {
   const { handleSubmit, errors, touched } = rest;
 
   return (
-    <Container
-      as={FormikForm}
-      onSubmit={handleSubmit}
-      className={'h-100 d-flex align-items-center justify-content-center'}
-    >
-      <Row className="w-100 d-flex justify-content-center">
-        <Col xs={6}>
-          <h2 style={{ textAlign: 'center' }}>Register</h2>
+    <Container as={FormikForm} onSubmit={handleSubmit} className={'h-100'}>
+      <Row className="w-100" style={{ height: '5%' }}>
+        <Col>
+          <Button
+            variant="primary"
+            type="button"
+            className="ms-1"
+            disabled={isLoading}
+            onClick={() => {
+              changeRoute('/');
+            }}
+          >
+            Home
+          </Button>
+        </Col>
+      </Row>
+      <Row className="w-100" style={{ height: '25%' }}></Row>
+      <Row className="w-100" style={{ height: '40%' }}>
+        <Col xs={4}></Col>
+        <Col xs={4} className="d-flex flex-column justify-content-center">
+          <h2 style={{ textAlign: 'center' }}>Sign up</h2>
           <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
@@ -72,20 +86,24 @@ const RegisterComponent: FC<TRegister> = ({ isLoading, theme, onChangeRoute, ...
           </Form.Group>
           <Form.Group className="mb-3 d-flex justify-content-center" controlId="formSubmit">
             <Button variant="primary" type="submit" className="me-1" disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Submit'}
+              {isLoading ? 'Loading...' : 'Sign up'}
             </Button>
             <Button
               variant="secondary"
               type="button"
               className="ms-1"
               disabled={isLoading}
-              onClick={onChangeRoute}
+              onClick={() => {
+                changeRoute('/login');
+              }}
             >
-              Login instead
+              Log in instead
             </Button>
           </Form.Group>
         </Col>
+        <Col xs={4}></Col>
       </Row>
+      <Row className="w-100" style={{ height: '30%' }}></Row>
     </Container>
   );
 };
