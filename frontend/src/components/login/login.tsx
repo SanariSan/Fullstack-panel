@@ -4,20 +4,26 @@ import { Button, Form } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import classNames from 'classnames';
 import { changeRoute } from '../../containers/history-catcher';
 import type { TLogin } from './login.type';
+import style from './login.module.scss';
 
 const LoginComponent: FC<TLogin> = ({ theme, isLoading, ...rest }) => {
   const { handleSubmit, errors, touched } = rest;
 
   return (
-    <Container as={FormikForm} onSubmit={handleSubmit} className={'h-100'}>
+    <Container
+      as={FormikForm}
+      onSubmit={handleSubmit}
+      className={classNames('h-100', style[theme])}
+    >
       <Row className="w-100" style={{ height: '5%' }}>
         <Col>
           <Button
             variant="primary"
             type="button"
-            className="ms-1"
+            className="m-3"
             disabled={isLoading}
             onClick={() => {
               changeRoute('/');
@@ -33,7 +39,7 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, ...rest }) => {
         <Col xs={4} className="d-flex flex-column justify-content-center">
           <h2 style={{ textAlign: 'center' }}>Log in</h2>
           <Form.Group className="mb-3" controlId="formUsername">
-            <Form.Label>Username</Form.Label>
+            <Form.Label className={style[theme]}>Username</Form.Label>
             <Form.Control
               as={Field}
               className="mb-1"

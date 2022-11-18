@@ -7,7 +7,6 @@
 .dark {
   @include darkTheme;
   color: map-get($darkThemeAlt, color);
-  color: $color-accent;
 }
 
 .controllerWrap {
@@ -23,6 +22,7 @@
 
   button {
     margin-right: 10px;
+    background-color: transparent;
 
     &.opener {
       animation: wigle 10s infinite;
