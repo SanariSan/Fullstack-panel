@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import type { FC } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -6,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import { changeRoute } from '../../containers/history-catcher';
 import { useAppDispatch } from '../../hooks/redux';
 import { logoutUserAsync } from '../../store';
+import style from './dashboard.module.scss';
 import type { TDashboard } from './dashboard.type';
 
 const DashboardComponent: FC<TDashboard> = ({ theme }) => {
@@ -14,7 +16,10 @@ const DashboardComponent: FC<TDashboard> = ({ theme }) => {
   const dispatch = useAppDispatch();
 
   return (
-    <Container className={'h-100 d-flex align-items-center justify-content-center'}>
+    <Container
+      fluid
+      className={classNames('h-100 d-flex align-items-center justify-content-center', style[theme])}
+    >
       <Row className="w-100">
         <Col xs={12} className="d-flex justify-content-center">
           <Button

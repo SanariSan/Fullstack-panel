@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { ErrorMessage, Field, Form as FormikForm } from 'formik';
 import type { FC } from 'react';
 import { Button, Form } from 'react-bootstrap';
@@ -6,18 +7,23 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { changeRoute } from '../../containers/history-catcher';
 import type { TRegister } from './register.type';
+import style from './register.module.scss';
 
 const RegisterComponent: FC<TRegister> = ({ isLoading, theme, ...rest }) => {
   const { handleSubmit, errors, touched } = rest;
 
   return (
-    <Container as={FormikForm} onSubmit={handleSubmit} className={'h-100'}>
+    <Container
+      as={FormikForm}
+      onSubmit={handleSubmit}
+      className={classNames('h-100', style[theme])}
+    >
       <Row className="w-100" style={{ height: '5%' }}>
         <Col>
           <Button
             variant="primary"
             type="button"
-            className="ms-1"
+            className="m-3"
             disabled={isLoading}
             onClick={() => {
               changeRoute('/');

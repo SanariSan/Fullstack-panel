@@ -9,6 +9,7 @@ import { DebugContainer } from './containers/debug';
 import { ErrorBoundaryGenericContainer } from './containers/error-boundary-generic';
 // import { ErrorBoundaryNativeContainer } from './containers/error-boundary-native';
 import { LandingContainer } from './containers/landing';
+import { LoadingTrackerProgressContainer } from './containers/loading-tracker-progress';
 import { LoginContainer } from './containers/login';
 import { RegisterContainer } from './containers/register';
 import { useAppSelector } from './hooks/redux';
@@ -19,7 +20,8 @@ const App: FC = () => {
 
   return (
     <ErrorBoundaryGenericContainer>
-      <Container fluid className={'h-100 d-flex align-items-center justify-content-center'}>
+      <Container fluid className={'h-100 p-0 d-flex align-items-center justify-content-center'}>
+        <LoadingTrackerProgressContainer />
         <Switch>
           <Route exact path="/">
             <LandingContainer />

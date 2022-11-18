@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import classNames from 'classnames';
-import s from './theme-controller.module.scss';
+import style from './theme-controller.module.scss';
 
 type TThemeController = {
   theme: string;
@@ -20,14 +20,14 @@ const ThemeControllerComponent: FC<TThemeController> = ({
   onVisibilityChange,
 }) => (
   <div
-    className={classNames(s.controllerWrap, s[theme])}
+    className={classNames(style.controllerWrap, style[theme])}
     style={{ transform: isVisible ? 'translateX(-10px)' : 'translateX(62px)' }}
   >
-    <button className={classNames(s[theme], s.opener)} onClick={onVisibilityChange}>
+    <button className={classNames(style[theme], style.opener)} onClick={onVisibilityChange}>
       <span>{isVisible ? '>>' : '>>'}</span>
     </button>
 
-    <select value={theme} onChange={onThemeChange} className={s.select}>
+    <select value={theme} onChange={onThemeChange} className={style.select}>
       {themeOptions.map((option, idx) => (
         <option value={option.value} key={idx}>
           {option.value}

@@ -166,11 +166,14 @@ function* registerUserWorker(action: { type: string; payload: TAuthBody }) {
 function* logoutUserWorker(action: { type: string }) {
   const abortController = new AbortController();
   try {
+    yield put(setUserAuthLoadStatus({ status: 'loading' }));
+
     const fetchStatus = (yield safe(
       call(logoutUser, abortController.signal),
     )) as TSafeReturn<Response>;
 
     if (fetchStatus.error !== undefined) {
+      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
       return;
     }
 
@@ -182,11 +185,13 @@ function* logoutUserWorker(action: { type: string }) {
     }>;
 
     if (jsonParse.error !== undefined) {
+      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
       return;
     }
 
     // todo: STRICT CHECK PARSED JSON FIELDS
 
+    yield put(setUserAuthLoadStatus({ status: 'success' }));
     yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
     yield put(setUserInfo({ login: undefined }));
   } finally {
