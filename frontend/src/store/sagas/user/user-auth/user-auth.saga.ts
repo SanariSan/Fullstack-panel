@@ -103,20 +103,23 @@ function* loginUserWorker(action: { type: string; payload: TAuthBody }) {
     const jsonParse = (yield safe(
       call([fetchStatus.response, fetchStatus.response.json]),
     )) as TSafeReturn<{
-      isAuthenticated: boolean;
-      login?: string;
+      data: {
+        isAuthenticated: boolean;
+        login?: string;
+      };
     }>;
 
     if (jsonParse.error !== undefined) {
       yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
+
       return;
     }
 
     // todo: STRICT CHECK PARSED JSON FIELDS
 
     yield put(setUserAuthLoadStatus({ status: 'success' }));
-    yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
-    yield put(setUserInfo(jsonParse.response));
+    yield put(setUserIsAuthenticated({ status: jsonParse.response.data.isAuthenticated }));
+    yield put(setUserInfo(jsonParse.response.data));
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();

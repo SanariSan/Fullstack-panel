@@ -27,11 +27,11 @@ const AuthenticatedAccessContainer: FC<TAuthRoute> = ({
     };
   }, [dispatch, isAuthenticated]);
 
-  // console.log(
-  //   `isAuthenticated-${isAuthenticated};mustBeAuthenticated-${mustBeAuthenticated};${
-  //     isAuthenticated !== mustBeAuthenticated ? redirectLocation : ''
-  //   }`,
-  // );
+  console.log(
+    `isAuthenticated-${isAuthenticated};mustBeAuthenticated-${mustBeAuthenticated};${
+      isAuthenticated !== mustBeAuthenticated ? redirectLocation : ''
+    }`,
+  );
 
   if (isAuthenticated === 'idle')
     return (
