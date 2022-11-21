@@ -4,6 +4,7 @@ import { ELOG_LEVEL } from '../../../../general.type';
 import { DB } from '../../../../modules/access-layer/db';
 import { publishLog } from '../../../../modules/access-layer/events/pubsub';
 import type { TRequestValidatedCredentials } from '../../../express.type';
+import { AuthFailureErrorResponse } from '../../../responses';
 
 export const accessLoginCTR = async (
   req: TRequestValidatedCredentials,
@@ -23,7 +24,13 @@ export const accessLoginCTR = async (
 
   if (possibleUser === undefined) {
     publishLog(ELOG_LEVEL.DEBUG, `User does not exist: ${login}`);
-    res.status(400).send('User does not exist');
+    new AuthFailureErrorResponse({
+      res,
+      data: {
+        message: 'Username does not exist',
+        isAuthenticated: false,
+      },
+    }).send();
     return;
   }
 

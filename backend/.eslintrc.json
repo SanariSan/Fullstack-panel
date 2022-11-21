@@ -173,6 +173,10 @@
     // Disallow if statements as the only statement in else blocks https://eslint.org/docs/rules/no-lonely-if
     "no-lonely-if": ["error"],
 
+    // Enforce a maximum number of classes per file https://eslint.org/docs/latest/rules/max-classes-per-file
+    // Set to 2 to be able to have abstract class near implementation
+    "max-classes-per-file": ["error", 2],
+
     // ==========================================
     // rules:import
 
@@ -389,7 +393,7 @@
 
       // for object properties - ignore style (http headers and similar may not require quotes)
       {
-        "selector": ["objectLiteralProperty", "objectLiteralMethod"],
+        "selector": ["objectLiteralProperty", "objectLiteralMethod", "typeProperty"],
         "format": null
       },
 
