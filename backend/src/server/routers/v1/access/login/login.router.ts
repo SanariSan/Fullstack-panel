@@ -14,9 +14,7 @@ const loginR = Router();
 loginR.get('/login', syncHandleMW(accessAuthStatusCTR));
 loginR.post(
   '/login',
-  asyncHandleMW(
-    validateBySchemaAsyncMW(SCHEME_AUTHENTICATION.credentials, EVALIDATION_TARGET.BODY),
-  ),
+  asyncHandleMW(validateBySchemaAsyncMW(SCHEME_AUTHENTICATION.login, EVALIDATION_TARGET.BODY)),
   asyncHandleMW(accessLoginCTR),
 );
 

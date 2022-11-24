@@ -1,4 +1,6 @@
-class GenericError extends Error {
+import type { IError } from './generic.error.type';
+
+class GenericError extends Error implements IError {
   public description: string;
 
   public errorTimestamp: number;

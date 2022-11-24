@@ -2,7 +2,7 @@ import type { Response } from 'express';
 import { GenericErrorResponse } from '../generic';
 import { ERESPONSE_STATUS, ERESPONSE_TYPE } from '../response.const';
 
-class AuthFailureErrorResponse extends GenericErrorResponse {
+class InternalErrorResponse extends GenericErrorResponse {
   protected type: number;
 
   protected title: string;
@@ -12,14 +12,14 @@ class AuthFailureErrorResponse extends GenericErrorResponse {
   constructor({ res, data }: { res: Response; data?: Record<string, unknown> }) {
     super({
       res,
-      status: ERESPONSE_STATUS.UNAUTHORIZED,
+      status: ERESPONSE_STATUS.INTERNAL_ERROR,
       data,
     });
 
-    this.type = ERESPONSE_TYPE.AUTH_FAILURE;
-    this.title = 'Auth error';
-    this.detail = 'Authentication failed, wrong credentials';
+    this.type = ERESPONSE_TYPE.FAILURE;
+    this.title = 'Internal error';
+    this.detail = 'Internal server error, please try again later';
   }
 }
 
-export { AuthFailureErrorResponse };
+export { InternalErrorResponse };

@@ -1,7 +1,7 @@
 import type { Express, NextFunction, Request, Response } from 'express';
 import { ELOG_LEVEL } from '../../general.type';
 import { publishError, publishErrorUnexpected } from '../../modules/access-layer/events/pubsub';
-import { ExpressError, handleExpress } from '../../server/error';
+import { GenericExpressError, handleExpress, InternalError } from '../../server/error';
 
 function setupErrorHandleExpress(app: Express) {
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -12,15 +12,22 @@ function setupErrorHandleExpress(app: Express) {
       return;
     }
 
-    if (err instanceof ExpressError) {
+    if (err instanceof GenericExpressError) {
       publishError(ELOG_LEVEL.WARN, err);
       handleExpress(err, res);
-      res.status(400).json({ error: err.message });
       return;
     }
 
     publishErrorUnexpected(ELOG_LEVEL.ERROR, err);
-    next(err);
+    handleExpress(
+      new InternalError({
+        message: 'Internal error',
+        miscellaneous: {
+          message: err.message,
+        },
+      }),
+      res,
+    );
   });
 }
 

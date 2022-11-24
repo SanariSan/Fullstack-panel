@@ -3,7 +3,8 @@ import type { Session } from 'express-session';
 
 type TSessionCustomFields = {
   userId?: number;
-  login?: string;
+  email?: string;
+  username?: string;
   isAuthenticated?: boolean;
 };
 
@@ -15,13 +16,22 @@ type TRequestNarrowed = Omit<Request, 'body'> & {
   };
 };
 
-type TRequestValidatedCredentials = TRequestNarrowed & {
+type TRequestValidatedLogin = TRequestNarrowed & {
   body: {
-    login: string;
+    username: string;
     password: string;
   };
 };
-type TRequestValidatedCredentialsChange = TRequestNarrowed & {
+
+type TRequestValidatedRegister = TRequestNarrowed & {
+  body: {
+    email: string;
+    username: string;
+    password: string;
+  };
+};
+
+type TRequestValidatedChange = TRequestNarrowed & {
   body: {
     oldPassword: string;
     newPassword: string;
@@ -30,12 +40,14 @@ type TRequestValidatedCredentialsChange = TRequestNarrowed & {
 
 type TRequest =
   | TRequestNarrowed
-  | TRequestValidatedCredentials
-  | TRequestValidatedCredentialsChange;
+  | TRequestValidatedLogin
+  | TRequestValidatedRegister
+  | TRequestValidatedChange;
 
 export type {
   TRequestNarrowed,
-  TRequestValidatedCredentials,
-  TRequestValidatedCredentialsChange,
+  TRequestValidatedLogin,
+  TRequestValidatedRegister,
+  TRequestValidatedChange,
   TRequest,
 };

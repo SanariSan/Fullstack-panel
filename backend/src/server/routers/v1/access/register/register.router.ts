@@ -14,9 +14,7 @@ const registerR = Router();
 registerR.get('/register', syncHandleMW(accessAuthStatusCTR));
 registerR.post(
   '/register',
-  asyncHandleMW(
-    validateBySchemaAsyncMW(SCHEME_AUTHENTICATION.credentials, EVALIDATION_TARGET.BODY),
-  ),
+  asyncHandleMW(validateBySchemaAsyncMW(SCHEME_AUTHENTICATION.register, EVALIDATION_TARGET.BODY)),
   asyncHandleMW(accessRegisterCTR),
 );
 

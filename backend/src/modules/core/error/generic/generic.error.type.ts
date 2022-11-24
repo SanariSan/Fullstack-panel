@@ -3,6 +3,7 @@ interface IError extends Error {
   description: string;
   errorTimestamp: number;
   errorTimestampHr: Readonly<Date>;
+  miscellaneous?: Record<string, unknown>;
 }
 
 export type { IError };

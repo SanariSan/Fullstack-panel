@@ -2,7 +2,7 @@ import type { NextFunction, Response } from 'express';
 import type Joi from 'joi';
 import type { ValidationError } from 'joi';
 import { validateBySchemaAsync } from '../../../modules/access-layer/schemes';
-import { ExpressError } from '../../error';
+import { GenericExpressError } from '../../error';
 import type { TRequest } from '../../express.type';
 import { EVALIDATION_TARGET } from './schemes.type';
 
@@ -18,6 +18,6 @@ export function validateBySchemaAsyncMW(
       })
       .catch((error: ValidationError) => {
         const messages = JSON.stringify(error.details.map((el) => el.message));
-        next(new ExpressError(messages));
+        next(new GenericExpressError(messages));
       });
 }

@@ -1,41 +1,55 @@
 import { hash } from 'bcryptjs';
 import type { NextFunction, Response } from 'express';
-import { ELOG_LEVEL } from '../../../../general.type';
 import { DB } from '../../../../modules/access-layer/db';
-import { publishLog } from '../../../../modules/access-layer/events/pubsub';
-import type { TRequestValidatedCredentials } from '../../../express.type';
+import { DuplicateUserError } from '../../../error';
+import type { TRequestValidatedRegister } from '../../../express.type';
+import { SuccessResponse } from '../../../responses';
+
+// dbGetNoUserOrThrow(email, username)
+// dbCreateUserOrThrow(email, username, hashedPassword)
+// sessionInit(req.session, data)
 
 export const accessRegisterCTR = async (
-  req: TRequestValidatedCredentials,
+  req: TRequestValidatedRegister,
   res: Response,
   next: NextFunction,
 ) => {
   // console.log(req.session.id);
   // console.dir(req.session, { depth: 5 });
-  const { login, password } = req.body;
+
+  const { email, username, password } = req.body;
 
   const possibleUserId = await DB.any<Record<'id', number>>(
-    'SELECT s.id FROM SystemUser AS s WHERE s.Login = $1',
-    [login],
+    'SELECT s.id FROM SystemUser AS s WHERE s.email = $1 AND s.username = $2',
+    [email, username],
   );
 
   if (possibleUserId.length > 0) {
-    publishLog(ELOG_LEVEL.DEBUG, `User exists: ${login}`);
-    res.status(400).send('User exists');
-    return;
+    // publishLog(ELOG_LEVEL.DEBUG, `User already exists: ${email} ${username}`);
+    throw new DuplicateUserError({
+      message: 'User already exists',
+      miscellaneous: {
+        isAuthenticated: false,
+      },
+    });
   }
 
-  const hashedPassword = await hash(password, 12);
-  const createdUser = await DB.any<{ id: number; login: string }>(
-    'INSERT INTO SystemUser(login, passwordHash) VALUES($1, $2) RETURNING id, login',
-    [login, hashedPassword],
-  )
-    .then((result) => result[0])
-    .catch(() => {
-      throw new Error(
-        'User was not registered, but appeared in INSERT stage, might be race attack',
-      );
+  let createdUser: { id: number; email: string; username: string };
+  try {
+    const hashedPassword = await hash(password, 12);
+    const queryResult = await DB.any<{ id: number; email: string; username: string }>(
+      'INSERT INTO SystemUser(email, username, passwordHash) VALUES($1, $2, $3) RETURNING id, email, username',
+      [email, username, hashedPassword],
+    );
+    [createdUser] = queryResult;
+  } catch {
+    throw new DuplicateUserError({
+      message: 'User already exists, might be race condition',
+      miscellaneous: {
+        isAuthenticated: false,
+      },
     });
+  }
 
   await new Promise<void>((resolve, reject) => {
     req.session.regenerate((err) => {
@@ -48,7 +62,8 @@ export const accessRegisterCTR = async (
 
   req.session.user = {
     userId: createdUser.id,
-    login: createdUser.login,
+    email: createdUser.email,
+    username: createdUser.username,
     isAuthenticated: true,
   };
 
@@ -61,9 +76,11 @@ export const accessRegisterCTR = async (
     });
   });
 
-  res.json({
-    login: createdUser.login,
-    isAuthenticated: true,
-  });
-  return;
+  new SuccessResponse({
+    res,
+    data: {
+      username: req.session.user.username,
+      isAuthenticated: true,
+    },
+  }).send();
 };
