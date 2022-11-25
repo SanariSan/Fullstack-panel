@@ -9,11 +9,11 @@ class ForbiddenErrorResponse extends GenericErrorResponse {
 
   protected detail: string;
 
-  constructor({ res, data }: { res: Response; data?: Record<string, unknown> }) {
+  constructor({ res, miscellaneous }: { res: Response; miscellaneous?: Record<string, unknown> }) {
     super({
       res,
       status: ERESPONSE_STATUS.FORBIDDEN,
-      data,
+      miscellaneous,
     });
 
     this.type = ERESPONSE_TYPE.ACCESS_FAILURE;

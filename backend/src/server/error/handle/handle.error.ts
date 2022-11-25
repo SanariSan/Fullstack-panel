@@ -1,28 +1,53 @@
 import type { Response } from 'express';
 import type { IError } from '../../../modules/core/error';
 import {
+  ForbiddenErrorResponse,
   InternalErrorResponse,
   LoginErrorResponse,
+  NotFoundErrorResponse,
   RegistrationErrorResponse,
 } from '../../responses';
-import { CredentialsMismatchError, UserNotExistsError } from '../express';
+import {
+  CredentialsMismatchError,
+  GenericExpressError,
+  NoSessionError,
+  NotFoundError,
+  UserNotExistsError,
+} from '../express';
 import { DuplicateUserError } from '../express/duplicate-user.error';
 
-function getMatchingResponse(e: Readonly<IError>, res: Response) {
+function getMatchingErrorResponse(e: Readonly<IError>) {
   switch (true) {
     case e instanceof DuplicateUserError: {
-      return new RegistrationErrorResponse({ res, data: e.miscellaneous });
+      return RegistrationErrorResponse;
     }
     case e instanceof UserNotExistsError:
     case e instanceof CredentialsMismatchError: {
-      return new LoginErrorResponse({ res, data: e.miscellaneous });
+      return LoginErrorResponse;
+    }
+    case e instanceof NotFoundError: {
+      return NotFoundErrorResponse;
+    }
+    case e instanceof NoSessionError: {
+      return ForbiddenErrorResponse;
+    }
+    // todo: decide what to do with this
+    case e instanceof GenericExpressError: {
+      return InternalErrorResponse;
     }
     default: {
-      return new InternalErrorResponse({ res, data: e.miscellaneous });
+      return InternalErrorResponse;
     }
   }
 }
 
-const handleExpress = (e: Readonly<IError>, res: Response) => getMatchingResponse(e, res).send();
+const handleExpress = (e: Readonly<IError>, res: Response) => {
+  const { miscellaneous } = e;
+
+  // new (getMatchingErrorResponse(e))({ res, miscellaneous }).send();
+  const ErrorResponse = getMatchingErrorResponse(e);
+  const errorResponse = new ErrorResponse({ res, miscellaneous });
+  errorResponse.send();
+};
 
 export { handleExpress };

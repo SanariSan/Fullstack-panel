@@ -2,7 +2,7 @@ import type { Response } from 'express';
 import { GenericErrorResponse } from '../generic';
 import { ERESPONSE_STATUS, ERESPONSE_TYPE } from '../response.const';
 
-class RegistrationErrorResponse extends GenericErrorResponse {
+class NotFoundErrorResponse extends GenericErrorResponse {
   protected type: number;
 
   protected title: string;
@@ -12,14 +12,14 @@ class RegistrationErrorResponse extends GenericErrorResponse {
   constructor({ res, miscellaneous }: { res: Response; miscellaneous?: Record<string, unknown> }) {
     super({
       res,
-      status: ERESPONSE_STATUS.CONFLICT,
+      status: ERESPONSE_STATUS.NOT_FOUND,
       miscellaneous,
     });
 
-    this.type = ERESPONSE_TYPE.REGISTER_FAILURE;
-    this.title = 'Registration error';
-    this.detail = 'Registration failed, try using different credentials';
+    this.type = ERESPONSE_TYPE.FAILURE;
+    this.title = 'Not found';
+    this.detail = 'Requested resource was not found on the server';
   }
 }
 
-export { RegistrationErrorResponse };
+export { NotFoundErrorResponse };

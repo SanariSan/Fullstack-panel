@@ -1,15 +1,22 @@
 import type { NextFunction, Response } from 'express';
-import { ELOG_LEVEL } from '../../../general.type';
-import { publishLog } from '../../../modules/access-layer/events/pubsub';
+import { NoSessionError } from '../../error';
 import type { TRequestNarrowed } from '../../express.type';
 
 export function authentificateMW(req: TRequestNarrowed, res: Response, next: NextFunction): void {
-  if (req.session.user === undefined || req.session.user.isAuthenticated !== true) {
-    publishLog(ELOG_LEVEL.DEBUG, `User not authenticated, no session`);
-    res.status(403).send({
-      isAuthenticated: false,
+  if (req.session.user === undefined) {
+    throw new NoSessionError({
+      message: 'No storage for provided session',
+      miscellaneous: {
+        isAuthenticated: false,
+      },
     });
-    return;
+  } else if (req.session.user.isAuthenticated !== true) {
+    throw new NoSessionError({
+      message: 'User not authenticated, although have session',
+      miscellaneous: {
+        isAuthenticated: false,
+      },
+    });
   }
 
   next();

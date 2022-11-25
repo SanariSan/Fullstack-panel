@@ -9,11 +9,11 @@ class InternalErrorResponse extends GenericErrorResponse {
 
   protected detail: string;
 
-  constructor({ res, data }: { res: Response; data?: Record<string, unknown> }) {
+  constructor({ res, miscellaneous }: { res: Response; miscellaneous?: Record<string, unknown> }) {
     super({
       res,
       status: ERESPONSE_STATUS.INTERNAL_ERROR,
-      data,
+      miscellaneous,
     });
 
     this.type = ERESPONSE_TYPE.FAILURE;

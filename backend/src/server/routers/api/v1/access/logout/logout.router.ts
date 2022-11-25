@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { accessLogoutCTR } from '../../../../controllers';
-import { asyncHandleMW, authentificateMW, syncHandleMW } from '../../../../middleware';
+import { accessLogoutCTR } from '../../../../../controllers';
+import { asyncHandleMW, authentificateMW, syncHandleMW } from '../../../../../middleware';
 
 const logoutR = Router();
 

@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { accessLoginCTR } from '../../../../controllers';
-import { accessAuthStatusCTR } from '../../../../controllers/access/auth-status';
+import { accessLoginCTR } from '../../../../../controllers';
+import { accessAuthStatusCTR } from '../../../../../controllers/access/auth-status';
 import {
   asyncHandleMW,
   EVALIDATION_TARGET,
   syncHandleMW,
   validateBySchemaAsyncMW,
-} from '../../../../middleware';
-import { SCHEME_AUTHENTICATION } from '../../../../schemes';
+} from '../../../../../middleware';
+import { SCHEME_AUTHENTICATION } from '../../../../../schemes';
 
 const loginR = Router();
 

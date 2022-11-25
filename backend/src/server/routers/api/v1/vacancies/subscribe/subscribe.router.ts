@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { subscribeCTR } from '../../../../controllers';
-import { asyncHandleMW, syncHandleMW } from '../../../../middleware';
+import { subscribeCTR } from '../../../../../controllers';
+import { asyncHandleMW, syncHandleMW } from '../../../../../middleware';
 
 const subscribeR = Router();
 
