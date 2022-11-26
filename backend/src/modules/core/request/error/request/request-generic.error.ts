@@ -1,4 +1,4 @@
-import { GenericError } from '../../../error';
+import { GenericError } from '../../../../../error';
 
 class RequestGenericError extends GenericError {
   public name: string;

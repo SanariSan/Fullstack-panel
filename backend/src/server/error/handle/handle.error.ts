@@ -1,5 +1,5 @@
 import type { Response } from 'express';
-import type { IError } from '../../../modules/core/error';
+import type { IError } from '../../../error';
 import {
   ForbiddenErrorResponse,
   InternalErrorResponse,

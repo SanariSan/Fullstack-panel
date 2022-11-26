@@ -1,4 +1,4 @@
-import { GenericError } from '../../../modules/core/error';
+import { GenericError } from '../../../error';
 
 class GenericExpressError extends GenericError {
   public name: string;
