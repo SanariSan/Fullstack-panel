@@ -55,10 +55,13 @@ $$;
 CREATE TABLE IF NOT EXISTS SystemUser (
   id SERIAL,
   -- uuid_ UUID UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
-  login VARCHAR(64) UNIQUE NOT NULL,
+  email VARCHAR(64) UNIQUE NOT NULL,
+  username VARCHAR(64) NOT NULL,
   passwordHash VARCHAR(255) NOT NULL,
   telegramId VARCHAR(64),
   hhToken VARCHAR(255),
+  isActivated BOOLEAN NOT NULL DEFAULT TRUE,
+  otpToken VARCHAR(255),
   createdOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
@@ -71,7 +74,6 @@ UPDATE
 CREATE TABLE IF NOT EXISTS SystemRole (
   id SERIAL,
   roleName VARCHAR(64) UNIQUE NOT NULL,
-  mask VARCHAR(4) UNIQUE NOT NULL,
   PRIMARY KEY (id)
 );
 -- 
@@ -158,37 +160,30 @@ BEGIN
 ;
 -- pwd = pwd123456 | bcrypt secret = auto, 12 rounds
 INSERT INTO
-  SystemUser (login, passwordHash)
+  SystemUser (email, username, passwordHash)
 VALUES
   (
+    'testadmin@gmail.com',
+    'testadmin',
+    '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
+  ),
+  (
+    'testuser@gmail.com',
+    'testuser',
+    '$2a$12$LxcmMFGVW6u0qXPVP.fDBeteTBpy2mq7TvCYQYVdWjJ6QF4f2xfti'
+  ),
+  (
+    CONCAT(rndStr(10), '@gmail.com'),
     rndStr(10),
     '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
-  );
-INSERT INTO
-  SystemUser (login, passwordHash)
-VALUES
+  ),
   (
+    CONCAT(rndStr(10), '@gmail.com'),
     rndStr(10),
     '$2a$12$LxcmMFGVW6u0qXPVP.fDBeteTBpy2mq7TvCYQYVdWjJ6QF4f2xfti'
-  );
-INSERT INTO
-  SystemUser (login, passwordHash)
-VALUES
+  ),
   (
-    rndStr(10),
-    '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
-  );
-INSERT INTO
-  SystemUser (login, passwordHash)
-VALUES
-  (
-    rndStr(10),
-    '$2a$12$LxcmMFGVW6u0qXPVP.fDBeteTBpy2mq7TvCYQYVdWjJ6QF4f2xfti'
-  );
-INSERT INTO
-  SystemUser (login, passwordHash)
-VALUES
-  (
+    CONCAT(rndStr(8), '@gmail.com'),
     rndStr(10),
     '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
   );
@@ -197,13 +192,23 @@ END;
 BEGIN
 ;
 INSERT INTO
-  SystemRole (roleName, mask)
+  SystemRole (roleName)
 VALUES
-  ('admin', '1111');
+  ('admin'),
+  ('user');
+END;
+--
+BEGIN
+;
 INSERT INTO
-  SystemRole (roleName, mask)
+  SystemUserSystemRole (userId, roleId)
 VALUES
-  ('user', '0001');
+  (1, 1),
+  (1, 2),
+  (2, 2),
+  (3, 2),
+  (4, 2),
+  (5, 2);
 END;
 -- 
 BEGIN
@@ -215,50 +220,32 @@ VALUES
     1,
     CONCAT('Search - ', rndStr(8)),
     CONCAT('Options - ', rndStr(8))
-  );
-INSERT INTO
-  SearchQuery (userId, searchText, searchParams)
-VALUES
+  ),
   (
     1,
     CONCAT('Search - ', rndStr(8)),
     CONCAT('Options - ', rndStr(8))
-  );
-INSERT INTO
-  SearchQuery (userId, searchText, searchParams)
-VALUES
+  ),
   (
     2,
     CONCAT('Search - ', rndStr(8)),
     CONCAT('Options - ', rndStr(8))
-  );
-INSERT INTO
-  SearchQuery (userId, searchText, searchParams)
-VALUES
+  ),
   (
     3,
     CONCAT('Search - ', rndStr(8)),
     CONCAT('Options - ', rndStr(8))
-  );
-INSERT INTO
-  SearchQuery (userId, searchText, searchParams)
-VALUES
+  ),
   (
     3,
     CONCAT('Search - ', rndStr(8)),
     CONCAT('Options - ', rndStr(8))
-  );
-INSERT INTO
-  SearchQuery (userId, searchText, searchParams)
-VALUES
+  ),
   (
     3,
     CONCAT('Search - ', rndStr(8)),
     CONCAT('Options - ', rndStr(8))
-  );
-INSERT INTO
-  SearchQuery (userId, searchText, searchParams)
-VALUES
+  ),
   (
     4,
     CONCAT('Search - ', rndStr(8)),
@@ -300,23 +287,7 @@ VALUES
     ),
     rndstr(10),
     rndstr(100)
-  );
-INSERT INTO
-  VacancyHH (
-    hhId,
-    hashMD5,
-    title,
-    createdAt,
-    publishedAt,
-    hasTest,
-    responseLetterRequired,
-    areaId,
-    scheduleId,
-    employerUrl,
-    employerName,
-    snippetRequirement
-  )
-VALUES
+  ),
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
@@ -333,23 +304,7 @@ VALUES
     ),
     rndstr(10),
     rndstr(100)
-  );
-INSERT INTO
-  VacancyHH (
-    hhId,
-    hashMD5,
-    title,
-    createdAt,
-    publishedAt,
-    hasTest,
-    responseLetterRequired,
-    areaId,
-    scheduleId,
-    employerUrl,
-    employerName,
-    snippetRequirement
-  )
-VALUES
+  ),
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
@@ -366,23 +321,7 @@ VALUES
     ),
     rndstr(10),
     rndstr(100)
-  );
-INSERT INTO
-  VacancyHH (
-    hhId,
-    hashMD5,
-    title,
-    createdAt,
-    publishedAt,
-    hasTest,
-    responseLetterRequired,
-    areaId,
-    scheduleId,
-    employerUrl,
-    employerName,
-    snippetRequirement
-  )
-VALUES
+  ),
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
@@ -399,23 +338,7 @@ VALUES
     ),
     rndstr(10),
     rndstr(100)
-  );
-INSERT INTO
-  VacancyHH (
-    hhId,
-    hashMD5,
-    title,
-    createdAt,
-    publishedAt,
-    hasTest,
-    responseLetterRequired,
-    areaId,
-    scheduleId,
-    employerUrl,
-    employerName,
-    snippetRequirement
-  )
-VALUES
+  ),
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
@@ -432,23 +355,7 @@ VALUES
     ),
     rndstr(10),
     rndstr(100)
-  );
-INSERT INTO
-  VacancyHH (
-    hhId,
-    hashMD5,
-    title,
-    createdAt,
-    publishedAt,
-    hasTest,
-    responseLetterRequired,
-    areaId,
-    scheduleId,
-    employerUrl,
-    employerName,
-    snippetRequirement
-  )
-VALUES
+  ),
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
@@ -465,23 +372,7 @@ VALUES
     ),
     rndstr(10),
     rndstr(100)
-  );
-INSERT INTO
-  VacancyHH (
-    hhId,
-    hashMD5,
-    title,
-    createdAt,
-    publishedAt,
-    hasTest,
-    responseLetterRequired,
-    areaId,
-    scheduleId,
-    employerUrl,
-    employerName,
-    snippetRequirement
-  )
-VALUES
+  ),
   (
     rndIntInRange(10000, 100000),
     rndStr(32),
@@ -506,46 +397,16 @@ BEGIN
 INSERT INTO
   SearchQueryVacancyHH (searchQueryId, vacancyId)
 VALUES
-  (1, 1);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (1, 2);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (1, 3);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (2, 2);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (2, 4);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (2, 7);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (3, 4);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (4, 6);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (4, 7);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
-  (5, 1);
-INSERT INTO
-  SearchQueryVacancyHH (searchQueryId, vacancyId)
-VALUES
+  (1, 1),
+  (1, 2),
+  (1, 3),
+  (2, 2),
+  (2, 4),
+  (2, 7),
+  (3, 4),
+  (4, 6),
+  (4, 7),
+  (5, 1),
   (5, 2);
 END;
 -- 

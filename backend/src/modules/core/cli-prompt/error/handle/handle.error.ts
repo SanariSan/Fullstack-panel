@@ -1,4 +1,4 @@
-import type { IError } from '../../../error';
+import type { IError } from '../../../../../error';
 
 function handleCliPropmpt(e: Readonly<IError>) {
   return;

@@ -1,4 +1,4 @@
-import type { IError } from '../../../error';
+import type { IError } from '../../../../../error';
 
 function handleSchemes(e: Readonly<IError>) {
   return;

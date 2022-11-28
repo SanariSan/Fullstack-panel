@@ -9,26 +9,26 @@ class GenericErrorResponse extends GenericApiResponse {
 
   protected detail: string;
 
-  protected data: Record<string, unknown>;
+  protected miscellaneous: Record<string, unknown>;
 
   constructor({
     res,
     status,
-    data,
+    miscellaneous,
   }: {
     res: Response;
     status: number;
-    data?: Record<string, unknown>;
+    miscellaneous?: Record<string, unknown>;
   }) {
     super({ res, status });
 
     this.type = ERESPONSE_TYPE.FAILURE;
     this.title = 'Generic error';
     this.detail = 'No case-specific description provided';
-    this.data = data ?? {};
+    this.miscellaneous = miscellaneous ?? {};
 
     // if (process.env.NODE_ENV === 'development') {
-    this.data.stack = new Error('Traceback').stack;
+    this.miscellaneous.stack = new Error('Traceback').stack;
     // }
   }
 
@@ -38,7 +38,7 @@ class GenericErrorResponse extends GenericApiResponse {
       type: this.type,
       title: this.title,
       detail: this.detail,
-      data: this.data,
+      miscellaneous: this.miscellaneous,
     };
 
     return this;

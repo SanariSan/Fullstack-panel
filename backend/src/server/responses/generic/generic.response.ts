@@ -21,9 +21,14 @@ class GenericApiResponse extends ApiResponseAbstract {
 
   protected body?: {
     [key: string]: unknown;
-  } & {
-    data: Record<string, unknown>;
-  };
+  } & (
+    | {
+        data: Record<string, unknown>;
+      }
+    | {
+        miscellaneous: Record<string, unknown>;
+      }
+  );
 
   protected constructor({ res, status }: { res: Response; status: TResponseStatus }) {
     super();

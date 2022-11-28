@@ -1,4 +1,4 @@
-import { ValueTypeError } from '../modules/core/error';
+import { ValueTypeError } from '../error';
 import { NoEnvValueError } from './error';
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */

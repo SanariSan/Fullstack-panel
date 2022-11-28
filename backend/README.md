@@ -6,11 +6,28 @@
 
 ---
 
+## Hints
+
+Session:
+
+- If req came without cookie - req.session gets fresh .id
+- If req came with cookie, but no ID found in storage - req.session gets fresh .id (before first controller)
+- If req came with cookie and ID found in storage - req.session populated with data from storage
+
+Cookie and ID example:
+
+- Cookie: s%3A**OLlpedfafn96MNR2mH_2OmVvKRWYwK2q**.G0jIieIbAlOW8ktoqObkQAn7snUoW54LtfhYUS5JfVg
+- req.session.id: **OLlpedfafn96MNR2mH_2OmVvKRWYwK2q**
+
 ## Usage <a name = "usage"></a>
 
 ```
 docker-compose up --build
+
+// docker-compose build --no-cache
+// ARG CACHEBUST=1
 ```
+
 
 Only db:
 

@@ -1,45 +1,42 @@
 import { compare } from 'bcryptjs';
 import type { NextFunction, Response } from 'express';
-import { ELOG_LEVEL } from '../../../../general.type';
-import { DB } from '../../../../modules/access-layer/db';
-import { publishLog } from '../../../../modules/access-layer/events/pubsub';
-import type { TRequestValidatedCredentials } from '../../../express.type';
-import { AuthFailureErrorResponse } from '../../../responses';
+import { UserRepository } from '../../../../db';
+import { CredentialsMismatchError, UserNotExistsError } from '../../../error';
+import type { TRequestValidatedLogin } from '../../../express.type';
+import { SuccessResponse } from '../../../responses';
+
+// dbGetUserOrThrow(username)
+// matchPasswordOrThrow
+// sessionInit(req.session, data)
 
 export const accessLoginCTR = async (
-  req: TRequestValidatedCredentials,
+  req: TRequestValidatedLogin,
   res: Response,
   next: NextFunction,
 ) => {
-  // console.log(req.session.id);
-  // console.dir(req.session, { depth: 5 });
+  const { username, password } = req.body;
 
-  const { login, password } = req.body;
-
-  type TPossibleUser = { id: number; login: string; passwordhash: string } | undefined;
-  const possibleUser = await DB.any<TPossibleUser>(
-    'SELECT s.id, s.login, s.passwordHash FROM SystemUser AS s WHERE s.login = $1',
-    [login],
-  ).then((result) => result[0]);
-
-  if (possibleUser === undefined) {
-    publishLog(ELOG_LEVEL.DEBUG, `User does not exist: ${login}`);
-    new AuthFailureErrorResponse({
-      res,
-      data: {
-        message: 'Username does not exist',
+  let possibleUser: Awaited<ReturnType<typeof UserRepository.findByUsername>>;
+  try {
+    possibleUser = await UserRepository.findByUsername({ username }); // email: '604f47397@gmail.com'
+  } catch {
+    throw new UserNotExistsError({
+      message: 'User does not exist',
+      miscellaneous: {
         isAuthenticated: false,
       },
-    }).send();
-    return;
+    });
   }
 
-  const compareResult = await compare(password, possibleUser.passwordhash);
-
-  if (!compareResult) {
-    publishLog(ELOG_LEVEL.DEBUG, `Wrong password: ${login}`);
-    res.status(400).send('Wrong password');
-    return;
+  try {
+    await compare(password, possibleUser.passwordhash);
+  } catch {
+    throw new CredentialsMismatchError({
+      message: 'Wrong password',
+      miscellaneous: {
+        isAuthenticated: false,
+      },
+    });
   }
 
   await new Promise<void>((resolve, reject) => {
@@ -53,7 +50,8 @@ export const accessLoginCTR = async (
 
   req.session.user = {
     userId: possibleUser.id,
-    login: possibleUser.login,
+    email: possibleUser.email,
+    username: possibleUser.username,
     isAuthenticated: true,
   };
 
@@ -66,9 +64,11 @@ export const accessLoginCTR = async (
     });
   });
 
-  res.json({
-    login: req.session.user.login,
-    isAuthenticated: true,
-  });
-  return;
+  new SuccessResponse({
+    res,
+    data: {
+      username: req.session.user.username,
+      isAuthenticated: true,
+    },
+  }).send();
 };

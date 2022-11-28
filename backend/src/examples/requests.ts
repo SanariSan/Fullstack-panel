@@ -1,11 +1,11 @@
 import type { AxiosError } from 'axios';
 import { stringify } from 'querystring';
 import { publishError } from '../modules/access-layer/events/pubsub';
-import type { GenericError } from '../modules/core/error';
 import { ELOG_LEVEL } from '../general.type';
 import { Request } from '../modules/access-layer/request';
 import { BadStatusError } from '../modules/core/request/error';
 import { makeForm, parseResponse } from '../helpers/request';
+import type { IError } from '../error';
 
 async function sendJson() {
   const response = await Request.post({
@@ -54,17 +54,17 @@ async function sendMultipart() {
 
 async function exampleRequests() {
   const respJson = await sendJson().catch((error) => {
-    publishError(ELOG_LEVEL.WARN, error as GenericError);
+    publishError(ELOG_LEVEL.WARN, error as IError);
   });
   const { request: jsonRequest, response: jsonResponse } = respJson || {};
 
   const respQs = await sendQs().catch((error) => {
-    publishError(ELOG_LEVEL.WARN, error as GenericError);
+    publishError(ELOG_LEVEL.WARN, error as IError);
   });
   const { response: qsResponse } = respQs || {};
 
   const respMultipart = await sendMultipart().catch((error) => {
-    publishError(ELOG_LEVEL.WARN, error as GenericError);
+    publishError(ELOG_LEVEL.WARN, error as IError);
   });
   const { response: multipartResponse } = respMultipart || {};
 

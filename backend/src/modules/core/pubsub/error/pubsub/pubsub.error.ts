@@ -1,4 +1,4 @@
-import { GenericError } from '../../../error';
+import { GenericError } from '../../../../../error';
 
 class PubSubError extends GenericError {
   public name: string;

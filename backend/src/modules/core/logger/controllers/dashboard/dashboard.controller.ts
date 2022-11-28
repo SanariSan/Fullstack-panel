@@ -1,5 +1,5 @@
 import { ELOG_LEVEL } from '../../../../../general.type';
-import { GenericError } from '../../../error';
+import { GenericError } from '../../../../../error';
 import type { ILogEntity } from '../../consumers/generic';
 import { LogsStorage } from '../../storage';
 
