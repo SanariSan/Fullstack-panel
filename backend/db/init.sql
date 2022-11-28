@@ -163,12 +163,12 @@ INSERT INTO
   SystemUser (email, username, passwordHash)
 VALUES
   (
-    CONCAT(rndStr(10), '@gmail.com'),
+    'testadmin@gmail.com',
     'testadmin',
     '$2a$12$OfyJOnXVNp4yE1eGha4KJuh182nWC0NTL0I8/OeRbzubP2JIIMpf6'
   ),
   (
-    CONCAT(rndStr(10), '@gmail.com'),
+    'testuser@gmail.com',
     'testuser',
     '$2a$12$LxcmMFGVW6u0qXPVP.fDBeteTBpy2mq7TvCYQYVdWjJ6QF4f2xfti'
   ),

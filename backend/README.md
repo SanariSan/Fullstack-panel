@@ -23,7 +23,11 @@ Cookie and ID example:
 
 ```
 docker-compose up --build
+
+// docker-compose build --no-cache
+// ARG CACHEBUST=1
 ```
+
 
 Only db:
 

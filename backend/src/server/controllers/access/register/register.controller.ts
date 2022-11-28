@@ -1,6 +1,6 @@
 import { hash } from 'bcryptjs';
 import type { NextFunction, Response } from 'express';
-import { DB } from '../../../../modules/access-layer/db';
+import { UserRepository } from '../../../../db';
 import { DuplicateUserError } from '../../../error';
 import type { TRequestValidatedRegister } from '../../../express.type';
 import { SuccessResponse } from '../../../responses';
@@ -14,18 +14,11 @@ export const accessRegisterCTR = async (
   res: Response,
   next: NextFunction,
 ) => {
-  // console.log(req.session.id);
-  // console.dir(req.session, { depth: 5 });
-
   const { email, username, password } = req.body;
 
-  const possibleUserId = await DB.any<Record<'id', number>>(
-    'SELECT s.id FROM SystemUser AS s WHERE s.email = $1 AND s.username = $2',
-    [email, username],
-  );
-
-  if (possibleUserId.length > 0) {
-    // publishLog(ELOG_LEVEL.DEBUG, `User already exists: ${email} ${username}`);
+  try {
+    await UserRepository.findNoneByEmailAndUsername({ email, username });
+  } catch {
     throw new DuplicateUserError({
       message: 'User already exists',
       miscellaneous: {
@@ -34,14 +27,10 @@ export const accessRegisterCTR = async (
     });
   }
 
-  let createdUser: { id: number; email: string; username: string };
+  let createdUser: Awaited<ReturnType<typeof UserRepository.insert>>;
   try {
     const hashedPassword = await hash(password, 12);
-    const queryResult = await DB.any<{ id: number; email: string; username: string }>(
-      'INSERT INTO SystemUser(email, username, passwordHash) VALUES($1, $2, $3) RETURNING id, email, username',
-      [email, username, hashedPassword],
-    );
-    [createdUser] = queryResult;
+    createdUser = await UserRepository.insert({ email, username, hashedPassword });
   } catch {
     throw new DuplicateUserError({
       message: 'User already exists, might be race condition',
