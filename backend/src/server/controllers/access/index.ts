@@ -1,5 +1,4 @@
-// export * from "./change-password.controller";
+export * from './change-password';
 export * from './login';
 export * from './logout';
-// export * from "./refresh-token.controller";
 export * from './register';

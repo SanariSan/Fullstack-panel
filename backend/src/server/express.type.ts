@@ -8,11 +8,19 @@ type TSessionCustomFields = {
   isAuthenticated?: boolean;
 };
 
-type TRequestNarrowed = Omit<Request, 'body'> & {
+type TRequestTypedBody = Omit<Request, 'body'> & {
   body?: Record<string, unknown> | string;
-} & {
+};
+
+type TRequestNarrowed = TRequestTypedBody & {
   session: Session & {
     user?: TSessionCustomFields;
+  };
+};
+
+type TRequestNarrowedAuthenticated = TRequestTypedBody & {
+  session: Session & {
+    user: Required<TSessionCustomFields>;
   };
 };
 
@@ -31,7 +39,7 @@ type TRequestValidatedRegister = TRequestNarrowed & {
   };
 };
 
-type TRequestValidatedChange = TRequestNarrowed & {
+type TRequestValidatedChangePassword = TRequestNarrowedAuthenticated & {
   body: {
     oldPassword: string;
     newPassword: string;
@@ -40,14 +48,16 @@ type TRequestValidatedChange = TRequestNarrowed & {
 
 type TRequest =
   | TRequestNarrowed
+  | TRequestNarrowedAuthenticated
   | TRequestValidatedLogin
   | TRequestValidatedRegister
-  | TRequestValidatedChange;
+  | TRequestValidatedChangePassword;
 
 export type {
   TRequestNarrowed,
+  TRequestNarrowedAuthenticated,
   TRequestValidatedLogin,
   TRequestValidatedRegister,
-  TRequestValidatedChange,
+  TRequestValidatedChangePassword,
   TRequest,
 };

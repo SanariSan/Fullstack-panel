@@ -19,6 +19,7 @@ services:
       - ./db/pgdata:/var/lib/postgresql/data
     ports:
       - '${DB_PORT}:5432'
+    command: ['postgres', '-c', 'log_statement=all']
   app:
     image: sanarisan/job-sniper:1
     restart: always

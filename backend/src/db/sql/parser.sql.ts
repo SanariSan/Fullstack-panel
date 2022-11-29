@@ -18,6 +18,7 @@ function sql(file: string): QueryFile {
 export const USER = {
   findByEmail: sql('user/find-by-email.sql'),
   findByUsername: sql('user/find-by-username.sql'),
-  findByEmailAndUsername: sql('user/find-by-email-and-username.sql'),
+  findByEmailOrUsername: sql('user/find-by-email-or-username.sql'),
   insert: sql('user/insert.sql'),
+  updatePassword: sql('user/update-password.sql'),
 };

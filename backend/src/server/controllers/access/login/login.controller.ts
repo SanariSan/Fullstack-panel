@@ -1,13 +1,10 @@
 import { compare } from 'bcryptjs';
 import type { NextFunction, Response } from 'express';
 import { UserRepository } from '../../../../db';
+import { SessionManager } from '../../../../helpers/session';
 import { CredentialsMismatchError, UserNotExistsError } from '../../../error';
 import type { TRequestValidatedLogin } from '../../../express.type';
 import { SuccessResponse } from '../../../responses';
-
-// dbGetUserOrThrow(username)
-// matchPasswordOrThrow
-// sessionInit(req.session, data)
 
 export const accessLoginCTR = async (
   req: TRequestValidatedLogin,
@@ -28,9 +25,7 @@ export const accessLoginCTR = async (
     });
   }
 
-  try {
-    await compare(password, possibleUser.passwordhash);
-  } catch {
+  if (!(await compare(password, possibleUser.passwordhash))) {
     throw new CredentialsMismatchError({
       message: 'Wrong password',
       miscellaneous: {
@@ -39,30 +34,14 @@ export const accessLoginCTR = async (
     });
   }
 
-  await new Promise<void>((resolve, reject) => {
-    req.session.regenerate((err) => {
-      if (err !== undefined) {
-        reject();
-      }
-      resolve();
-    });
-  });
-
+  await SessionManager.regenerate({ session: req.session });
   req.session.user = {
     userId: possibleUser.id,
     email: possibleUser.email,
     username: possibleUser.username,
     isAuthenticated: true,
   };
-
-  await new Promise<void>((resolve, reject) => {
-    req.session.save((err) => {
-      if (err !== undefined) {
-        reject();
-      }
-      resolve();
-    });
-  });
+  await SessionManager.save({ session: req.session });
 
   new SuccessResponse({
     res,

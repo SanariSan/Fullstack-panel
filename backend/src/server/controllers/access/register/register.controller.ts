@@ -1,13 +1,10 @@
 import { hash } from 'bcryptjs';
 import type { NextFunction, Response } from 'express';
 import { UserRepository } from '../../../../db';
+import { SessionManager } from '../../../../helpers/session';
 import { DuplicateUserError } from '../../../error';
 import type { TRequestValidatedRegister } from '../../../express.type';
 import { SuccessResponse } from '../../../responses';
-
-// dbGetNoUserOrThrow(email, username)
-// dbCreateUserOrThrow(email, username, hashedPassword)
-// sessionInit(req.session, data)
 
 export const accessRegisterCTR = async (
   req: TRequestValidatedRegister,
@@ -17,7 +14,7 @@ export const accessRegisterCTR = async (
   const { email, username, password } = req.body;
 
   try {
-    await UserRepository.findNoneByEmailAndUsername({ email, username });
+    await UserRepository.findNoneByEmailOrUsername({ email, username });
   } catch {
     throw new DuplicateUserError({
       message: 'User already exists',
@@ -33,37 +30,21 @@ export const accessRegisterCTR = async (
     createdUser = await UserRepository.insert({ email, username, hashedPassword });
   } catch {
     throw new DuplicateUserError({
-      message: 'User already exists, might be race condition',
+      message: 'User already exists',
       miscellaneous: {
         isAuthenticated: false,
       },
     });
   }
 
-  await new Promise<void>((resolve, reject) => {
-    req.session.regenerate((err) => {
-      if (err !== undefined) {
-        reject();
-      }
-      resolve();
-    });
-  });
-
+  await SessionManager.regenerate({ session: req.session });
   req.session.user = {
     userId: createdUser.id,
     email: createdUser.email,
     username: createdUser.username,
     isAuthenticated: true,
   };
-
-  await new Promise<void>((resolve, reject) => {
-    req.session.save((err) => {
-      if (err !== undefined) {
-        reject();
-      }
-      resolve();
-    });
-  });
+  await SessionManager.save({ session: req.session });
 
   new SuccessResponse({
     res,
