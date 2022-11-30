@@ -2,7 +2,7 @@ import { compare, hash } from 'bcryptjs';
 import type { NextFunction, Response } from 'express';
 import { UserRepository } from '../../../../db';
 import { SessionManager } from '../../../../helpers/session';
-import { CredentialsMismatchError, InternalError, UserNotExistsError } from '../../../error';
+import { CredentialsMismatchError, InternalError } from '../../../error';
 import type { TRequestValidatedChangePassword } from '../../../express.type';
 import { SuccessResponse } from '../../../responses';
 
@@ -13,8 +13,6 @@ export const changePasswordCTR = async (
 ) => {
   const { username } = req.session.user;
   const { oldPassword, newPassword } = req.body;
-
-  console.log(oldPassword, newPassword);
 
   let possibleUser: Awaited<ReturnType<typeof UserRepository.findByUsername>>;
   try {
@@ -29,7 +27,6 @@ export const changePasswordCTR = async (
   }
 
   if (!(await compare(oldPassword, possibleUser.passwordhash))) {
-    // correct error + response associated with it
     throw new CredentialsMismatchError({
       message: 'Old password is wrong',
       miscellaneous: {

@@ -2,7 +2,7 @@ import type { NextFunction, Response } from 'express';
 import type { ObjectSchema } from 'joi';
 import { isError } from 'joi';
 import { validateBySchemaAsync } from '../../../modules/access-layer/schemes';
-import { GenericExpressError, InternalError } from '../../error';
+import { InternalError, ParamsValidationError } from '../../error';
 import type { TRequest } from '../../express.type';
 import { EVALIDATION_TARGET } from './schemes.type';
 
@@ -16,7 +16,7 @@ export function validateBySchemaAsyncMW(
       next();
     } catch (error: unknown) {
       if (!isError(error)) {
-        next(new InternalError({ message: 'Error during validation' }));
+        next(new InternalError({ message: 'Validation module internal error' }));
         return;
       }
 
@@ -25,9 +25,10 @@ export function validateBySchemaAsyncMW(
         reason: el.message.replace(/"/g, ''),
       }));
 
+      // console.dir(error, { depth: 10 });
       next(
-        new GenericExpressError({
-          message: 'Fields validation error',
+        new ParamsValidationError({
+          message: 'Invalid request fields',
           miscellaneous: {
             invalidParams,
           },

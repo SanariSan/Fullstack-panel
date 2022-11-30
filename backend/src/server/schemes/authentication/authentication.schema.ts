@@ -17,6 +17,6 @@ export const SCHEME_AUTHENTICATION = {
       .max(30)
       .invalid(Joi.ref('oldPassword'))
       .required()
-      .messages({ 'any.ref': 'New password must be different from old' }),
+      .messages({ 'any.invalid': 'New password must be different from old one' }),
   }),
 };

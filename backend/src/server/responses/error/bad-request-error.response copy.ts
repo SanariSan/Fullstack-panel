@@ -2,7 +2,7 @@ import type { Response } from 'express';
 import { GenericErrorResponse } from '../generic';
 import { ERESPONSE_STATUS, ERESPONSE_TYPE } from '../response.const';
 
-class LoginErrorResponse extends GenericErrorResponse {
+class BadRequestErrorResponse extends GenericErrorResponse {
   protected type: number;
 
   protected title: string;
@@ -12,14 +12,14 @@ class LoginErrorResponse extends GenericErrorResponse {
   constructor({ res, miscellaneous }: { res: Response; miscellaneous?: Record<string, unknown> }) {
     super({
       res,
-      status: ERESPONSE_STATUS.UNAUTHORIZED,
+      status: ERESPONSE_STATUS.BAD_REQUEST,
       miscellaneous,
     });
 
-    this.type = ERESPONSE_TYPE.AUTH_FAILURE;
-    this.title = 'Authentication error';
-    this.detail = 'Authentication failed, invalid credentials';
+    this.type = ERESPONSE_TYPE.VALIDATION_FAILURE;
+    this.title = 'Invalid data';
+    this.detail = 'Some fields are missing or contain malformed information';
   }
 }
 
-export { LoginErrorResponse };
+export { BadRequestErrorResponse };

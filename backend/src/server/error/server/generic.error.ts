@@ -7,7 +7,7 @@ class GenericExpressError extends GenericError {
 
   public miscellaneous?: Record<string, unknown>;
 
-  constructor({
+  protected constructor({
     message,
     miscellaneous,
   }: {

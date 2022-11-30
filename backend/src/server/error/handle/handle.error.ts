@@ -3,18 +3,19 @@ import type { IError } from '../../../error';
 import {
   ForbiddenErrorResponse,
   InternalErrorResponse,
-  LoginErrorResponse,
+  AuthenticationErrorResponse,
   NotFoundErrorResponse,
   RegistrationErrorResponse,
+  BadRequestErrorResponse,
 } from '../../responses';
 import {
   CredentialsMismatchError,
-  GenericExpressError,
+  DuplicateUserError,
   NoSessionError,
   NotFoundError,
+  ParamsValidationError,
   UserNotExistsError,
-} from '../express';
-import { DuplicateUserError } from '../express/duplicate-user.error';
+} from '../server';
 
 function getMatchingErrorResponse(e: Readonly<IError>) {
   switch (true) {
@@ -23,7 +24,7 @@ function getMatchingErrorResponse(e: Readonly<IError>) {
     }
     case e instanceof UserNotExistsError:
     case e instanceof CredentialsMismatchError: {
-      return LoginErrorResponse;
+      return AuthenticationErrorResponse;
     }
     case e instanceof NotFoundError: {
       return NotFoundErrorResponse;
@@ -31,9 +32,8 @@ function getMatchingErrorResponse(e: Readonly<IError>) {
     case e instanceof NoSessionError: {
       return ForbiddenErrorResponse;
     }
-    // todo: decide what to do with this
-    case e instanceof GenericExpressError: {
-      return InternalErrorResponse;
+    case e instanceof ParamsValidationError: {
+      return BadRequestErrorResponse;
     }
     default: {
       return InternalErrorResponse;
