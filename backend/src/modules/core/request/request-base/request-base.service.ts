@@ -1,7 +1,7 @@
 import type { AxiosInstance } from 'axios';
 import axios_ from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
-import type { IGenericRequest } from '.';
+import type { IGenericRequest } from './request-base.service.type';
 import { DEFAULT_HEADERS, LIB_SPECIFIC_OPTIONS } from './request-base.service.const';
 import { RequestBuilder } from './request-builder.service';
 

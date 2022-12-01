@@ -1,5 +1,5 @@
 import type { AxiosProxyConfig } from 'axios';
-import type { IGenericRequest, IRequest, TRequestMethod } from '.';
+import type { IGenericRequest, IRequest, TRequestMethod } from './request-base.service.type';
 
 class RequestBuilder {
   private request: IRequest;
