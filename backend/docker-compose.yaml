@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   postgres:
+    container_name: job_sniper_postgres
     image: sanarisan/job_sniper_postgres:1
     restart: always
     build:
@@ -9,6 +10,8 @@ services:
       dockerfile: ./docker/postgres.Dockerfile
       shm_size: 512mb
     shm_size: 512mb
+    stop_signal: SIGINT
+    stop_grace_period: 60s
     environment:
       POSTGRES_USER: '${DB_USER}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
@@ -20,7 +23,81 @@ services:
     ports:
       - '${DB_PORT}:5432'
     command: ['postgres', '-c', 'log_statement=all']
+  redis:
+    container_name: job_sniper_redis
+    image: redis:7.0.5-alpine
+    restart: always
+    stop_signal: SIGINT
+    stop_grace_period: 60s
+    # environment:
+    #   - REDIS_DISABLE_COMMANDS=FLUSHALL,MIGRATE,RESTORE,SORT,KEYS,CLIENT,DEBUG,INFO,CONFIG,SAVE,REPLICAOF,MONITOR,ACL,SHUTDOWN
+    networks:
+      - default
+    volumes:
+      - ./db/redisdata:/data
+    ports:
+      - '${CACHE_PORT}:6379'
+    command:
+      # docs: https://raw.githubusercontent.com/redis/redis/7.0/redis.conf
+      [
+        'redis-server',
+
+        '--requirepass',
+        '${CACHE_PASSWORD}',
+
+        '--loglevel',
+        'warning',
+        # '--logfile',
+        # 'redis.log',
+
+        '--save',
+        '20 1',
+        '--appendonly',
+        'yes',
+        '--auto-aof-rewrite-percentage',
+        '100',
+        '--auto-aof-rewrite-min-size',
+        '64mb',
+        '--aof-load-truncated',
+        'yes',
+        '--aof-use-rdb-preamble',
+        'yes',
+        '--appendfsync',
+        'everysec',
+        '--appendfilename',
+        'appendonly.aof',
+        '--appenddirname',
+        'appendonlydir',
+
+        '--maxmemory',
+        '512mb',
+        '--maxmemory-policy',
+        'allkeys-lru',
+        '--lazyfree-lazy-eviction',
+        'yes',
+        '--lazyfree-lazy-expire',
+        'yes',
+        '--lazyfree-lazy-server-del',
+        'no',
+        '--replica-lazy-flush',
+        'no',
+
+        '--slowlog-log-slower-than',
+        '1000000',
+        '--slowlog-max-len',
+        '128',
+        '--busy-reply-threshold',
+        '5000',
+        '--shutdown-timeout',
+        '60',
+
+        '--io-threads',
+        '1',
+        '--io-threads-do-reads',
+        'no',
+      ]
   app:
+    container_name: job_sniper_server
     image: sanarisan/job-sniper:1
     restart: always
     build:
@@ -32,5 +109,6 @@ services:
       - default
     depends_on:
       - postgres
+      - redis
     ports:
       - '${PORT}:3000'
