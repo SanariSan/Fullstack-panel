@@ -15,7 +15,7 @@ export const accessLoginCTR = async (
 
   let possibleUser: Awaited<ReturnType<typeof UserRepository.findByUsername>>;
   try {
-    possibleUser = await UserRepository.findByUsername({ username }); // email: '604f47397@gmail.com'
+    possibleUser = await UserRepository.findByUsername({ username });
   } catch {
     throw new UserNotExistsError({
       message: 'User does not exist',

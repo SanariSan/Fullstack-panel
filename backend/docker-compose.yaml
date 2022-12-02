@@ -112,3 +112,6 @@ services:
       - redis
     ports:
       - '${PORT}:3000'
+    # deploy:
+    #   mode: replicated
+    #   replicas: 2

@@ -4,8 +4,8 @@ type TDbInstance = ReturnType<typeof PgPromise>;
 type TDbPool = ReturnType<TDbInstance>;
 type TInitializeParams = Exclude<Parameters<TDbInstance>[0], string>;
 
-class DBPoolConnectionManager {
-  private static instance?: DBPoolConnectionManager;
+class PersistentDBConnectionManager {
+  private static instance?: PersistentDBConnectionManager;
 
   private readonly pool: TDbPool;
 
@@ -40,17 +40,21 @@ class DBPoolConnectionManager {
     });
   }
 
-  public getPool() {
+  protected getPool() {
     return this.pool;
+  }
+
+  public getConnection() {
+    return this.getPool();
   }
 
   public static getInstance() {
     if (this.instance === undefined) {
-      this.instance = new DBPoolConnectionManager();
+      this.instance = new PersistentDBConnectionManager();
     }
 
     return this.instance;
   }
 }
 
-export { DBPoolConnectionManager };
+export { PersistentDBConnectionManager };

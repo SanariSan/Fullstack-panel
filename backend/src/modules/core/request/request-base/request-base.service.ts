@@ -25,8 +25,9 @@ const socksAxiosInstanceWrap = (socks: string) => {
   };
 };
 
-// TODO: move default socks address to ENV
-const socksAxiosInstance = socksAxiosInstanceWrap(`${process.env.DEFAULT_SOCKS_URL}`);
+const socksAxiosInstance = socksAxiosInstanceWrap(
+  `${process.env.DEFAULT_SOCKS_URL ?? 'socks://127.0.0.1:1080'}`,
+);
 
 const requestGeneric = ({
   method,

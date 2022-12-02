@@ -4,7 +4,7 @@ class SessionManager {
   static regenerate({ session }: { session: Session }) {
     return new Promise<void>((resolve, reject) => {
       session.regenerate((err) => {
-        if (err !== undefined) {
+        if (err !== undefined && err !== null) {
           reject();
         }
         resolve();
@@ -15,7 +15,7 @@ class SessionManager {
   static save({ session }: { session: Session }) {
     return new Promise<void>((resolve, reject) => {
       session.save((err) => {
-        if (err !== undefined) {
+        if (err !== undefined && err !== null) {
           reject();
         }
         resolve();
@@ -26,7 +26,7 @@ class SessionManager {
   static destroy({ session }: { session: Session }) {
     return new Promise<void>((resolve, reject) => {
       session.destroy((err) => {
-        if (err !== undefined) {
+        if (err !== undefined && err !== null) {
           reject();
         }
         resolve();

@@ -1,21 +1,28 @@
 import type { Express } from 'express';
+import express from 'express';
 import path from 'node:path';
-import * as apiBranches from '../../server/routers';
-import type { TApiBranches } from '../../server/routers';
 import { NotFoundError } from '../../server/error';
+import type { TApiBranches } from '../../server/routers';
+import * as apiBranches from '../../server/routers';
 
 function setupRoutersExpress(app: Express) {
-  if (process.env.NODE_ENV === 'production') {
+  const { NODE_ENV, API_VERSION, BUILD_PATH } = process.env;
+
+  if (NODE_ENV === 'production') {
     app.get('/', (req, res) => {
-      res.sendFile(path.resolve(process.env.BUILD_PATH, 'index.html'));
+      res.sendFile(path.resolve(BUILD_PATH, 'index.html'));
     });
   }
 
   // console.dir(apiBranches, { depth: 10 }); // => { v1: [Getter], v2: [Getter] }
 
-  const apiVersion = process.env.API_VERSION;
-  app.use(`/api/${apiVersion}`, (apiBranches as unknown as TApiBranches)[apiVersion]);
-  app.use(`/`, () => {
+  app.use(`/api/${API_VERSION}`, (apiBranches as unknown as TApiBranches)[API_VERSION]);
+
+  if (NODE_ENV === 'production') {
+    app.use(express.static(path.resolve(BUILD_PATH)));
+  }
+
+  app.all(`*`, () => {
     throw new NotFoundError({ message: 'Route not found' });
   });
 }

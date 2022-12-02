@@ -7,7 +7,13 @@ class NoEnvValueError extends GenericError {
 
   public miscellaneous?: Record<string, unknown>;
 
-  constructor(message: string, miscellaneous?: Record<string, unknown>) {
+  constructor({
+    message,
+    miscellaneous,
+  }: {
+    message: string;
+    miscellaneous?: Record<string, unknown>;
+  }) {
     super(message);
 
     this.name = 'NoEnvValueError';

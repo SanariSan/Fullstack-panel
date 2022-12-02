@@ -1,11 +1,11 @@
-import { DBPoolConnectionManager } from '../init.db';
+import { PersistentDBConnectionManager } from '../connection-manager.persistent';
 import { USER as sql } from '../sql';
 
 type TUser = { id: number; email: string; username: string; passwordhash: string };
 
 class UserRepository {
   private static getConnection() {
-    return DBPoolConnectionManager.getInstance().getPool();
+    return PersistentDBConnectionManager.getInstance().getConnection();
   }
 
   static findByEmail({ email }: { email: string }) {

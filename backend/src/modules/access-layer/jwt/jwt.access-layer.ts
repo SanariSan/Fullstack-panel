@@ -4,7 +4,7 @@ import { JWTDecode, JWTEncode, JWTError, JWTPayloadBuilder } from '../../core/jw
 // TODO: change TObjectUnknown to typed object, when token prm format is stable
 function jwtEncode(
   customPayload: Record<string, unknown>,
-  secret: string = process.env.JWT_SECRET,
+  secret: string = process.env.JWT_SECRET ?? '',
 ) {
   const now = Date.now();
   const payload = new JWTPayloadBuilder()
@@ -22,7 +22,7 @@ async function jwtRead(token: string) {
   return payload;
 }
 
-async function jwtDecode(token: string, secret: string = process.env.JWT_SECRET) {
+async function jwtDecode(token: string, secret: string = process.env.JWT_SECRET ?? '') {
   const payload = await new JWTDecode(token, secret).verify();
 
   // check fields of verified token, count these three as base ones
