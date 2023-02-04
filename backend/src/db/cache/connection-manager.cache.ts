@@ -19,12 +19,28 @@ class CacheDBConnectionManager {
   private constructor() {
     this.client = createClient({
       url: `redis://${this.user}:${this.password}@${this.host}:${this.port}/${this.database}`,
-
-      // legacyMode: true,
+      socket: {
+        reconnectStrategy(retries: number) {
+          return 5000;
+        },
+      },
+      legacyMode: true,
     });
 
-    void this.client.connect().catch((error) => {
-      console.error(error);
+    this.client.on('connect', () => {
+      console.log('Redis connected');
+    });
+
+    // catching socket event error, otherwise it'll crash whole app
+    this.client.on('error', (error) => {
+      // wiping instance to let user initialize fresh
+      // but since using built-in reconnect strategy it has no use
+      // CacheDBConnectionManager.instance = undefined;
+      console.error(`Redis connection error: ${(error as Error).message}`);
+    });
+
+    void this.client.connect().catch(() => {
+      // silently catching connection error, because handled above
     });
   }
 

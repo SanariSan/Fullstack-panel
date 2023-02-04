@@ -13,21 +13,13 @@ import { DbConnectionError } from '../error';
 // });
 
 export async function setupCacheDb() {
-  const retriesMax = 10;
-  for (let i = 0; i < retriesMax; i += 1) {
-    publishLog(ELOG_LEVEL.WARN, `Cache DB connection attempt ${String(i + 1)}`);
+  publishLog(ELOG_LEVEL.WARN, `Cache DB connection attempt`);
 
-    try {
-      if ((await CacheDBConnectionManager.getInstance().getConnection().ping()) === 'PONG') {
-        publishLog(ELOG_LEVEL.WARN, `Cache DB connection success`);
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-      publishError(ELOG_LEVEL.WARN, error as Error);
-    }
+  const connection = CacheDBConnectionManager.getInstance().getConnection();
 
-    await sleep(5000);
+  if ((await connection.v4.sendCommand(['ping']).catch(() => {})) === 'PONG') {
+    publishLog(ELOG_LEVEL.WARN, `Cache DB connection success`);
+    return;
   }
 }
 

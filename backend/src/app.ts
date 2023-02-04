@@ -76,7 +76,7 @@ async function init() {
   setupCli();
   await setupCacheDb();
   await setupPersistentDb();
-  await setupExpress();
+  setupExpress();
 
   test();
   // setupDashboard();

@@ -1,10 +1,15 @@
 version: '3.7'
 
+volumes:
+  job_sniper_backend_postgres_pgdata:
+    external: false
+  job_sniper_backend_redis_data:
+    external: false
 services:
   postgres:
     container_name: job_sniper_postgres
     image: sanarisan/job_sniper_postgres:1
-    restart: always
+    restart: on-failure
     build:
       context: ./
       dockerfile: ./docker/postgres.Dockerfile
@@ -19,14 +24,14 @@ services:
     networks:
       - default
     volumes:
-      - ./db/pgdata:/var/lib/postgresql/data
+      - job_sniper_backend_postgres_pgdata:/var/lib/postgresql/data:rw
     ports:
       - '${DB_PORT}:5432'
     command: ['postgres', '-c', 'log_statement=all']
   redis:
     container_name: job_sniper_redis
     image: redis:7.0.5-alpine
-    restart: always
+    restart: on-failure
     stop_signal: SIGINT
     stop_grace_period: 60s
     # environment:
@@ -34,7 +39,7 @@ services:
     networks:
       - default
     volumes:
-      - ./db/redisdata:/data
+      - job_sniper_backend_redis_data:/data:rw
     ports:
       - '${CACHE_PORT}:6379'
     command:
@@ -99,7 +104,7 @@ services:
   app:
     container_name: job_sniper_server
     image: sanarisan/job-sniper:1
-    restart: always
+    restart: on-failure
     build:
       context: ./
       dockerfile: ./docker/app.Dockerfile

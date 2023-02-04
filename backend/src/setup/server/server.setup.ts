@@ -6,11 +6,11 @@ import { setupErrorHandleExpress } from './error-handler.setup';
 import { setupRoutersExpress } from './routers.setup';
 import { setupSettingsExpress } from './settings.setup';
 
-export async function setupExpress() {
+export function setupExpress() {
   const app = express();
   const server = createServer(app);
 
-  await setupSettingsExpress(app);
+  setupSettingsExpress(app);
   setupRoutersExpress(app);
   setupErrorHandleExpress(app);
 
