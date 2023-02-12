@@ -1,23 +1,36 @@
 import type { FormikHelpers } from 'formik';
 import { Formik } from 'formik';
 import type { FC } from 'react';
+// import { useCallback, useState, useEffect, useMemo } from 'react';
+// import { debounceLeadingWrap, debounceWrap } from '../../helpers/util';
 import { useCallback } from 'react';
 import { LoginComponent } from '../../components/login';
+import { LoginOutgoingDM } from '../../data-models/outgoing';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { loginUserAsync, themeSelector, userAuthLoadingStatusSelector } from '../../store';
+import {
+  loginUserAsync,
+  themeSelector,
+  userAuthLoadingStatusSelector,
+  // userAuthErrorSelector,
+} from '../../store';
 import { FormSubmitControlContainer } from '../form-submit-control';
 import { INITIAL_VALUES, VALIDATION_SCHEMA } from './login.const';
-import type { TFormValues } from './login.type';
+import type { TLoginFormValues } from './login.type';
 
 const LoginContainer: FC = () => {
   const theme = useAppSelector(themeSelector);
   const userAuthLoadingState = useAppSelector(userAuthLoadingStatusSelector);
+  // const userAuthError = useAppSelector(userAuthErrorSelector);
   const dispatch = useAppDispatch();
 
   const onSubmit = useCallback(
-    (values: TFormValues, actions: FormikHelpers<TFormValues>) => {
+    (values: TLoginFormValues, actions: FormikHelpers<TLoginFormValues>) => {
       console.log({ values });
-      void dispatch(loginUserAsync({ login: values.username, password: values.password }));
+      void dispatch(
+        loginUserAsync(
+          new LoginOutgoingDM({ username: values.username, password: values.password }).getFields(),
+        ),
+      );
     },
     [dispatch],
   );
@@ -31,6 +44,7 @@ const LoginContainer: FC = () => {
             isLoading={userAuthLoadingState === 'loading'}
             {...formikConfig}
           />
+          {/* <>{showErrors ? userAuthError : undefined}</> */}
           <FormSubmitControlContainer isLoading={userAuthLoadingState === 'loading'} />
         </>
       )}

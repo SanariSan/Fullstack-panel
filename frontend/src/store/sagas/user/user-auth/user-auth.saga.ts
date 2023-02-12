@@ -1,7 +1,8 @@
 import { all, call, cancelled, delay, put, takeLatest } from 'redux-saga/effects';
+import type { IAccessLoginFields, IAccessRegisterFields } from '../../../../data-models/outgoing';
 import type { TSafeReturn } from '../../../../helpers/sagas';
 import { safe } from '../../../../helpers/sagas';
-import { request } from '../../../../services';
+import { checkUserSession, loginUser, logoutUser, registerUser } from '../../../../services/api';
 import {
   checkUserSessionAsync,
   loginUserAsync,
@@ -11,41 +12,6 @@ import {
   setUserInfo,
   setUserIsAuthenticated,
 } from '../../../slices';
-
-type TAuthBody = { login: string; password: string };
-
-async function checkUserSession(abortSignal: AbortSignal) {
-  return request({
-    url: `http://127.0.0.1:3000/v1/access/login`,
-    abortSignal,
-  });
-}
-
-async function loginUser({ body, abortSignal }: { body: TAuthBody; abortSignal: AbortSignal }) {
-  return request({
-    url: `http://127.0.0.1:3000/v1/access/login`,
-    method: 'POST',
-    body: JSON.stringify(body),
-    abortSignal,
-  });
-}
-
-async function registerUser({ body, abortSignal }: { body: TAuthBody; abortSignal: AbortSignal }) {
-  return request({
-    url: `http://127.0.0.1:3000/v1/access/register`,
-    method: 'POST',
-    body: JSON.stringify(body),
-    abortSignal,
-  });
-}
-
-async function logoutUser(abortSignal: AbortSignal) {
-  return request({
-    url: `http://127.0.0.1:3000/v1/access/logout`,
-    method: 'DELETE',
-    abortSignal,
-  });
-}
 
 function* checkUserSessionWorker(action: { type: string }) {
   const abortController = new AbortController();
@@ -61,12 +27,16 @@ function* checkUserSessionWorker(action: { type: string }) {
       return;
     }
 
+    console.log(fetchStatus);
+
     /* eslint-disable @typescript-eslint/unbound-method */
     const jsonParse = (yield safe(
       call([fetchStatus.response, fetchStatus.response.json]),
     )) as TSafeReturn<{
-      isAuthenticated: boolean;
-      login?: string;
+      data: {
+        isAuthenticated: boolean;
+        login?: string;
+      };
     }>;
 
     if (jsonParse.error !== undefined) {
@@ -76,8 +46,8 @@ function* checkUserSessionWorker(action: { type: string }) {
 
     // todo: STRICT CHECK PARSED JSON FIELDS
 
-    yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
-    yield put(setUserInfo(jsonParse.response));
+    yield put(setUserIsAuthenticated({ status: jsonParse.response.data.isAuthenticated }));
+    yield put(setUserInfo(jsonParse.response.data));
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();
@@ -85,7 +55,7 @@ function* checkUserSessionWorker(action: { type: string }) {
   }
 }
 
-function* loginUserWorker(action: { type: string; payload: TAuthBody }) {
+function* loginUserWorker(action: { type: string; payload: IAccessLoginFields }) {
   const abortController = new AbortController();
   try {
     yield put(setUserAuthLoadStatus({ status: 'loading' }));
@@ -127,7 +97,7 @@ function* loginUserWorker(action: { type: string; payload: TAuthBody }) {
   }
 }
 
-function* registerUserWorker(action: { type: string; payload: TAuthBody }) {
+function* registerUserWorker(action: { type: string; payload: IAccessRegisterFields }) {
   const abortController = new AbortController();
   try {
     yield put(setUserAuthLoadStatus({ status: 'loading' }));
@@ -145,8 +115,10 @@ function* registerUserWorker(action: { type: string; payload: TAuthBody }) {
     const jsonParse = (yield safe(
       call([fetchStatus.response, fetchStatus.response.json]),
     )) as TSafeReturn<{
-      isAuthenticated: boolean;
-      login?: string;
+      data: {
+        isAuthenticated: boolean;
+        login?: string;
+      };
     }>;
 
     if (jsonParse.error !== undefined) {
@@ -157,8 +129,8 @@ function* registerUserWorker(action: { type: string; payload: TAuthBody }) {
     // todo: STRICT CHECK PARSED JSON FIELDS
 
     yield put(setUserAuthLoadStatus({ status: 'success' }));
-    yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
-    yield put(setUserInfo(jsonParse.response));
+    yield put(setUserIsAuthenticated({ status: jsonParse.response.data.isAuthenticated }));
+    yield put(setUserInfo(jsonParse.response.data));
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();
@@ -184,7 +156,9 @@ function* logoutUserWorker(action: { type: string }) {
     const jsonParse = (yield safe(
       call([fetchStatus.response, fetchStatus.response.json]),
     )) as TSafeReturn<{
-      isAuthenticated: boolean;
+      data: {
+        isAuthenticated: boolean;
+      };
     }>;
 
     if (jsonParse.error !== undefined) {
@@ -195,7 +169,7 @@ function* logoutUserWorker(action: { type: string }) {
     // todo: STRICT CHECK PARSED JSON FIELDS
 
     yield put(setUserAuthLoadStatus({ status: 'success' }));
-    yield put(setUserIsAuthenticated({ status: jsonParse.response.isAuthenticated }));
+    yield put(setUserIsAuthenticated({ status: jsonParse.response.data.isAuthenticated }));
     yield put(setUserInfo({ login: undefined }));
   } finally {
     if ((yield cancelled()) as boolean) {

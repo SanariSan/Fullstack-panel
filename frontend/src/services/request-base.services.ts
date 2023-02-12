@@ -93,7 +93,7 @@ async function request({
     });
 
     const timeoutId: NodeJS.Timeout = setTimeout(() => {
-      localAbortController.abort();
+      triggerLocalAbortControllerCb();
     }, timeoutMS);
 
     // eslint-disable-next-line @typescript-eslint/no-loop-func

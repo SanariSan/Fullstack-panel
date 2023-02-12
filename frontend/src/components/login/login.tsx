@@ -16,9 +16,9 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, ...rest }) => {
     <Container
       as={FormikForm}
       onSubmit={handleSubmit}
-      className={classNames('h-100', style[theme])}
+      className={classNames('h-100', 'd-flex', 'flex-column', 'align-items-center', style[theme])}
     >
-      <Row className="w-100" style={{ height: '5%' }}>
+      <Row className="w-100" style={{ height: 'min-content' }}>
         <Col>
           <Button
             variant="primary"
@@ -33,10 +33,10 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, ...rest }) => {
           </Button>
         </Col>
       </Row>
-      <Row className="w-100" style={{ height: '25%' }}></Row>
-      <Row className="w-100" style={{ height: '40%' }}>
-        <Col xs={4}></Col>
-        <Col xs={4} className="d-flex flex-column justify-content-center">
+      <Row className="w-100" style={{ height: '20%' }}></Row>
+      <Row className="w-100">
+        <Col xs={0} md={3} xl={4}></Col>
+        <Col xs={12} md={6} xl={4} className="d-flex flex-column justify-content-center">
           <h2 style={{ textAlign: 'center' }}>Log in</h2>
           <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label className={style[theme]}>Username</Form.Label>
@@ -91,9 +91,8 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, ...rest }) => {
             </Button>
           </Form.Group>
         </Col>
-        <Col xs={4}></Col>
+        <Col xs={0} md={3} xl={4}></Col>
       </Row>
-      <Row className="w-100" style={{ height: '30%' }}></Row>
     </Container>
   );
 };

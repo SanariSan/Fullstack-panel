@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { IAccessLoginFields, IAccessRegisterFields } from '../../../../data-models/outgoing';
 import { USER_AUTH_INIT_STATE } from './user-auth.slice.const';
 import type { TIsAuthenticated, TLoadingStatus } from './user-auth.slice.type';
 
@@ -24,13 +25,10 @@ const userAuthSlice = createSlice({
     checkUserSessionAsync() {
       // saga
     },
-    registerUserAsync(
-      state,
-      action: { payload: { login: string; password: string }; type: string },
-    ) {
+    registerUserAsync(state, action: { payload: IAccessRegisterFields; type: string }) {
       // saga
     },
-    loginUserAsync(state, action: { payload: { login: string; password: string }; type: string }) {
+    loginUserAsync(state, action: { payload: IAccessLoginFields; type: string }) {
       // saga
     },
     logoutUserAsync() {

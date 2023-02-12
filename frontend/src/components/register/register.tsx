@@ -6,8 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { changeRoute } from '../../containers/history-catcher';
-import type { TRegister } from './register.type';
 import style from './register.module.scss';
+import type { TRegister } from './register.type';
 
 const RegisterComponent: FC<TRegister> = ({ isLoading, theme, ...rest }) => {
   const { handleSubmit, errors, touched } = rest;
@@ -16,9 +16,9 @@ const RegisterComponent: FC<TRegister> = ({ isLoading, theme, ...rest }) => {
     <Container
       as={FormikForm}
       onSubmit={handleSubmit}
-      className={classNames('h-100', style[theme])}
+      className={classNames('h-100', 'd-flex', 'flex-column', 'align-items-center', style[theme])}
     >
-      <Row className="w-100" style={{ height: '5%' }}>
+      <Row className="w-100" style={{ height: 'min-content' }}>
         <Col>
           <Button
             variant="primary"
@@ -33,11 +33,27 @@ const RegisterComponent: FC<TRegister> = ({ isLoading, theme, ...rest }) => {
           </Button>
         </Col>
       </Row>
-      <Row className="w-100" style={{ height: '25%' }}></Row>
-      <Row className="w-100" style={{ height: '40%' }}>
-        <Col xs={4}></Col>
-        <Col xs={4} className="d-flex flex-column justify-content-center">
+      <Row className="w-100" style={{ height: '15%' }}></Row>
+      <Row className="w-100">
+        <Col xs={0} md={3} xl={4}></Col>
+        <Col xs={12} md={6} xl={4} className="d-flex flex-column justify-content-center">
           <h2 style={{ textAlign: 'center' }}>Sign up</h2>
+          <Form.Group className="mb-3" controlId="formEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              as={Field}
+              className="mb-1"
+              isInvalid={touched.email !== undefined && errors.email !== undefined}
+              type="text"
+              name="email"
+              placeholder="Enter email"
+            />
+            <ErrorMessage name="email">
+              {(errorMessage: string) => (
+                <Form.Text className="ms-1 text-danger">{errorMessage}</Form.Text>
+              )}
+            </ErrorMessage>
+          </Form.Group>
           <Form.Group className="mb-3" controlId="formUsername">
             <Form.Label>Username</Form.Label>
             <Form.Control
@@ -63,7 +79,7 @@ const RegisterComponent: FC<TRegister> = ({ isLoading, theme, ...rest }) => {
               isInvalid={touched.password !== undefined && errors.password !== undefined}
               type="password"
               name="password"
-              placeholder="Password"
+              placeholder="Create a password"
             />
             <ErrorMessage name="password">
               {(errorMessage: string) => (
@@ -79,7 +95,7 @@ const RegisterComponent: FC<TRegister> = ({ isLoading, theme, ...rest }) => {
               isInvalid={touched.passwordRe !== undefined && errors.passwordRe !== undefined}
               type="password"
               name="passwordRe"
-              placeholder="Password"
+              placeholder="Repeat your password"
             />
             <ErrorMessage name="passwordRe">
               {(errorMessage: string) => (
@@ -107,9 +123,8 @@ const RegisterComponent: FC<TRegister> = ({ isLoading, theme, ...rest }) => {
             </Button>
           </Form.Group>
         </Col>
-        <Col xs={4}></Col>
+        <Col xs={0} md={3} xl={4}></Col>
       </Row>
-      <Row className="w-100" style={{ height: '30%' }}></Row>
     </Container>
   );
 };

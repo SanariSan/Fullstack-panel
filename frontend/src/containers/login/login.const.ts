@@ -1,7 +1,11 @@
+import type { AnySchema } from 'yup';
 import { object, string } from 'yup';
-import type { TFormValues } from './login.type';
+import type { TLoginFormValues } from './login.type';
 
-const VALIDATION_SCHEMA = object({
+// more on strong typing https://github.com/DefinitelyTyped/DefinitelyTyped/issues/29412
+// type TA = InferType<typeof VALIDATION_SCHEMA>;
+
+const VALIDATION_SCHEMA = object<Record<keyof TLoginFormValues, AnySchema>>({
   username: string()
     .required('Username required')
     .min(6, 'Username too short')
@@ -12,6 +16,6 @@ const VALIDATION_SCHEMA = object({
     .max(28, 'Password too long!'),
 });
 
-const INITIAL_VALUES: TFormValues = { username: '0a8046d4d', password: 'pwd123456' };
+const INITIAL_VALUES: TLoginFormValues = { username: '0a8046d4d', password: 'pwd123456' };
 
 export { VALIDATION_SCHEMA, INITIAL_VALUES };

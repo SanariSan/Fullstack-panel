@@ -1,6 +1,6 @@
-type TFormValues = {
+type TLoginFormValues = {
   username: string;
   password: string;
 };
 
-export type { TFormValues };
+export type { TLoginFormValues };

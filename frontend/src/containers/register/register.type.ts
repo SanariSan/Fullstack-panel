@@ -1,7 +1,8 @@
-type TFormValues = {
+type TRegisterFormValues = {
+  email: string;
   username: string;
   password: string;
   passwordRe: string;
 };
 
-export type { TFormValues };
+export type { TRegisterFormValues };

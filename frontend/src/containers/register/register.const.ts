@@ -1,7 +1,9 @@
-import { object, string, ref } from 'yup';
-import type { TFormValues } from './register.type';
+import type { AnySchema } from 'yup';
+import { object, ref, string } from 'yup';
+import type { TRegisterFormValues } from './register.type';
 
-const VALIDATION_SCHEMA = object({
+const VALIDATION_SCHEMA = object<Record<keyof TRegisterFormValues, AnySchema>>({
+  email: string().email().required('Email required'),
   username: string()
     .required('Username required')
     .min(6, 'Username too short')
@@ -15,7 +17,8 @@ const VALIDATION_SCHEMA = object({
     .oneOf([ref('password')], 'Your passwords do not match'),
 });
 
-const INITIAL_VALUES: TFormValues = {
+const INITIAL_VALUES: TRegisterFormValues = {
+  email: '0a8046d4d@gmail.com',
   username: '0a8046d4d',
   password: 'pwd123456',
   passwordRe: 'pwd123456',
