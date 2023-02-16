@@ -1,5 +1,5 @@
 type TUserInfoInitState = {
-  login: string;
+  username: string;
 };
 
 export type { TUserInfoInitState };

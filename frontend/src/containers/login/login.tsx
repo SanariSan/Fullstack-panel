@@ -5,14 +5,9 @@ import type { FC } from 'react';
 // import { debounceLeadingWrap, debounceWrap } from '../../helpers/util';
 import { useCallback } from 'react';
 import { LoginComponent } from '../../components/login';
-import { LoginOutgoingDM } from '../../data-models/outgoing';
+import { LoginOutgoingDM } from '../../data-models/login';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import {
-  loginUserAsync,
-  themeSelector,
-  userAuthLoadingStatusSelector,
-  // userAuthErrorSelector,
-} from '../../store';
+import { loginUserAsync, themeSelector, userAuthLoadingStatusSelector } from '../../store';
 import { FormSubmitControlContainer } from '../form-submit-control';
 import { INITIAL_VALUES, VALIDATION_SCHEMA } from './login.const';
 import type { TLoginFormValues } from './login.type';
@@ -28,7 +23,7 @@ const LoginContainer: FC = () => {
       console.log({ values });
       void dispatch(
         loginUserAsync(
-          new LoginOutgoingDM({ username: values.username, password: values.password }).getFields(),
+          new LoginOutgoingDM({ username: values.username, password: values.password }),
         ),
       );
     },

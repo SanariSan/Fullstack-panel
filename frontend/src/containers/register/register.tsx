@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import type { FC } from 'react';
 import { useCallback } from 'react';
 import { RegisterComponent } from '../../components/register';
-import { RegisterOutgoingDM } from '../../data-models/outgoing/register.data-model';
+import { RegisterOutgoingDM } from '../../data-models/register';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { registerUserAsync, themeSelector, userAuthLoadingStatusSelector } from '../../store';
 import { FormSubmitControlContainer } from '../form-submit-control';
@@ -24,7 +24,7 @@ const RegisterContainer: FC = () => {
             email: values.email,
             username: values.username,
             password: values.password,
-          }).getFields(),
+          }),
         ),
       );
     },

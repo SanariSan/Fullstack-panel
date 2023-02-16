@@ -97,9 +97,13 @@ async function request({
     }, timeoutMS);
 
     // eslint-disable-next-line @typescript-eslint/no-loop-func
-    const response = (await requestInternal(localAbortController).catch((error: Error) => {
-      errorReturn = error;
-    })) as Response | undefined;
+    let response: Response | undefined;
+    try {
+      response = await requestInternal(localAbortController);
+    } catch (error) {
+      // only system errors like no network, cors, etc
+      errorReturn = error as Error;
+    }
 
     clearTimeout(timeoutId);
 
@@ -110,7 +114,7 @@ async function request({
 
     // exit point with response
     if (response !== undefined) {
-      console.dir({ url: response.url, status: response.status, headers: response.headers });
+      // console.dir({ url: response.url, status: response.status, headers: response.headers });
       return response;
     }
 

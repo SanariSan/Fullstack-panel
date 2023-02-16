@@ -1,7 +1,7 @@
 import type { TUserInfoInitState } from './user-info.slice.type';
 
 const USER_INFO_INIT_STATE: TUserInfoInitState = {
-  login: '',
+  username: '',
   // preferences: [],
   // otherInfo: '123'
 };

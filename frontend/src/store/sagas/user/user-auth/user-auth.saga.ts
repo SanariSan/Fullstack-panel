@@ -1,5 +1,26 @@
 import { all, call, cancelled, delay, put, takeLatest } from 'redux-saga/effects';
-import type { IAccessLoginFields, IAccessRegisterFields } from '../../../../data-models/outgoing';
+import type {
+  IAccessCheckSessionIncomingFailureDM,
+  IAccessCheckSessionIncomingSuccessDM,
+  IAccessLoginIncomingFailureDM,
+  IAccessLoginIncomingSuccessDM,
+  IAccessLoginOutgoingDM,
+  IAccessLogoutIncomingFailureDM,
+  IAccessLogoutIncomingSuccessDM,
+  IAccessRegisterIncomingFailureDM,
+  IAccessRegisterIncomingSuccessDM,
+  IAccessRegisterOutgoingDM,
+} from '../../../../data-models';
+import {
+  AccessCheckSessionIncomingFailureDM,
+  AccessCheckSessionIncomingSuccessDM,
+  AccessLoginIncomingFailureDM,
+  AccessLoginIncomingSuccessDM,
+  AccessLogoutIncomingFailureDM,
+  AccessLogoutIncomingSuccessDM,
+  AccessRegisterIncomingFailureDM,
+  AccessRegisterIncomingSuccessDM,
+} from '../../../../data-models';
 import type { TSafeReturn } from '../../../../helpers/sagas';
 import { safe } from '../../../../helpers/sagas';
 import { checkUserSession, loginUser, logoutUser, registerUser } from '../../../../services/api';
@@ -19,35 +40,33 @@ function* checkUserSessionWorker(action: { type: string }) {
     yield delay(1000);
 
     const fetchStatus = (yield safe(
-      call(checkUserSession, abortController.signal),
-    )) as TSafeReturn<Response>;
+      call(checkUserSession, { abortSignal: abortController.signal }),
+    )) as TSafeReturn<IAccessCheckSessionIncomingSuccessDM | IAccessCheckSessionIncomingFailureDM>;
+
+    console.dir(fetchStatus);
 
     if (fetchStatus.error !== undefined) {
       yield put(setUserIsAuthenticated({ status: false }));
       return;
     }
 
-    console.log(fetchStatus);
+    console.dir(fetchStatus.response.getFields());
 
-    /* eslint-disable @typescript-eslint/unbound-method */
-    const jsonParse = (yield safe(
-      call([fetchStatus.response, fetchStatus.response.json]),
-    )) as TSafeReturn<{
-      data: {
-        isAuthenticated: boolean;
-        login?: string;
-      };
-    }>;
-
-    if (jsonParse.error !== undefined) {
-      yield put(setUserIsAuthenticated({ status: false }));
+    if (fetchStatus.response instanceof AccessCheckSessionIncomingSuccessDM) {
+      yield put(
+        setUserIsAuthenticated({ status: fetchStatus.response.getFields().data.isAuthenticated }),
+      );
       return;
     }
 
-    // todo: STRICT CHECK PARSED JSON FIELDS
-
-    yield put(setUserIsAuthenticated({ status: jsonParse.response.data.isAuthenticated }));
-    yield put(setUserInfo(jsonParse.response.data));
+    if (fetchStatus.response instanceof AccessCheckSessionIncomingFailureDM) {
+      yield put(
+        setUserIsAuthenticated({
+          status: fetchStatus.response.getFields().miscellaneous.isAuthenticated,
+        }),
+      );
+      return;
+    }
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();
@@ -55,41 +74,42 @@ function* checkUserSessionWorker(action: { type: string }) {
   }
 }
 
-function* loginUserWorker(action: { type: string; payload: IAccessLoginFields }) {
+function* loginUserWorker(action: { type: string; payload: IAccessLoginOutgoingDM }) {
   const abortController = new AbortController();
   try {
     yield put(setUserAuthLoadStatus({ status: 'loading' }));
 
     const fetchStatus = (yield safe(
-      call(loginUser, { body: action.payload, abortSignal: abortController.signal }),
-    )) as TSafeReturn<Response>;
+      call(loginUser, { dm: action.payload, abortSignal: abortController.signal }),
+    )) as TSafeReturn<IAccessLoginIncomingSuccessDM | IAccessLoginIncomingFailureDM>;
+
+    console.dir(fetchStatus);
 
     if (fetchStatus.error !== undefined) {
       yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
       return;
     }
 
-    /* eslint-disable @typescript-eslint/unbound-method */
-    const jsonParse = (yield safe(
-      call([fetchStatus.response, fetchStatus.response.json]),
-    )) as TSafeReturn<{
-      data: {
-        isAuthenticated: boolean;
-        login?: string;
-      };
-    }>;
+    console.dir(fetchStatus.response.getFields());
 
-    if (jsonParse.error !== undefined) {
-      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
-
+    if (fetchStatus.response instanceof AccessLoginIncomingSuccessDM) {
+      yield put(setUserAuthLoadStatus({ status: 'success' }));
+      yield put(
+        setUserIsAuthenticated({ status: fetchStatus.response.getFields().data.isAuthenticated }),
+      );
+      yield put(setUserInfo(fetchStatus.response.getFields().data));
       return;
     }
 
-    // todo: STRICT CHECK PARSED JSON FIELDS
-
-    yield put(setUserAuthLoadStatus({ status: 'success' }));
-    yield put(setUserIsAuthenticated({ status: jsonParse.response.data.isAuthenticated }));
-    yield put(setUserInfo(jsonParse.response.data));
+    if (fetchStatus.response instanceof AccessLoginIncomingFailureDM) {
+      yield put(setUserAuthLoadStatus({ status: 'failure' }));
+      yield put(
+        setUserIsAuthenticated({
+          status: fetchStatus.response.getFields().miscellaneous.isAuthenticated,
+        }),
+      );
+      return;
+    }
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();
@@ -97,40 +117,42 @@ function* loginUserWorker(action: { type: string; payload: IAccessLoginFields })
   }
 }
 
-function* registerUserWorker(action: { type: string; payload: IAccessRegisterFields }) {
+function* registerUserWorker(action: { type: string; payload: IAccessRegisterOutgoingDM }) {
   const abortController = new AbortController();
   try {
     yield put(setUserAuthLoadStatus({ status: 'loading' }));
 
     const fetchStatus = (yield safe(
-      call(registerUser, { body: action.payload, abortSignal: abortController.signal }),
-    )) as TSafeReturn<Response>;
+      call(registerUser, { dm: action.payload, abortSignal: abortController.signal }),
+    )) as TSafeReturn<IAccessRegisterIncomingSuccessDM | IAccessRegisterIncomingFailureDM>;
+
+    console.dir(fetchStatus);
 
     if (fetchStatus.error !== undefined) {
       yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
       return;
     }
 
-    /* eslint-disable @typescript-eslint/unbound-method */
-    const jsonParse = (yield safe(
-      call([fetchStatus.response, fetchStatus.response.json]),
-    )) as TSafeReturn<{
-      data: {
-        isAuthenticated: boolean;
-        login?: string;
-      };
-    }>;
+    console.dir(fetchStatus.response.getFields());
 
-    if (jsonParse.error !== undefined) {
-      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
+    if (fetchStatus.response instanceof AccessRegisterIncomingSuccessDM) {
+      yield put(setUserAuthLoadStatus({ status: 'success' }));
+      yield put(
+        setUserIsAuthenticated({ status: fetchStatus.response.getFields().data.isAuthenticated }),
+      );
+      yield put(setUserInfo(fetchStatus.response.getFields().data));
       return;
     }
 
-    // todo: STRICT CHECK PARSED JSON FIELDS
-
-    yield put(setUserAuthLoadStatus({ status: 'success' }));
-    yield put(setUserIsAuthenticated({ status: jsonParse.response.data.isAuthenticated }));
-    yield put(setUserInfo(jsonParse.response.data));
+    if (fetchStatus.response instanceof AccessRegisterIncomingFailureDM) {
+      yield put(setUserAuthLoadStatus({ status: 'failure' }));
+      yield put(
+        setUserIsAuthenticated({
+          status: fetchStatus.response.getFields().miscellaneous.isAuthenticated,
+        }),
+      );
+      return;
+    }
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();
@@ -144,33 +166,35 @@ function* logoutUserWorker(action: { type: string }) {
     yield put(setUserAuthLoadStatus({ status: 'loading' }));
 
     const fetchStatus = (yield safe(
-      call(logoutUser, abortController.signal),
-    )) as TSafeReturn<Response>;
+      call(logoutUser, { abortSignal: abortController.signal }),
+    )) as TSafeReturn<IAccessLogoutIncomingSuccessDM | IAccessLogoutIncomingFailureDM>;
+
+    console.dir(fetchStatus);
 
     if (fetchStatus.error !== undefined) {
       yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
       return;
     }
 
-    /* eslint-disable @typescript-eslint/unbound-method */
-    const jsonParse = (yield safe(
-      call([fetchStatus.response, fetchStatus.response.json]),
-    )) as TSafeReturn<{
-      data: {
-        isAuthenticated: boolean;
-      };
-    }>;
+    console.dir(fetchStatus.response.getFields());
 
-    if (jsonParse.error !== undefined) {
-      yield put(setUserAuthLoadStatus({ status: 'failure', error: String(fetchStatus.error) }));
+    if (fetchStatus.response instanceof AccessLogoutIncomingSuccessDM) {
+      yield put(setUserAuthLoadStatus({ status: 'success' }));
+      yield put(
+        setUserIsAuthenticated({ status: fetchStatus.response.getFields().data.isAuthenticated }),
+      );
       return;
     }
 
-    // todo: STRICT CHECK PARSED JSON FIELDS
-
-    yield put(setUserAuthLoadStatus({ status: 'success' }));
-    yield put(setUserIsAuthenticated({ status: jsonParse.response.data.isAuthenticated }));
-    yield put(setUserInfo({ login: undefined }));
+    if (fetchStatus.response instanceof AccessLogoutIncomingFailureDM) {
+      yield put(setUserAuthLoadStatus({ status: 'failure' }));
+      yield put(
+        setUserIsAuthenticated({
+          status: fetchStatus.response.getFields().miscellaneous.isAuthenticated,
+        }),
+      );
+      return;
+    }
   } finally {
     if ((yield cancelled()) as boolean) {
       abortController.abort();

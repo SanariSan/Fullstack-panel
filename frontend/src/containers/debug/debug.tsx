@@ -2,7 +2,11 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useAppSelector } from '../../hooks/redux';
 import { useScreenDetails } from '../../hooks/use-screen-details';
-import { themeSelector, userInfoLoginSelector, userAuthIsAuthenticatedSelector } from '../../store';
+import {
+  themeSelector,
+  userInfoUsernameSelector,
+  userAuthIsAuthenticatedSelector,
+} from '../../store';
 import style from './debug.module.scss';
 
 const DebugContainer: FC = () => {
@@ -12,7 +16,7 @@ const DebugContainer: FC = () => {
     },
   } = useScreenDetails();
   const theme = useAppSelector(themeSelector);
-  const login = useAppSelector(userInfoLoginSelector);
+  const username = useAppSelector(userInfoUsernameSelector);
   const isAuthenticated = useAppSelector(userAuthIsAuthenticatedSelector);
 
   useEffect(() => {
@@ -26,7 +30,7 @@ const DebugContainer: FC = () => {
       </pre>
       <textarea
         readOnly
-        value={`isAuthenticated: ${isAuthenticated}\nlogin: ${login}`}
+        value={`isAuthenticated: ${isAuthenticated}\nusername: ${username}`}
         style={{ position: 'fixed', bottom: 0, right: 0, height: '100px' }}
       />
     </>

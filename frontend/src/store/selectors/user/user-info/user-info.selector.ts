@@ -1,5 +1,5 @@
 import type { TRootState } from '../../../redux.store.type';
 
-const userInfoLoginSelector = (state: TRootState) => state.user.userInfo.login;
+const userInfoUsernameSelector = (state: TRootState) => state.user.userInfo.username;
 
-export { userInfoLoginSelector };
+export { userInfoUsernameSelector };
