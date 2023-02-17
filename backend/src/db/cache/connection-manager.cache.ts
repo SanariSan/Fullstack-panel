@@ -28,7 +28,7 @@ class CacheDBConnectionManager {
     });
 
     this.client.on('connect', () => {
-      console.log('Redis connected');
+      console.log('Redis re/connected');
     });
 
     // catching socket event error, otherwise it'll crash whole app

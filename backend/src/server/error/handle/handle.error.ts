@@ -1,5 +1,6 @@
 import type { Response } from 'express';
 import type { IError } from '../../../error';
+import type { TRequestNarrowed } from '../../express.type';
 import {
   ForbiddenErrorResponse,
   InternalErrorResponse,
@@ -41,8 +42,9 @@ function getMatchingErrorResponse(e: Readonly<IError>) {
   }
 }
 
-const handleExpress = (e: Readonly<IError>, res: Response) => {
-  const { miscellaneous } = e;
+const handleExpress = (e: Readonly<IError>, req: TRequestNarrowed, res: Response) => {
+  const { miscellaneous = {} } = e;
+  miscellaneous.isAuthenticated ??= req.session.user?.isAuthenticated ?? false;
 
   // new (getMatchingErrorResponse(e))({ res, miscellaneous }).send();
   const ErrorResponse = getMatchingErrorResponse(e);

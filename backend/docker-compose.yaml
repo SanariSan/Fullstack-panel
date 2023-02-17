@@ -1,14 +1,25 @@
 version: '3.7'
 
 volumes:
-  job_sniper_backend_postgres_pgdata:
+  fullstack_panel_backend_postgres_pgdata:
     external: false
-  job_sniper_backend_redis_data:
+  fullstack_panel_backend_redis_data:
     external: false
 services:
+  nginx:
+    container_name: fullstack_panel_nginx
+    image: sanarisan/fullstack_panel_nginx:1
+    restart: on-failure
+    build:
+      context: './'
+      dockerfile: './docker/nginx.Dockerfile'
+    networks:
+      - default
+    ports:
+      - '80:80'
   postgres:
-    container_name: job_sniper_postgres
-    image: sanarisan/job_sniper_postgres:1
+    container_name: fullstack_panel_postgres
+    image: sanarisan/fullstack_panel_postgres:1
     restart: on-failure
     build:
       context: ./
@@ -24,12 +35,12 @@ services:
     networks:
       - default
     volumes:
-      - job_sniper_backend_postgres_pgdata:/var/lib/postgresql/data:rw
+      - fullstack_panel_backend_postgres_pgdata:/var/lib/postgresql/data:rw
     ports:
       - '${DB_PORT}:5432'
     command: ['postgres', '-c', 'log_statement=all']
   redis:
-    container_name: job_sniper_redis
+    container_name: fullstack_panel_redis
     image: redis:7.0.5-alpine
     restart: on-failure
     stop_signal: SIGINT
@@ -39,7 +50,7 @@ services:
     networks:
       - default
     volumes:
-      - job_sniper_backend_redis_data:/data:rw
+      - fullstack_panel_backend_redis_data:/data:rw
     ports:
       - '${CACHE_PORT}:6379'
     command:
@@ -102,8 +113,8 @@ services:
         'no',
       ]
   app:
-    container_name: job_sniper_server
-    image: sanarisan/job-sniper:1
+    container_name: fullstack_panel_server
+    image: sanarisan/fullstack_panel_server:1
     restart: on-failure
     build:
       context: ./
@@ -113,6 +124,7 @@ services:
     networks:
       - default
     depends_on:
+      - nginx
       - postgres
       - redis
     ports:
