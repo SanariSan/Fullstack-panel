@@ -1,2 +1,1 @@
-export * from './routers.type';
-export * from './v1';
+export * from './api';

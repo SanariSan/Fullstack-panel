@@ -1,6 +1,7 @@
 body {
   font-size: $font-size-def;
   font-family: $font-def;
+  @include darkTheme;
 }
 
 h1 {
@@ -28,13 +29,6 @@ h6 {
   margin: $margin-h6;
 }
 
-.themed {
-  @include themify() {
-    background: themed('bg');
-    color: themed('text-color');
-  }
-}
-
 #root {
   width: 100%;
   height: 100%;
@@ -42,7 +36,7 @@ h6 {
 }
 
 * {
-  // box-sizing: border-box;
+  box-sizing: border-box;
   // outline: 1px solid lightseagreen !important;
   // background: rgba(141, 234, 255, 0.1);
 }

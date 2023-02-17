@@ -1,6 +1,6 @@
 import { publishError, publishErrorUnexpected } from '../modules/access-layer/events/pubsub';
 import { CliPromptError } from '../modules/core/cli-prompt';
-import type { IError } from '../modules/core/error';
+import type { IError } from '../error';
 import { NoDataError } from '../modules/core/request/error';
 import { ELOG_LEVEL } from '../general.type';
 import { setupErrorHandle } from '../setup';

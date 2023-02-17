@@ -168,7 +168,7 @@ ignore/**/*
 *.ignore*
 dist*
 /db/pgdata/**/*
-.vscode
+/db/redisdata/**/*
 
 *.env*
 !.env.copy

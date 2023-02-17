@@ -1,12 +1,50 @@
+@import '../../scss/index.custom';
+
+.light {
+  @include lightTheme;
+}
+
+.dark {
+  @include darkTheme;
+  color: map-get($darkThemeAlt, color);
+}
+
 .controllerWrap {
   position: fixed;
   top: 0;
   right: 0;
+  background-color: transparent;
+
+  transition-property: transform;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  transform: translateX(0px);
 
   button {
-    color: black;
     margin-right: 10px;
-  }
-  .select {
+    background-color: transparent;
+
+    &.opener {
+      animation: wigle 10s infinite;
+    }
+
+    @keyframes wigle {
+      0% {
+        transform: translateX(0px);
+      }
+      3% {
+        transform: translateX(7px);
+      }
+      6% {
+        transform: translateX(0px);
+      }
+      9% {
+        transform: translateX(7px);
+      }
+      12%,
+      100% {
+        transform: translateX(0px);
+      }
+    }
   }
 }

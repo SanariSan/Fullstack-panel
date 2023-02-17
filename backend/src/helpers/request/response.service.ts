@@ -1,5 +1,5 @@
 import type { AxiosError, AxiosResponse } from 'axios';
-import type { IParsedResponse } from '.';
+import type { IParsedResponse } from './response.service.type';
 import { ELOG_LEVEL } from '../../general.type';
 import { publishErrorUnexpected } from '../../modules/access-layer/events/pubsub';
 

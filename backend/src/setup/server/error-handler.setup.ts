@@ -1,10 +1,16 @@
-import type { Express, NextFunction, Request, Response } from 'express';
+import type { Express, NextFunction, Response } from 'express';
 import { ELOG_LEVEL } from '../../general.type';
 import { publishError, publishErrorUnexpected } from '../../modules/access-layer/events/pubsub';
-import { ExpressError, handleExpress } from '../../server/error';
+import {
+  GenericExpressError,
+  handleExpress,
+  InternalError,
+  NotFoundError,
+} from '../../server/error';
+import type { TRequestNarrowed } from '../../server/express.type';
 
 function setupErrorHandleExpress(app: Express) {
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  app.use((err: Error, req: TRequestNarrowed, res: Response, next: NextFunction) => {
     // for rare cases when something broke while streaming data to client
     // fallback to default express handler
     if (res.headersSent) {
@@ -12,15 +18,38 @@ function setupErrorHandleExpress(app: Express) {
       return;
     }
 
-    if (err instanceof ExpressError) {
+    if (err instanceof GenericExpressError) {
       publishError(ELOG_LEVEL.WARN, err);
-      handleExpress(err, res);
-      res.status(400).json({ error: err.message });
+      handleExpress(err, req, res);
+      return;
+    }
+
+    if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+      publishError(ELOG_LEVEL.WARN, err);
+      handleExpress(
+        new NotFoundError({
+          message: 'Resource not found',
+          miscellaneous: {
+            // err,
+          },
+        }),
+        req,
+        res,
+      );
       return;
     }
 
     publishErrorUnexpected(ELOG_LEVEL.ERROR, err);
-    next(err);
+    handleExpress(
+      new InternalError({
+        message: 'Internal error',
+        miscellaneous: {
+          message: err.message,
+        },
+      }),
+      req,
+      res,
+    );
   });
 }
 

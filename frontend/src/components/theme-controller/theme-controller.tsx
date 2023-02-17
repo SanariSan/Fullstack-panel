@@ -1,12 +1,11 @@
 import type { FC } from 'react';
 import classNames from 'classnames';
-import s from './theme-controller.module.scss';
+import style from './theme-controller.module.scss';
 
 type TThemeController = {
   theme: string;
   onThemeChange: (evt: React.ChangeEvent<HTMLSelectElement>) => void;
   themeOptions: Array<{
-    name: string;
     value: string;
   }>;
   isVisible: boolean;
@@ -20,19 +19,21 @@ const ThemeControllerComponent: FC<TThemeController> = ({
   isVisible,
   onVisibilityChange,
 }) => (
-  <div className={classNames(s.controllerWrap, 'themed')}>
-    <button className={classNames('themed')} onClick={onVisibilityChange}>
-      {'{O}'}
+  <div
+    className={classNames(style.controllerWrap, style[theme])}
+    style={{ transform: isVisible ? 'translateX(-10px)' : 'translateX(62px)' }}
+  >
+    <button className={classNames(style[theme], style.opener)} onClick={onVisibilityChange}>
+      <span>{isVisible ? '>>' : '>>'}</span>
     </button>
-    {isVisible && (
-      <select value={theme} onChange={onThemeChange} className={s.select}>
-        {themeOptions.map((option, idx) => (
-          <option value={option.value} key={idx}>
-            {option.name}
-          </option>
-        ))}
-      </select>
-    )}
+
+    <select value={theme} onChange={onThemeChange} className={style.select}>
+      {themeOptions.map((option, idx) => (
+        <option value={option.value} key={idx}>
+          {option.value}
+        </option>
+      ))}
+    </select>
   </div>
 );
 

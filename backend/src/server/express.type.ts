@@ -3,25 +3,43 @@ import type { Session } from 'express-session';
 
 type TSessionCustomFields = {
   userId?: number;
-  login?: string;
+  email?: string;
+  username?: string;
   isAuthenticated?: boolean;
 };
 
-type TRequestNarrowed = Omit<Request, 'body'> & {
+type TRequestTypedBody = Omit<Request, 'body'> & {
   body?: Record<string, unknown> | string;
-} & {
+};
+
+type TRequestNarrowed = TRequestTypedBody & {
   session: Session & {
     user?: TSessionCustomFields;
   };
 };
 
-type TRequestValidatedCredentials = TRequestNarrowed & {
+type TRequestNarrowedAuthenticated = TRequestTypedBody & {
+  session: Session & {
+    user: Required<TSessionCustomFields>;
+  };
+};
+
+type TRequestValidatedLogin = TRequestNarrowed & {
   body: {
-    login: string;
+    username: string;
     password: string;
   };
 };
-type TRequestValidatedCredentialsChange = TRequestNarrowed & {
+
+type TRequestValidatedRegister = TRequestNarrowed & {
+  body: {
+    email: string;
+    username: string;
+    password: string;
+  };
+};
+
+type TRequestValidatedChangePassword = TRequestNarrowedAuthenticated & {
   body: {
     oldPassword: string;
     newPassword: string;
@@ -30,12 +48,16 @@ type TRequestValidatedCredentialsChange = TRequestNarrowed & {
 
 type TRequest =
   | TRequestNarrowed
-  | TRequestValidatedCredentials
-  | TRequestValidatedCredentialsChange;
+  | TRequestNarrowedAuthenticated
+  | TRequestValidatedLogin
+  | TRequestValidatedRegister
+  | TRequestValidatedChangePassword;
 
 export type {
   TRequestNarrowed,
-  TRequestValidatedCredentials,
-  TRequestValidatedCredentialsChange,
+  TRequestNarrowedAuthenticated,
+  TRequestValidatedLogin,
+  TRequestValidatedRegister,
+  TRequestValidatedChangePassword,
   TRequest,
 };

@@ -1,7 +1,7 @@
 import type { AxiosInstance } from 'axios';
 import axios_ from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
-import type { IGenericRequest } from '.';
+import type { IGenericRequest } from './request-base.service.type';
 import { DEFAULT_HEADERS, LIB_SPECIFIC_OPTIONS } from './request-base.service.const';
 import { RequestBuilder } from './request-builder.service';
 
@@ -25,8 +25,9 @@ const socksAxiosInstanceWrap = (socks: string) => {
   };
 };
 
-// TODO: move default socks address to ENV
-const socksAxiosInstance = socksAxiosInstanceWrap(`${process.env.DEFAULT_SOCKS_URL}`);
+const socksAxiosInstance = socksAxiosInstanceWrap(
+  `${process.env.DEFAULT_SOCKS_URL ?? 'socks://127.0.0.1:1080'}`,
+);
 
 const requestGeneric = ({
   method,

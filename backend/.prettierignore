@@ -169,6 +169,7 @@ ignore/**/*
 dist*
 *.http
 /db/pgdata/**/*
+/db/redisdata/**/*
 .vscode
 
 *.md

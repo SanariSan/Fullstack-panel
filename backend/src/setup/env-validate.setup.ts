@@ -1,78 +1,92 @@
-import { ValueTypeError } from '../modules/core/error';
+import { ValueTypeError } from '../error';
 import { NoEnvValueError } from './error';
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 export function setupValidateEnv() {
-  if (process.env.NODE_ENV === undefined) {
-    throw new NoEnvValueError('NODE_ENV');
-  }
-  if (process.env.BASE_URL === undefined) {
-    throw new NoEnvValueError('BASE_URL');
-  }
-  if (process.env.API_VERSION === undefined) {
-    throw new NoEnvValueError('API_VERSION');
-  }
-  // if (process.env.JWT_SECRET === undefined) {
-  //   throw new NoEnvValueError('JWT_SECRET');
-  // }
-  // if (process.env.JWT_EXP === undefined) {
-  //   throw new NoEnvValueError('JWT_EXP');
-  // }
-  // if (Number.isNaN(Number(process.env.JWT_EXP))) {
-  //   throw new ValueTypeError('JWT_EXP', {
-  //     expectedValue: 'number',
-  //     actualValue: process.env.JWT_EXP,
-  //   });
-  // }
-  if (process.env.COOKIE_SECRET === undefined) {
-    throw new NoEnvValueError('COOKIE_SECRET');
-  }
-  if (process.env.PORT === undefined) {
-    throw new NoEnvValueError('PORT');
-  }
-  if (Number.isNaN(Number(process.env.PORT))) {
-    throw new ValueTypeError('PORT', {
-      expectedValue: 'number',
-      actualValue: process.env.PORT,
-    });
-  }
-  if (process.env.DEFAULT_SOCKS_URL === undefined) {
-    throw new NoEnvValueError('DEFAULT_SOCKS_URL');
-  }
-  if (!/^socks:\/{2}(?:\d{1,3}.){3}\d{1,3}:\d{1,5}$/.test(process.env.DEFAULT_SOCKS_URL)) {
-    throw new ValueTypeError('DEFAULT_SOCKS_URL', {
-      expectedValue: 'socks://xxx.yyy.xxx.yyy:xxxxx',
-      actualValue: process.env.DEFAULT_SOCKS_URL,
-    });
-  }
-  if (process.env.CORS_URL_PROD === undefined) {
-    throw new NoEnvValueError('CORS_URL_PROD');
-  }
-  if (process.env.BUILD_PATH === undefined) {
-    throw new NoEnvValueError('BUILD_PATH');
-  }
-  if (process.env.CORS_URL_DEV === undefined) {
-    throw new NoEnvValueError('CORS_URL_DEV');
-  }
-  if (process.env.DB_HOST === undefined) {
-    throw new NoEnvValueError('DB_HOST');
-  }
-  if (process.env.DB_PORT === undefined) {
-    throw new NoEnvValueError('DB_PORT');
-  }
-  if (Number.isNaN(Number(process.env.DB_PORT))) {
-    throw new ValueTypeError('DB_PORT', {
-      expectedValue: 'number',
-      actualValue: process.env.DB_PORT,
-    });
-  }
-  if (process.env.DB_DATABASE_NAME === undefined) {
-    throw new NoEnvValueError('DB_DATABASE_NAME');
-  }
-  if (process.env.DB_USER === undefined) {
-    throw new NoEnvValueError('DB_USER');
-  }
-  if (process.env.DB_PASSWORD === undefined) {
-    throw new NoEnvValueError('DB_PASSWORD');
+  const {
+    NODE_ENV,
+    API_VERSION,
+    COOKIE_SECRET,
+    PORT,
+    CORS_URL_PROD,
+    BUILD_PATH,
+    DB_HOST,
+    DB_PORT,
+    DB_DATABASE_NAME,
+    DB_USER,
+    DB_PASSWORD,
+    CACHE_HOST,
+    CACHE_PORT,
+    CACHE_PASSWORD,
+    // DEFAULT_SOCKS_URL,
+    // JWT_SECRET,
+    // JWT_EXP,
+  } = process.env as Partial<typeof process.env>;
+
+  switch (true) {
+    case NODE_ENV === undefined:
+      throw new NoEnvValueError({ message: 'NODE_ENV' });
+    case API_VERSION === undefined:
+      throw new NoEnvValueError({ message: 'API_VERSION' });
+    case COOKIE_SECRET === undefined:
+      throw new NoEnvValueError({ message: 'COOKIE_SECRET' });
+    case PORT === undefined:
+      throw new NoEnvValueError({ message: 'PORT' });
+    case Number.isNaN(Number(PORT)):
+      throw new ValueTypeError({
+        message: 'PORT',
+        miscellaneous: {
+          expectedValue: 'number',
+          actualValue: PORT,
+        },
+      });
+    case CORS_URL_PROD === undefined:
+      throw new NoEnvValueError({ message: 'CORS_URL_PROD' });
+    case BUILD_PATH === undefined:
+      throw new NoEnvValueError({ message: 'BUILD_PATH' });
+    case DB_HOST === undefined:
+      throw new NoEnvValueError({ message: 'DB_HOST' });
+    case DB_PORT === undefined:
+      throw new NoEnvValueError({ message: 'DB_PORT' });
+    case Number.isNaN(Number(DB_PORT)):
+      throw new ValueTypeError({
+        message: 'DB_PORT',
+        miscellaneous: {
+          expectedValue: 'number',
+          actualValue: DB_PORT,
+        },
+      });
+    case DB_DATABASE_NAME === undefined:
+      throw new NoEnvValueError({ message: 'DB_DATABASE_NAME' });
+    case DB_USER === undefined:
+      throw new NoEnvValueError({ message: 'DB_USER' });
+    case DB_PASSWORD === undefined:
+      throw new NoEnvValueError({ message: 'DB_PASSWORD' });
+    case CACHE_HOST === undefined:
+      throw new NoEnvValueError({ message: 'CACHE_HOST' });
+    case CACHE_PORT === undefined:
+      throw new NoEnvValueError({ message: 'CACHE_PORT' });
+    case Number.isNaN(Number(CACHE_PORT)):
+      throw new ValueTypeError({
+        message: 'CACHE_PORT',
+        miscellaneous: {
+          expectedValue: 'number',
+          actualValue: CACHE_PORT,
+        },
+      });
+    case CACHE_PASSWORD === undefined:
+      throw new NoEnvValueError({ message: 'CACHE_PASSWORD' });
+    // case DEFAULT_SOCKS_URL === undefined: throw new NoEnvValueError('DEFAULT_SOCKS_URL');
+    // case !/^socks:\/{2}(?:\d{1,3}.){3}\d{1,3}:\d{1,5}$/.test(DEFAULT_SOCKS_URL): throw new ValueTypeError('DEFAULT_SOCKS_URL', {
+    //   expectedValue: 'socks://xxx.yyy.xxx.yyy:xxxxx',
+    //   actualValue: DEFAULT_SOCKS_URL,
+    // });
+    // case JWT_SECRET === undefined: throw new NoEnvValueError('JWT_SECRET');
+    // case JWT_EXP === undefined: throw new NoEnvValueError('JWT_EXP');
+    // case Number.isNaN(Number(JWT_EXP)): throw new ValueTypeError('JWT_EXP', {
+    //       expectedValue: 'number',
+    //       actualValue: JWT_EXP,
+    //     });
+    default:
+      void 0;
   }
 }

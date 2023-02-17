@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getLSValue } from '../../../helpers/browser';
+import { getLSValue, setLSValue } from '../../../helpers/browser';
 
 /* eslint-disable no-param-reassign */
 
@@ -9,11 +9,15 @@ type TThemeInitState = { type: TThemeOptions };
 const themeSlice = createSlice({
   name: 'theme',
   initialState: {
-    type: getLSValue('globalTheme') ?? 'light',
+    type:
+      getLSValue('globalTheme') ??
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
   } as TThemeInitState,
   reducers: {
     setTheme(state, action: { payload: { theme: TThemeOptions } }) {
-      state.type = action.payload.theme;
+      const { theme } = action.payload;
+      setLSValue('globalTheme', theme);
+      state.type = theme;
     },
   },
 });
