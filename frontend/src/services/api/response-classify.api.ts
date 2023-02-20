@@ -1,6 +1,6 @@
-import type { IIncomingFailureFields, IIncomingSuccessFields } from '../data-models';
+import type { IIncomingFailureFields, IIncomingSuccessFields } from './data-models';
 
-function isObject(input: unknown): input is { [key: string]: unknown } {
+function isNotEmptyObject(input: unknown): input is { [key: string]: unknown } {
   return (
     typeof input === 'object' &&
     !Array.isArray(input) &&
@@ -14,7 +14,7 @@ function isExpectedSuccessResponse(
   parsedJsonResponse: unknown,
 ): parsedJsonResponse is IIncomingSuccessFields {
   return (
-    isObject(parsedJsonResponse) &&
+    isNotEmptyObject(parsedJsonResponse) &&
     response.status > 100 &&
     response.status < 400 &&
     parsedJsonResponse.data !== undefined
@@ -26,7 +26,7 @@ function isExpectedFailureResponse(
   parsedJsonResponse: unknown,
 ): parsedJsonResponse is IIncomingFailureFields {
   return (
-    isObject(parsedJsonResponse) &&
+    isNotEmptyObject(parsedJsonResponse) &&
     response.status > 400 &&
     parsedJsonResponse.type !== undefined &&
     parsedJsonResponse.title !== undefined &&
@@ -35,4 +35,4 @@ function isExpectedFailureResponse(
   );
 }
 
-export { isObject, isExpectedFailureResponse, isExpectedSuccessResponse };
+export { isNotEmptyObject, isExpectedFailureResponse, isExpectedSuccessResponse };

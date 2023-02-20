@@ -1,13 +1,7 @@
-import type { IAccessRegisterOutgoingDM } from '../../../data-models/register';
-import {
-  AccessRegisterIncomingFailureDM,
-  AccessRegisterIncomingSuccessDM,
-} from '../../../data-models/register';
 import { request } from '../../request-base.services';
-import {
-  isExpectedFailureResponse,
-  isExpectedSuccessResponse,
-} from '../../response-handle.services';
+import type { IAccessRegisterOutgoingDM } from '../data-models';
+import { AccessRegisterIncomingFailureDM, AccessRegisterIncomingSuccessDM } from '../data-models';
+import { isExpectedFailureResponse, isExpectedSuccessResponse } from '../response-classify.api';
 
 export async function registerUser({
   dm,

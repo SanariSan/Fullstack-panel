@@ -1,14 +1,11 @@
+import { request } from '../../request-base.services';
 import {
   AccessCheckSessionIncomingFailureDM,
   AccessCheckSessionIncomingSuccessDM,
-} from '../../../data-models';
-import { request } from '../../request-base.services';
-import {
-  isExpectedFailureResponse,
-  isExpectedSuccessResponse,
-} from '../../response-handle.services';
+} from '../data-models';
+import { isExpectedFailureResponse, isExpectedSuccessResponse } from '../response-classify.api';
 
-export async function checkUserSession({ abortSignal }: { abortSignal: AbortSignal }) {
+export async function checkUserAuthStatus({ abortSignal }: { abortSignal: AbortSignal }) {
   try {
     const response: Response = await request({
       url: `http://127.0.0.1:3000/api/v1/access/login`,

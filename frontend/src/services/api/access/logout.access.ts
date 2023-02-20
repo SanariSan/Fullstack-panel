@@ -1,9 +1,6 @@
-import { AccessLogoutIncomingFailureDM, AccessLogoutIncomingSuccessDM } from '../../../data-models';
+import { AccessLogoutIncomingFailureDM, AccessLogoutIncomingSuccessDM } from '../data-models';
 import { request } from '../../request-base.services';
-import {
-  isExpectedFailureResponse,
-  isExpectedSuccessResponse,
-} from '../../response-handle.services';
+import { isExpectedFailureResponse, isExpectedSuccessResponse } from '../response-classify.api';
 
 export async function logoutUser({ abortSignal }: { abortSignal: AbortSignal }) {
   try {

@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { IAccessLoginOutgoingDM } from '../../../../data-models/login';
-import type { IAccessRegisterOutgoingDM } from '../../../../data-models/register';
+import type { IAccessLoginOutgoingDM, IAccessRegisterOutgoingDM } from '../../../../services/api';
 import { USER_AUTH_INIT_STATE } from './user-auth.slice.const';
 import type { TIsAuthenticated, TLoadingStatus } from './user-auth.slice.type';
 
 /* eslint-disable no-param-reassign */
 
+// example of action creator for saga if decide to move those empty ones
 // const registerUserAsync = (payload: IAccessRegisterOutgoingDM) => ({
 //   type: 'userAuth/registerUserAsync',
 //   payload,
@@ -28,18 +28,11 @@ const userAuthSlice = createSlice({
         state.error = JSON.stringify(action.payload.error);
       }
     },
-    checkUserSessionAsync() {
-      // saga
-    },
-    registerUserAsync(state, action: { payload: IAccessRegisterOutgoingDM; type: string }) {
-      // saga
-    },
-    loginUserAsync(state, action: { payload: IAccessLoginOutgoingDM; type: string }) {
-      // saga
-    },
-    logoutUserAsync() {
-      // saga
-    },
+    // sagas
+    checkUserAuthStatusAsync() {},
+    registerUserAsync(state, action: { payload: IAccessRegisterOutgoingDM; type: string }) {},
+    loginUserAsync(state, action: { payload: IAccessLoginOutgoingDM; type: string }) {},
+    logoutUserAsync() {},
   },
 });
 
@@ -47,7 +40,7 @@ const userAuth = userAuthSlice.reducer;
 const {
   setUserIsAuthenticated,
   setUserAuthLoadStatus,
-  checkUserSessionAsync,
+  checkUserAuthStatusAsync,
   registerUserAsync,
   loginUserAsync,
   logoutUserAsync,
@@ -57,7 +50,7 @@ export {
   userAuth,
   setUserIsAuthenticated,
   setUserAuthLoadStatus,
-  checkUserSessionAsync,
+  checkUserAuthStatusAsync,
   registerUserAsync,
   loginUserAsync,
   logoutUserAsync,

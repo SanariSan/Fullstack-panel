@@ -1,13 +1,7 @@
-import type { IAccessLoginOutgoingDM } from '../../../data-models/login';
-import {
-  AccessLoginIncomingFailureDM,
-  AccessLoginIncomingSuccessDM,
-} from '../../../data-models/login';
 import { request } from '../../request-base.services';
-import {
-  isExpectedFailureResponse,
-  isExpectedSuccessResponse,
-} from '../../response-handle.services';
+import { isExpectedFailureResponse, isExpectedSuccessResponse } from '../response-classify.api';
+import type { IAccessLoginOutgoingDM } from '../data-models';
+import { AccessLoginIncomingFailureDM, AccessLoginIncomingSuccessDM } from '../data-models';
 
 export async function loginUser({
   dm,
