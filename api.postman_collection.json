@@ -1,0 +1,2285 @@
+{
+	"info": {
+		"_postman_id": "82fdf28d-dd6c-490a-ac48-cc09bc31b623",
+		"name": "fullstack-panel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:3000/api/v1/access/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"access",
+										"login"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success authenticated",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/login",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "33"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"21-lWppmdY/5PX8TCYRqPSRvxDTGAc\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 15:31:29 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"isAuthenticated\": true\n    }\n}"
+								},
+								{
+									"name": "Success not authenticated",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/login",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "34"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"22-dp+n2whC1XUqrMIlkwsifpa2OnQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 14:01:07 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"isAuthenticated\": false\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "testuser6",
+											"type": "default"
+										},
+										{
+											"key": "password",
+											"value": "pwd123456",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/api/v1/access/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"access",
+										"login"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success login",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "username",
+													"value": "testadmin",
+													"type": "default"
+												},
+												{
+													"key": "password",
+													"value": "pwd123456",
+													"type": "default"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/login",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "56"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"38-2Nx0BQtq1dz2yhoasZ7h055C/7A\""
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "sid=s%3AXFBC8Ptki3peLUmuvX4NdjCggaekAfro.m0x2QRs%2F6tH6R2%2F3J5beQhASAW3nWxSzugYx2EcI3MU; Path=/; Expires=Fri, 02 Dec 2022 15:29:23 GMT; HttpOnly; SameSite=None"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 15:29:23 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"username\": \"testadmin\",\n        \"isAuthenticated\": true\n    }\n}"
+								},
+								{
+									"name": "Error invalid credentials",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "username",
+													"value": "testadmin",
+													"type": "default"
+												},
+												{
+													"key": "password",
+													"value": "pwd1234567",
+													"type": "default"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/login",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"login"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1031"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"407-0qYPfQkyrs65hzoWq3rE1YnEls4\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 15:23:41 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"type\": 3001,\n    \"title\": \"Authentication error\",\n    \"detail\": \"Authentication failed, invalid credentials\",\n    \"miscellaneous\": {\n        \"isAuthenticated\": false,\n        \"stack\": \"Error: Traceback\\n    at new GenericErrorResponse (/usr/project/dist/server/responses/generic/generic-error.response.js:13:36)\\n    at new LoginErrorResponse (/usr/project/dist/server/responses/error/login-error.response.js:8:9)\\n    at getMatchingResponse (/usr/project/dist/server/error/handle/handle.error.js:15:20)\\n    at handleExpress (/usr/project/dist/server/error/handle/handle.error.js:25:35)\\n    at /usr/project/dist/setup/server/error-handler.setup.js:15:39\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:71:5)\\n    at trim_prefix (/usr/project/node_modules/express/lib/router/index.js:321:13)\\n    at /usr/project/node_modules/express/lib/router/index.js:284:7\\n    at Function.process_params (/usr/project/node_modules/express/lib/router/index.js:341:12)\\n    at next (/usr/project/node_modules/express/lib/router/index.js:275:10)\"\n    }\n}"
+								},
+								{
+									"name": "Error not all fields provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "username",
+													"value": "testadmin",
+													"type": "default",
+													"disabled": true
+												},
+												{
+													"key": "password",
+													"value": "pwd12345",
+													"type": "default",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/login",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"login"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1132"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"46c-ays6KazbRMb5Qcs/QOFpk6ODGmU\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 15:28:37 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"type\": 3000,\n    \"title\": \"Internal error\",\n    \"detail\": \"Internal server error, please try again later\",\n    \"miscellaneous\": {\n        \"invalidParams\": [\n            {\n                \"name\": \"username\",\n                \"reason\": \"username is required\"\n            },\n            {\n                \"name\": \"password\",\n                \"reason\": \"password is required\"\n            }\n        ],\n        \"stack\": \"Error: Traceback\\n    at new GenericErrorResponse (/usr/project/dist/server/responses/generic/generic-error.response.js:13:36)\\n    at new InternalErrorResponse (/usr/project/dist/server/responses/error/internal-error.response.js:8:9)\\n    at getMatchingResponse (/usr/project/dist/server/error/handle/handle.error.js:18:20)\\n    at handleExpress (/usr/project/dist/server/error/handle/handle.error.js:25:35)\\n    at /usr/project/dist/setup/server/error-handler.setup.js:15:39\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:71:5)\\n    at trim_prefix (/usr/project/node_modules/express/lib/router/index.js:321:13)\\n    at /usr/project/node_modules/express/lib/router/index.js:284:7\\n    at Function.process_params (/usr/project/node_modules/express/lib/router/index.js:341:12)\\n    at next (/usr/project/node_modules/express/lib/router/index.js:275:10)\"\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Register",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:3000/api/v1/access/register",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"access",
+										"register"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success authenticated",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/register",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"register"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "33"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"21-lWppmdY/5PX8TCYRqPSRvxDTGAc\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 15:31:29 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"isAuthenticated\": true\n    }\n}"
+								},
+								{
+									"name": "Success not authenticated",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/register",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"register"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "34"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"22-dp+n2whC1XUqrMIlkwsifpa2OnQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 14:01:07 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"isAuthenticated\": false\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "testuser8@email.com",
+											"type": "default"
+										},
+										{
+											"key": "username",
+											"value": "testuser8",
+											"type": "default"
+										},
+										{
+											"key": "password",
+											"value": "pwd123456",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/api/v1/access/register",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"access",
+										"register"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success register",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "testuser1@email.com",
+													"type": "default"
+												},
+												{
+													"key": "username",
+													"value": "testuser1",
+													"type": "default"
+												},
+												{
+													"key": "password",
+													"value": "pwd123456",
+													"type": "default"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/register",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"register"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "56"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"38-BMnspQgxFNptfQ9hbeZOFYmPmm4\""
+										},
+										{
+											"key": "Set-Cookie",
+											"value": "sid=s%3AhB0RLW1KGGmsFbW5OtUFaR1mbId9PRIa.bh0YghmRQrFOUgiO8W9B3BBt4M2R3sWIRricXuVxpWY; Path=/; Expires=Fri, 02 Dec 2022 18:38:09 GMT; HttpOnly; SameSite=None"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 18:38:09 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"username\": \"testuser1\",\n        \"isAuthenticated\": true\n    }\n}"
+								},
+								{
+									"name": "Error duplicate credentials",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "testuser1@email.com",
+													"type": "default"
+												},
+												{
+													"key": "username",
+													"value": "testuser1",
+													"type": "default"
+												},
+												{
+													"key": "password",
+													"value": "pwd123456",
+													"type": "default"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/register",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"register"
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1052"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"41c-8An8vNydDSS1hTtw+tSqWfO7XLs\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 18:38:34 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"type\": 3003,\n    \"title\": \"Registration error\",\n    \"detail\": \"Registration failed, try using different credentials\",\n    \"miscellaneous\": {\n        \"isAuthenticated\": false,\n        \"stack\": \"Error: Traceback\\n    at new GenericErrorResponse (/usr/project/dist/server/responses/generic/generic-error.response.js:13:36)\\n    at new RegistrationErrorResponse (/usr/project/dist/server/responses/error/registration-error.response.js:8:9)\\n    at handleExpress (/usr/project/dist/server/error/handle/handle.error.js:33:27)\\n    at /usr/project/dist/setup/server/error-handler.setup.js:15:39\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:71:5)\\n    at trim_prefix (/usr/project/node_modules/express/lib/router/index.js:321:13)\\n    at /usr/project/node_modules/express/lib/router/index.js:284:7\\n    at Function.process_params (/usr/project/node_modules/express/lib/router/index.js:341:12)\\n    at next (/usr/project/node_modules/express/lib/router/index.js:275:10)\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:67:12)\"\n    }\n}"
+								},
+								{
+									"name": "Error not all fields provided",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "testuser1@email.com",
+													"type": "default"
+												},
+												{
+													"key": "username",
+													"value": "testuser1",
+													"type": "default"
+												},
+												{
+													"key": "password",
+													"value": "pwd123456",
+													"type": "default",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/register",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"register"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1079"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"437-L7/vB4G0dJAmF9NpM7XiA8Qt9ac\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 18:39:34 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"type\": 3000,\n    \"title\": \"Internal error\",\n    \"detail\": \"Internal server error, please try again later\",\n    \"miscellaneous\": {\n        \"invalidParams\": [\n            {\n                \"name\": \"password\",\n                \"reason\": \"password is required\"\n            }\n        ],\n        \"stack\": \"Error: Traceback\\n    at new GenericErrorResponse (/usr/project/dist/server/responses/generic/generic-error.response.js:13:36)\\n    at new InternalErrorResponse (/usr/project/dist/server/responses/error/internal-error.response.js:8:9)\\n    at handleExpress (/usr/project/dist/server/error/handle/handle.error.js:33:27)\\n    at /usr/project/dist/setup/server/error-handler.setup.js:15:39\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:71:5)\\n    at trim_prefix (/usr/project/node_modules/express/lib/router/index.js:321:13)\\n    at /usr/project/node_modules/express/lib/router/index.js:284:7\\n    at Function.process_params (/usr/project/node_modules/express/lib/router/index.js:341:12)\\n    at next (/usr/project/node_modules/express/lib/router/index.js:275:10)\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:67:12)\"\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"item": [
+						{
+							"name": "Logout",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:3000/api/v1/access/logout",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"access",
+										"logout"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success logout",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/logout",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"logout"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "34"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"22-dp+n2whC1XUqrMIlkwsifpa2OnQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 16:28:35 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"isAuthenticated\": false\n    }\n}"
+								},
+								{
+									"name": "Error not active session",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/logout",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"logout"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1030"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"406-1vgCUZuDgUFIWLbneISOMglnuPc\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 25 Nov 2022 16:49:49 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"type\": 3002,\n    \"title\": \"Access error\",\n    \"detail\": \"Insufficient privileges to access resource\",\n    \"miscellaneous\": {\n        \"isAuthenticated\": false,\n        \"stack\": \"Error: Traceback\\n    at new GenericErrorResponse (/usr/project/dist/server/responses/generic/generic-error.response.js:13:36)\\n    at new ForbiddenErrorResponse (/usr/project/dist/server/responses/error/forbidden-error.response.js:8:9)\\n    at handleExpress (/usr/project/dist/server/error/handle/handle.error.js:33:27)\\n    at /usr/project/dist/setup/server/error-handler.setup.js:15:39\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:71:5)\\n    at trim_prefix (/usr/project/node_modules/express/lib/router/index.js:321:13)\\n    at /usr/project/node_modules/express/lib/router/index.js:284:7\\n    at Function.process_params (/usr/project/node_modules/express/lib/router/index.js:341:12)\\n    at next (/usr/project/node_modules/express/lib/router/index.js:275:10)\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:67:12)\"\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Change Password",
+					"item": [
+						{
+							"name": "Change Password",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "oldPassword",
+											"value": "pwd1234567",
+											"type": "default"
+										},
+										{
+											"key": "newPassword",
+											"value": "pwd123456",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3000/api/v1/access/change-password",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"access",
+										"change-password"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "oldPassword",
+													"value": "pwd1234567",
+													"type": "default"
+												},
+												{
+													"key": "newPassword",
+													"value": "pwd123456",
+													"type": "default"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/change-password",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"change-password"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "57"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"39-JyTQsY2zK79s4qu+D1+8XV53x7w\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 29 Nov 2022 19:07:01 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"username\": \"testuser6\",\n        \"isAuthenticated\": false\n    }\n}"
+								},
+								{
+									"name": "Error same password (!)",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "oldPassword",
+													"value": "pwd123456",
+													"type": "default"
+												},
+												{
+													"key": "newPassword",
+													"value": "pwd123456",
+													"type": "default"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/change-password",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"change-password"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1099"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"44b-5FHN+C1lXzAQQ+0sCl1QrXY/4Mw\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 29 Nov 2022 19:03:37 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"type\": 3000,\n    \"title\": \"Internal error\",\n    \"detail\": \"Internal server error, please try again later\",\n    \"miscellaneous\": {\n        \"invalidParams\": [\n            {\n                \"name\": \"newPassword\",\n                \"reason\": \"newPassword contains an invalid value\"\n            }\n        ],\n        \"stack\": \"Error: Traceback\\n    at new GenericErrorResponse (/usr/project/dist/server/responses/generic/generic-error.response.js:13:36)\\n    at new InternalErrorResponse (/usr/project/dist/server/responses/error/internal-error.response.js:8:9)\\n    at handleExpress (/usr/project/dist/server/error/handle/handle.error.js:33:27)\\n    at /usr/project/dist/setup/server/error-handler.setup.js:15:39\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:71:5)\\n    at trim_prefix (/usr/project/node_modules/express/lib/router/index.js:321:13)\\n    at /usr/project/node_modules/express/lib/router/index.js:284:7\\n    at Function.process_params (/usr/project/node_modules/express/lib/router/index.js:341:12)\\n    at next (/usr/project/node_modules/express/lib/router/index.js:275:10)\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:67:12)\"\n    }\n}"
+								},
+								{
+									"name": "Error no active session",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "oldPassword",
+													"value": "pwd1234567",
+													"type": "default"
+												},
+												{
+													"key": "newPassword",
+													"value": "pwd123456",
+													"type": "default"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/change-password",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"change-password"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1030"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"406-1vgCUZuDgUFIWLbneISOMglnuPc\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 29 Nov 2022 19:06:33 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"type\": 3002,\n    \"title\": \"Access error\",\n    \"detail\": \"Insufficient privileges to access resource\",\n    \"miscellaneous\": {\n        \"isAuthenticated\": false,\n        \"stack\": \"Error: Traceback\\n    at new GenericErrorResponse (/usr/project/dist/server/responses/generic/generic-error.response.js:13:36)\\n    at new ForbiddenErrorResponse (/usr/project/dist/server/responses/error/forbidden-error.response.js:8:9)\\n    at handleExpress (/usr/project/dist/server/error/handle/handle.error.js:33:27)\\n    at /usr/project/dist/setup/server/error-handler.setup.js:15:39\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:71:5)\\n    at trim_prefix (/usr/project/node_modules/express/lib/router/index.js:321:13)\\n    at /usr/project/node_modules/express/lib/router/index.js:284:7\\n    at Function.process_params (/usr/project/node_modules/express/lib/router/index.js:341:12)\\n    at next (/usr/project/node_modules/express/lib/router/index.js:275:10)\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:67:12)\"\n    }\n}"
+								},
+								{
+									"name": "Error wrong old password (!)",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "oldPassword",
+													"value": "pwd123456",
+													"type": "default"
+												},
+												{
+													"key": "newPassword",
+													"value": "pwd1234567",
+													"type": "default"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://127.0.0.1:3000/api/v1/access/change-password",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"access",
+												"change-password"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Resource-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1029"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"405-HJ4pPYY9j180DerCzTy0zLcV7c0\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 29 Nov 2022 19:50:31 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"type\": 3001,\n    \"title\": \"Authentication error\",\n    \"detail\": \"Authentication failed, invalid credentials\",\n    \"miscellaneous\": {\n        \"isAuthenticated\": true,\n        \"stack\": \"Error: Traceback\\n    at new GenericErrorResponse (/usr/project/dist/server/responses/generic/generic-error.response.js:13:36)\\n    at new LoginErrorResponse (/usr/project/dist/server/responses/error/login-error.response.js:8:9)\\n    at handleExpress (/usr/project/dist/server/error/handle/handle.error.js:33:27)\\n    at /usr/project/dist/setup/server/error-handler.setup.js:15:39\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:71:5)\\n    at trim_prefix (/usr/project/node_modules/express/lib/router/index.js:321:13)\\n    at /usr/project/node_modules/express/lib/router/index.js:284:7\\n    at Function.process_params (/usr/project/node_modules/express/lib/router/index.js:341:12)\\n    at next (/usr/project/node_modules/express/lib/router/index.js:275:10)\\n    at Layer.handle_error (/usr/project/node_modules/express/lib/router/layer.js:67:12)\"\n    }\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "v2",
+			"item": [
+				{
+					"name": "Example",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/v2/example",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v2",
+								"example"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

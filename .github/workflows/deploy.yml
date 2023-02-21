@@ -1,0 +1,51 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+
+jobs:
+  clone-repository:
+    name: Clone monorepo
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Copy repository contents via scp
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+        with:
+          source: '.'
+          target: '/root/code/panel'
+
+  build-front:
+    name: Build frontend
+    needs: [clone-repository]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Executing remote command
+        uses: appleboy/ssh-action@master
+        with:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+          script: >
+            cd /root/code/panel/frontend && cp prod.env .env &&
+            
+            docker container rm -f $(docker ps -a -q --no-trunc --filter name=^/panel-front-build-container$) > /dev/null 2>&1 ||
+            
+            docker run --rm -v panel-build-volume:/data busybox sh -c "rm -rf /data/*" &&
+            
+            docker build --build-arg REACT_APP_URL=${{ secrets.CORS_URL }} -t panel-build-img -f ./docker/build.Dockerfile . &&
+            
+            docker run --detach --rm --name panel-build-container -v "panel-build-volume:/home/node/proj/build" panel-build-img
+
