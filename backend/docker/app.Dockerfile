@@ -20,5 +20,21 @@ COPY --chown=node:node --from=prod_modules /home/node/proj/node_modules ./node_m
 COPY --chown=node:node package.json ./
 COPY --chown=node:node .env ./
 USER node
+
 # avoid calling yarn script, instead call directly to obtain right pid and provide graceful shutdown
-CMD ["dumb-init", "node", "./node_modules/cross-env/src/bin/cross-env.js", "NODE_ENV=production", "node", "-r", "dotenv/config", "./dist/app.js"]
+CMD [ \
+    "dumb-init", \
+    "node", \
+    "./node_modules/cross-env/src/bin/cross-env.js", \
+    "NODE_ENV=production", \
+    "CORS_URL=${CORS_URL}", \
+    "API_VERSION=${API_VERSION}", \
+    "DB_USERNAME=${DB_USERNAME}", \
+    "DB_PASSWORD=${DB_PASSWORD}", \
+    "COOKIE_SECRET=${COOKIE_SECRET}", \
+    "CACHE_PASSWORD=${CACHE_PASSWORD}", \
+    "node", \
+    "-r", \
+    "dotenv/config", \
+    "./dist/app.js" \
+    ]

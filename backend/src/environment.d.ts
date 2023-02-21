@@ -21,7 +21,7 @@ declare global {
       CACHE_PORT: string;
       CACHE_PASSWORD: string;
       // production
-      CORS_URL_PROD: string;
+      CORS_URL: string;
       BUILD_PATH: string;
       // development
       // ...

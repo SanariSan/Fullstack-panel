@@ -7,7 +7,7 @@ export function setupValidateEnv() {
     API_VERSION,
     COOKIE_SECRET,
     PORT,
-    CORS_URL_PROD,
+    CORS_URL,
     BUILD_PATH,
     DB_HOST,
     DB_PORT,
@@ -39,8 +39,8 @@ export function setupValidateEnv() {
           actualValue: PORT,
         },
       });
-    case CORS_URL_PROD === undefined:
-      throw new NoEnvValueError({ message: 'CORS_URL_PROD' });
+    case CORS_URL === undefined:
+      throw new NoEnvValueError({ message: 'CORS_URL' });
     case BUILD_PATH === undefined:
       throw new NoEnvValueError({ message: 'BUILD_PATH' });
     case DB_HOST === undefined:

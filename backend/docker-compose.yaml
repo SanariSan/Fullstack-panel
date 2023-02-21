@@ -129,6 +129,16 @@ services:
       - redis
     ports:
       - '${PORT}:3000'
+    environment:
+      CORS_URL: '${CORS_URL}'
+      API_VERSION: '${API_VERSION}'
+      DB_USERNAME: '${DB_USERNAME}'
+      DB_PASSWORD: '${DB_PASSWORD}'
+      COOKIE_SECRET: '${COOKIE_SECRET}'
+      CACHE_PASSWORD: '${CACHE_PASSWORD}'
+      VIRTUAL_HOST: '${VIRTUAL_HOST}'
+      LETSENCRYPT_HOST: '${LETSENCRYPT_HOST}'
+
     # deploy:
     #   mode: replicated
     #   replicas: 2
