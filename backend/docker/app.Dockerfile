@@ -29,7 +29,7 @@ CMD [ \
     "NODE_ENV=production", \
     "CORS_URL=${CORS_URL}", \
     "API_VERSION=${API_VERSION}", \
-    "DB_USERNAME=${DB_USERNAME}", \
+    "DB_USER=${DB_USER}", \
     "DB_PASSWORD=${DB_PASSWORD}", \
     "COOKIE_SECRET=${COOKIE_SECRET}", \
     "CACHE_PASSWORD=${CACHE_PASSWORD}", \

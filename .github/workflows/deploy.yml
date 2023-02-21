@@ -43,11 +43,11 @@ jobs:
 
                       docker container rm -f $(docker ps -a -q --no-trunc --filter name=^/panel-front-build-container$) > /dev/null 2>&1 ||
 
-                      docker run --rm -v panel-build-volume:/data busybox sh -c "rm -rf /data/*" &&
+                      docker run --rm -v panel-front-build-volume:/data busybox sh -c "rm -rf /data/*" &&
 
-                      docker build --build-arg REACT_APP_URL=${{ secrets.CORS_URL }} -t panel-build-img -f ./docker/build.Dockerfile . &&
+                      docker build --build-arg REACT_APP_URL=${{ secrets.CORS_URL }} -t panel-front-build-img -f ./docker/build.Dockerfile . &&
 
-                      docker run --detach --rm --name panel-build-container -v "panel-build-volume:/home/node/proj/build" panel-build-img
+                      docker run --detach --rm --name panel-front-build-container -v "panel-front-build-volume:/home/node/proj/build" panel-front-build-img
 
     launch-backend:
         name: Launch backend
@@ -68,14 +68,14 @@ jobs:
 
                       docker-compose down > /dev/null 2>&1 &&
                       docker run --rm -v vhost:/vhost_og busybox sh -c "{ echo 'client_max_body_size 10m;'; } > /vhost_og/${{ secrets.VIRTUAL_HOST }}" &&
-                      DB_USERNAME=${{ secrets.DB_USERNAME }}
+                      DB_USER=${{ secrets.DB_USER }}
                       DB_PASSWORD=${{ secrets.DB_PASSWORD }}
                       CACHE_PASSWORD=${{ secrets.CACHE_PASSWORD }}
                       docker-compose build &&
 
                       CORS_URL=${{ secrets.CORS_URL }}
                       COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}
-                      DB_USERNAME=${{ secrets.DB_USERNAME }}
+                      DB_USER=${{ secrets.DB_USER }}
                       DB_PASSWORD=${{ secrets.DB_PASSWORD }}
                       CACHE_PASSWORD=${{ secrets.CACHE_PASSWORD }}
                       VIRTUAL_HOST=${{ secrets.VIRTUAL_HOST }}
