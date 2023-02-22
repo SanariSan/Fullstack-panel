@@ -130,7 +130,7 @@ services:
         '--io-threads-do-reads',
         'no',
       ]
-  app:
+  app_fullstack_panel_server:
     container_name: fullstack_panel_server
     image: sanarisan/fullstack_panel_server:1
     restart: unless-stopped

@@ -3,8 +3,8 @@ name: Deploy
 on:
     push:
         branches:
-            - master
             - dev
+            # - master
 
 jobs:
     clone-repository:
@@ -23,7 +23,7 @@ jobs:
                   KEY: ${{ secrets.SSHKEY }}
               with:
                   source: "."
-                  target: "/root/code/panel"
+                  target: "/root/code/fullstack-panel"
 
     build-front:
         name: Build frontend
@@ -39,7 +39,7 @@ jobs:
                   PORT: ${{ secrets.PORT }}
                   KEY: ${{ secrets.SSHKEY }}
                   script: >
-                      cd /root/code/panel/frontend && cp prod.env .env &&
+                      cd /root/code/fullstack-panel/frontend && cp prod.env .env &&
 
                       docker container rm -f $(docker ps -a -q --no-trunc --filter name=^/fullstack-panel-front-build-container$) > /dev/null 2>&1 ||
 
@@ -63,7 +63,7 @@ jobs:
                   PORT: ${{ secrets.PORT }}
                   KEY: ${{ secrets.SSHKEY }}
                   script: >
-                      cd /root/code/panel/backend &&
+                      cd /root/code/fullstack-panel/backend &&
                       cp prod.env .env &&
 
                       docker-compose down > /dev/null 2>&1 &&
