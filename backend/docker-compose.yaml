@@ -5,7 +5,7 @@ volumes:
     external: false
   fullstack_panel_backend_redis_data:
     external: false
-  panel-front-build-volume:
+  fullstack-panel-front-build-volume:
     external: true
 networks:
   inbound:
@@ -15,13 +15,16 @@ services:
   nginx:
     container_name: fullstack_panel_nginx
     image: sanarisan/fullstack_panel_nginx:1
-    restart: on-failure
+    restart: unless-stopped
     build:
       context: './'
       dockerfile: './docker/nginx.Dockerfile'
     networks:
       - default
       - inbound
+    environment:
+      VIRTUAL_HOST: '${VIRTUAL_HOST}'
+      LETSENCRYPT_HOST: '${LETSENCRYPT_HOST}'
     expose:
       - '80'
     # ports:
@@ -29,7 +32,7 @@ services:
   postgres:
     container_name: fullstack_panel_postgres
     image: sanarisan/fullstack_panel_postgres:1
-    restart: on-failure
+    restart: unless-stopped
     build:
       context: ./
       dockerfile: ./docker/postgres.Dockerfile
@@ -41,6 +44,7 @@ services:
       POSTGRES_USER: '${DB_USER}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
       POSTGRES_DB: '${DB_DATABASE_NAME}'
+      NETWORK_ACCESS: 'internal'
     networks:
       - default
     volumes:
@@ -53,10 +57,11 @@ services:
   redis:
     container_name: fullstack_panel_redis
     image: redis:7.0.5-alpine
-    restart: on-failure
+    restart: unless-stopped
     stop_signal: SIGINT
     stop_grace_period: 60s
-    # environment:
+    environment:
+      NETWORK_ACCESS: 'internal'
     #   - REDIS_DISABLE_COMMANDS=FLUSHALL,MIGRATE,RESTORE,SORT,KEYS,CLIENT,DEBUG,INFO,CONFIG,SAVE,REPLICAOF,MONITOR,ACL,SHUTDOWN
     networks:
       - default
@@ -128,7 +133,7 @@ services:
   app:
     container_name: fullstack_panel_server
     image: sanarisan/fullstack_panel_server:1
-    restart: on-failure
+    restart: unless-stopped
     build:
       context: ./
       dockerfile: ./docker/app.Dockerfile
@@ -136,7 +141,7 @@ services:
     stop_grace_period: 60s
     volumes:
       - type: volume
-        source: panel-front-build-volume
+        source: fullstack-panel-front-build-volume
         target: /home/node/proj/front-build
     networks:
       - default
@@ -157,9 +162,7 @@ services:
       DB_PASSWORD: '${DB_PASSWORD}'
       COOKIE_SECRET: '${COOKIE_SECRET}'
       CACHE_PASSWORD: '${CACHE_PASSWORD}'
-      VIRTUAL_HOST: '${VIRTUAL_HOST}'
-      LETSENCRYPT_HOST: '${LETSENCRYPT_HOST}'
-
+      NETWORK_ACCESS: 'internal'
     # deploy:
     #   mode: replicated
     #   replicas: 2

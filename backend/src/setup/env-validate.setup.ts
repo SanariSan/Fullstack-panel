@@ -18,8 +18,6 @@ export function setupValidateEnv() {
     CACHE_PORT,
     CACHE_PASSWORD,
     // DEFAULT_SOCKS_URL,
-    // JWT_SECRET,
-    // JWT_EXP,
   } = process.env as Partial<typeof process.env>;
 
   switch (true) {
@@ -27,6 +25,14 @@ export function setupValidateEnv() {
       throw new NoEnvValueError({ message: 'NODE_ENV' });
     case API_VERSION === undefined:
       throw new NoEnvValueError({ message: 'API_VERSION' });
+    case !/^v\d+$/.test(`${API_VERSION}`):
+      throw new ValueTypeError({
+        message: 'API_VERSION',
+        miscellaneous: {
+          expectedValue: 'vNUMBER',
+          actualValue: API_VERSION,
+        },
+      });
     case COOKIE_SECRET === undefined:
       throw new NoEnvValueError({ message: 'COOKIE_SECRET' });
     case PORT === undefined:
