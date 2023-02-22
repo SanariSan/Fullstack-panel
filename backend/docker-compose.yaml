@@ -7,6 +7,10 @@ volumes:
     external: false
   panel-front-build-volume:
     external: true
+networks:
+  inbound:
+    name: inbound
+    external: true
 services:
   nginx:
     container_name: fullstack_panel_nginx
@@ -17,6 +21,7 @@ services:
       dockerfile: './docker/nginx.Dockerfile'
     networks:
       - default
+      - inbound
     expose:
       - '80'
     # ports:
