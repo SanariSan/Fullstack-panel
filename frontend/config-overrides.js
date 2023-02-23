@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const { removeModuleScopePlugin, override } = require('customize-cra');
 
 console.log(`
 @@@@@@@@@@@@@@@@@@@@@@@
@@ -7,7 +8,7 @@ console.log(`
 `);
 
 module.exports = {
-  webpack: function (config, env) {
+  webpack: override(removeModuleScopePlugin(), function (config, env) {
     /**
      * HOW TO CHANGE ENTRY POINT
      *
@@ -30,6 +31,7 @@ module.exports = {
       stream: require.resolve('stream-browserify'),
       process: require.resolve('process'),
       events: require.resolve('events'),
+      path: require.resolve('path-browserify'),
       // fs: require.resolve('fs'),
       // http: require.resolve('stream-http'),
       // https: require.resolve('https-browserify'),
@@ -43,5 +45,5 @@ module.exports = {
     );
 
     return config;
-  },
+  }),
 };

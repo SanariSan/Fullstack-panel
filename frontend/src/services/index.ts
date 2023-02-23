@@ -1,2 +1,2 @@
 export * from './request-base.services';
-export * from './response-handle.services';
+export * from './request-base.services.type';

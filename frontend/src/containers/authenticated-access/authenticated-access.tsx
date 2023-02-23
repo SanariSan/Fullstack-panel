@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { checkUserSessionAsync, userAuthIsAuthenticatedSelector } from '../../store';
+import { checkUserAuthStatusAsync, userAuthIsAuthenticatedSelector } from '../../store';
 import type { TAuthRoute } from './authenticated-access.type';
 
 const AuthenticatedAccessContainer: FC<TAuthRoute> = ({
@@ -17,7 +17,7 @@ const AuthenticatedAccessContainer: FC<TAuthRoute> = ({
 
   useEffect(() => {
     if (isAuthenticated === 'idle') {
-      void dispatch(checkUserSessionAsync());
+      void dispatch(checkUserAuthStatusAsync());
     }
 
     return () => {

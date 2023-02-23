@@ -172,3 +172,4 @@ dist*
 
 *.env*
 !.env.copy
+!prod.env

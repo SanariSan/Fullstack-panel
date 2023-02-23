@@ -5,11 +5,10 @@ import express from 'express';
 import session from 'express-session';
 import helmet from 'helmet';
 import { CacheDBConnectionManager } from '../../db';
-// import { DbConnectionError } from '../error';
 
 function setupSettingsExpress(app: Express) {
   const {
-    // CORS_URL_PROD,
+    // CORS_URL,
     NODE_ENV,
     COOKIE_SECRET,
   } = process.env;
@@ -18,11 +17,22 @@ function setupSettingsExpress(app: Express) {
   const redisClient = CacheDBConnectionManager.getInstance().getConnection();
 
   // origin: true for mirroring Front 'Origin' header back
-  // origin: CORS_URL_PROD for static env url
-  // origin: process.env.NODE_ENV === 'production' ? process.env.CORS_URL_PROD : true,
+  // origin: CORS_URL for static env url
+  // origin: process.env.NODE_ENV === 'production' ? process.env.CORS_URL : true,
   app.set('env', NODE_ENV);
-  app.use(helmet());
   app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
+  app.use(helmet());
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        connectSrc: ['*'],
+        styleSrc: ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+        imgSrc: ["'self'", "'unsafe-inline'", 'data:', 'blob:'],
+      },
+    }),
+  );
   app.use(
     cors({
       origin: true,

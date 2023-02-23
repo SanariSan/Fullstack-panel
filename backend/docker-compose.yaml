@@ -5,22 +5,41 @@ volumes:
     external: false
   fullstack_panel_backend_redis_data:
     external: false
+  fullstack-panel-front-build-volume:
+    external: true
+networks:
+  inbound:
+    name: inbound
+    external: true
 services:
   nginx:
     container_name: fullstack_panel_nginx
     image: sanarisan/fullstack_panel_nginx:1
-    restart: on-failure
+    restart: unless-stopped
     build:
       context: './'
       dockerfile: './docker/nginx.Dockerfile'
+      args:
+        BUILD_PATH: '${BUILD_PATH}'
     networks:
       - default
-    ports:
-      - '80:80'
+      - inbound
+    volumes:
+      - type: volume
+        source: fullstack-panel-front-build-volume
+        target: '${BUILD_PATH}'
+    environment:
+      VIRTUAL_HOST: '${VIRTUAL_HOST}'
+      LETSENCRYPT_HOST: '${LETSENCRYPT_HOST}'
+      BUILD_PATH: '${BUILD_PATH}'
+    expose:
+      - '80'
+    # ports:
+    #   - '80:80'
   postgres:
     container_name: fullstack_panel_postgres
     image: sanarisan/fullstack_panel_postgres:1
-    restart: on-failure
+    restart: unless-stopped
     build:
       context: ./
       dockerfile: ./docker/postgres.Dockerfile
@@ -32,27 +51,33 @@ services:
       POSTGRES_USER: '${DB_USER}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
       POSTGRES_DB: '${DB_DATABASE_NAME}'
+      NETWORK_ACCESS: 'internal'
     networks:
       - default
     volumes:
       - fullstack_panel_backend_postgres_pgdata:/var/lib/postgresql/data:rw
-    ports:
-      - '${DB_PORT}:5432'
+    expose:
+      - '${DB_PORT}'
+    # ports:
+    #   - '${DB_PORT}:5432'
     command: ['postgres', '-c', 'log_statement=all']
   redis:
     container_name: fullstack_panel_redis
     image: redis:7.0.5-alpine
-    restart: on-failure
+    restart: unless-stopped
     stop_signal: SIGINT
     stop_grace_period: 60s
-    # environment:
+    environment:
+      NETWORK_ACCESS: 'internal'
     #   - REDIS_DISABLE_COMMANDS=FLUSHALL,MIGRATE,RESTORE,SORT,KEYS,CLIENT,DEBUG,INFO,CONFIG,SAVE,REPLICAOF,MONITOR,ACL,SHUTDOWN
     networks:
       - default
     volumes:
       - fullstack_panel_backend_redis_data:/data:rw
-    ports:
-      - '${CACHE_PORT}:6379'
+    expose:
+      - '${CACHE_PORT}'
+    # ports:
+    #   - '${CACHE_PORT}:6379'
     command:
       # docs: https://raw.githubusercontent.com/redis/redis/7.0/redis.conf
       [
@@ -112,10 +137,10 @@ services:
         '--io-threads-do-reads',
         'no',
       ]
-  app:
+  app_fullstack_panel_server:
     container_name: fullstack_panel_server
     image: sanarisan/fullstack_panel_server:1
-    restart: on-failure
+    restart: unless-stopped
     build:
       context: ./
       dockerfile: ./docker/app.Dockerfile
@@ -127,8 +152,20 @@ services:
       - nginx
       - postgres
       - redis
-    ports:
-      - '${PORT}:3000'
+    expose:
+      - '${PORT}'
+    # ports:
+    #   - '${PORT}:3000'
+    env_file:
+      - .env
+    environment:
+      CORS_URL: '${CORS_URL}'
+      API_VERSION: '${API_VERSION}'
+      DB_USER: '${DB_USER}'
+      DB_PASSWORD: '${DB_PASSWORD}'
+      COOKIE_SECRET: '${COOKIE_SECRET}'
+      CACHE_PASSWORD: '${CACHE_PASSWORD}'
+      NETWORK_ACCESS: 'internal'
     # deploy:
     #   mode: replicated
     #   replicas: 2

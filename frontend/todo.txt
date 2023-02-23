@@ -1,2 +1,1 @@
-base url
-urls for api
+build to separate volume then rm+copy to mounted = no downtime
