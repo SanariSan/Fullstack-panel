@@ -45,7 +45,7 @@ jobs:
 
                       docker run --rm -v fullstack-panel-front-build-volume:/data busybox sh -c "rm -rf /data/*" &&
 
-                      docker build --build-arg REACT_APP_URL=${{ secrets.CORS_URL }} -t fullstack-panel-front-build-img -f ./docker/build.Dockerfile . &&
+                      docker build --build-arg REACT_APP_API_URL=${{ secrets.CORS_URL }} --build-arg REACT_APP_API_VERSION=${{ secrets.API_VERSION }} -t fullstack-panel-front-build-img -f ./docker/build.Dockerfile . &&
 
                       docker run --detach --rm --name fullstack-panel-front-build-container -v "fullstack-panel-front-build-volume:/home/node/proj/build" fullstack-panel-front-build-img
 
