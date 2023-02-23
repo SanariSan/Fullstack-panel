@@ -2,6 +2,7 @@ import { request } from '../../request-base.services';
 import type { IAccessRegisterOutgoingDM } from '../data-models';
 import { AccessRegisterIncomingFailureDM, AccessRegisterIncomingSuccessDM } from '../data-models';
 import { isExpectedFailureResponse, isExpectedSuccessResponse } from '../response-classify.api';
+import { ROUTES } from '../routes.api';
 
 export async function registerUser({
   dm,
@@ -12,7 +13,7 @@ export async function registerUser({
 }) {
   try {
     const response: Response = await request({
-      url: `http://127.0.0.1:3000/api/v1/access/register`,
+      url: ROUTES.ACCESS.REGISTER,
       method: 'POST',
       body: JSON.stringify(dm.getFields()),
       abortSignal,

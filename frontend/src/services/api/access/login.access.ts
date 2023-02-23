@@ -2,6 +2,7 @@ import { request } from '../../request-base.services';
 import { isExpectedFailureResponse, isExpectedSuccessResponse } from '../response-classify.api';
 import type { IAccessLoginOutgoingDM } from '../data-models';
 import { AccessLoginIncomingFailureDM, AccessLoginIncomingSuccessDM } from '../data-models';
+import { ROUTES } from '../routes.api';
 
 export async function loginUser({
   dm,
@@ -12,7 +13,7 @@ export async function loginUser({
 }) {
   try {
     const response: Response = await request({
-      url: `http://127.0.0.1:3000/api/v1/access/login`,
+      url: ROUTES.ACCESS.LOGIN,
       method: 'POST',
       body: JSON.stringify(dm.getFields()),
       abortSignal,
