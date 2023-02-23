@@ -5,7 +5,6 @@ import express from 'express';
 import session from 'express-session';
 import helmet from 'helmet';
 import { CacheDBConnectionManager } from '../../db';
-// import { DbConnectionError } from '../error';
 
 function setupSettingsExpress(app: Express) {
   const {

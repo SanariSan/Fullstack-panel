@@ -8,7 +8,6 @@ export function setupValidateEnv() {
     COOKIE_SECRET,
     PORT,
     CORS_URL,
-    BUILD_PATH,
     DB_HOST,
     DB_PORT,
     DB_DATABASE_NAME,
@@ -17,6 +16,7 @@ export function setupValidateEnv() {
     CACHE_HOST,
     CACHE_PORT,
     CACHE_PASSWORD,
+    // BUILD_PATH,
     // DEFAULT_SOCKS_URL,
   } = process.env as Partial<typeof process.env>;
 
@@ -25,7 +25,7 @@ export function setupValidateEnv() {
       throw new NoEnvValueError({ message: 'NODE_ENV' });
     case API_VERSION === undefined:
       throw new NoEnvValueError({ message: 'API_VERSION' });
-    case !/^v\d+$/.test(`${API_VERSION}`):
+    case API_VERSION !== undefined && !/^v\d+$/.test(`${API_VERSION}`):
       throw new ValueTypeError({
         message: 'API_VERSION',
         miscellaneous: {
@@ -47,8 +47,8 @@ export function setupValidateEnv() {
       });
     case CORS_URL === undefined:
       throw new NoEnvValueError({ message: 'CORS_URL' });
-    case BUILD_PATH === undefined:
-      throw new NoEnvValueError({ message: 'BUILD_PATH' });
+    // case BUILD_PATH === undefined:
+    //   throw new NoEnvValueError({ message: 'BUILD_PATH' });
     case DB_HOST === undefined:
       throw new NoEnvValueError({ message: 'DB_HOST' });
     case DB_PORT === undefined:

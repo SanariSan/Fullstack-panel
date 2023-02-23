@@ -19,12 +19,19 @@ services:
     build:
       context: './'
       dockerfile: './docker/nginx.Dockerfile'
+      args:
+        BUILD_PATH: '${BUILD_PATH}'
     networks:
       - default
       - inbound
+    volumes:
+      - type: volume
+        source: fullstack-panel-front-build-volume
+        target: '${BUILD_PATH}'
     environment:
       VIRTUAL_HOST: '${VIRTUAL_HOST}'
       LETSENCRYPT_HOST: '${LETSENCRYPT_HOST}'
+      BUILD_PATH: '${BUILD_PATH}'
     expose:
       - '80'
     # ports:
@@ -139,10 +146,6 @@ services:
       dockerfile: ./docker/app.Dockerfile
     stop_signal: SIGINT
     stop_grace_period: 60s
-    volumes:
-      - type: volume
-        source: fullstack-panel-front-build-volume
-        target: /home/node/proj/front-build
     networks:
       - default
     depends_on:
