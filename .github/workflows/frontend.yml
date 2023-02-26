@@ -1,0 +1,51 @@
+name: Deploy frontend
+
+on:
+    push:
+        branches:
+            - dev
+            # - master
+        paths:
+            - "frontend/**"
+            - "**.yml"
+    workflow_dispatch:
+
+jobs:
+    clone-frontend:
+        name: Clone frontend from monorepo
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v1
+
+            - name: Copy repository contents via scp
+              uses: appleboy/scp-action@master
+              env:
+                  HOST: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+                  PORT: ${{ secrets.PORT }}
+                  KEY: ${{ secrets.SSHKEY }}
+              with:
+                  source: "./frontend"
+                  target: "/root/code/fullstack-panel"
+
+    build-front:
+        name: Build frontend
+        needs: [clone-frontend]
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Executing remote command
+              uses: appleboy/ssh-action@master
+              with:
+                  HOST: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+                  PORT: ${{ secrets.PORT }}
+                  KEY: ${{ secrets.SSHKEY }}
+                  script: >
+                      cd /root/code/fullstack-panel/frontend &&
+                      chmod +x ./deploy-entrypoint.sh &&
+
+                      CORS_URL=${{ secrets.CORS_URL }}
+                      API_VERSION=${{ secrets.API_VERSION }}
+                      ./deploy-entrypoint.sh
