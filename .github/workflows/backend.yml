@@ -1,0 +1,57 @@
+name: Deploy backend
+
+on:
+    push:
+        branches:
+            - dev
+            # - master
+        paths:
+            - "backend/**"
+            - "**.yml"
+    workflow_dispatch:
+
+jobs:
+    clone-backend:
+        name: Clone backend from monorepo
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v1
+
+            - name: Copy repository contents via scp
+              uses: appleboy/scp-action@master
+              env:
+                  HOST: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+                  PORT: ${{ secrets.PORT }}
+                  KEY: ${{ secrets.SSHKEY }}
+              with:
+                  source: "./backend"
+                  target: "/root/code/fullstack-panel"
+
+    launch-backend:
+        name: Launch backend
+        needs: [clone-backend]
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Executing remote command
+              uses: appleboy/ssh-action@master
+              with:
+                  HOST: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+                  PORT: ${{ secrets.PORT }}
+                  KEY: ${{ secrets.SSHKEY }}
+                  script: >
+                      cd /root/code/fullstack-panel/backend &&
+                      chmod +x ./deploy-entrypoint.sh &&
+
+                      CORS_URL=${{ secrets.CORS_URL }}
+                      API_VERSION=${{ secrets.API_VERSION }}
+                      COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}
+                      DB_USER=${{ secrets.DB_USER }}
+                      DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+                      CACHE_PASSWORD=${{ secrets.CACHE_PASSWORD }}
+                      VIRTUAL_HOST=${{ secrets.VIRTUAL_HOST }}
+                      LETSENCRYPT_HOST=${{ secrets.LETSENCRYPT_HOST }}
+                      ./deploy-entrypoint.sh
