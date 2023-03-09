@@ -1,0 +1,17 @@
+@import '../../../scss/index.custom';
+
+.dark {
+  @include darkTheme;
+}
+
+.dark-alt {
+  @include darkThemeAlt;
+}
+
+.light {
+  @include lightTheme;
+}
+
+.light-alt {
+  @include lightThemeAlt;
+}

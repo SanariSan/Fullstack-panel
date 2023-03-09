@@ -5,24 +5,24 @@
 
 @mixin lightTheme {
   @include animate;
-  background-color: map-get($lightTheme, background-color);
-  color: map-get($lightTheme, color);
+  background-color: map-get($lightTheme, background-color) !important;
+  color: map-get($lightTheme, color) !important;
 }
 
 @mixin lightThemeAlt {
   @include animate;
-  background-color: map-get($lightThemeAlt, background-color);
-  color: map-get($lightThemeAlt, color);
+  background-color: map-get($lightThemeAlt, background-color) !important;
+  color: map-get($lightThemeAlt, color) !important;
 }
 
 @mixin darkTheme {
   @include animate;
-  background-color: map-get($darkTheme, background-color);
-  color: map-get($darkTheme, color);
+  background-color: map-get($darkTheme, background-color) !important;
+  color: map-get($darkTheme, color) !important;
 }
 
 @mixin darkThemeAlt {
   @include animate;
-  background-color: map-get($darkThemeAlt, background-color);
-  color: map-get($darkThemeAlt, color);
+  background-color: map-get($darkThemeAlt, background-color) !important;
+  color: map-get($darkThemeAlt, color) !important;
 }

@@ -27,7 +27,8 @@ $color-purple-alt: #958bb6; //#8272c7;
 $color-purple-light: #fbf8ff; //#f6ebff; //#f6f6ff;
 $color-gray-dark: #1d1d1d;
 $color-gray-alt-dark: #2f2f2f;
-$color-accent: #00c89d;
+$color-blue-alt-dark: #32303f;
+$color-accent: #00c896;
 
 $header-color-light: $color-purple;
 $bg-color-light: $color-purple-light;
@@ -40,7 +41,7 @@ $text-color-inactive-alt-light: darken($text-color-alt-light, 25%);
 
 $header-color-dark: $color-gray-dark;
 $bg-color-dark: $color-gray-dark; //maybe darken $light-purple-color
-$bg-color-alt-dark: $color-gray-alt-dark;
+$bg-color-alt-dark: $color-blue-alt-dark;
 $text-color-accent-dark: $color-accent; //$purple-alt-color; //maybe lighten later $color-purple
 $text-color-dark: $color-white-soft;
 $text-color-alt-dark: $color-black-soft;

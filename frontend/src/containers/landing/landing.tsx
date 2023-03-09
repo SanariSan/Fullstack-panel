@@ -6,7 +6,11 @@ import { themeSelector } from '../../store';
 const LandingContainer: React.FC = () => {
   const theme = useAppSelector(themeSelector);
 
-  return <LandingComponent theme={theme} />;
+  return (
+    <>
+      <LandingComponent theme={theme} />;
+    </>
+  );
 };
 
 export { LandingContainer };
