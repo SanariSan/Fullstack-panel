@@ -4,6 +4,11 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Navbar from 'react-bootstrap/Navbar';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
 import { changeRoute } from '../../containers/history-catcher';
 import { useAppDispatch } from '../../hooks/redux';
 import { logoutUserAsync } from '../../store';
@@ -18,42 +23,16 @@ const DashboardComponent: FC<TDashboard> = ({ theme }) => {
   return (
     <Container
       fluid
-      className={classNames('h-100 d-flex align-items-center justify-content-center', style[theme])}
+      className={classNames(
+        'overflow-scroll h-100 d-flex align-items-center justify-content-center',
+        style[theme],
+        style.containerScrollOverflow,
+      )}
+      // className={classNames('h-100 w-100 p-0', style[theme])}
     >
-      <Row className="w-100">
-        <Col xs={12} className="d-flex justify-content-center">
-          <Button
-            className="ms-2 me-2"
-            onClick={() => {
-              changeRoute('/login');
-            }}
-          >
-            login page
-          </Button>
-          <Button
-            className="ms-2 me-2"
-            onClick={() => {
-              changeRoute('/login');
-            }}
-          >
-            register page
-          </Button>
-          <Button
-            className="ms-2 me-2"
-            onClick={() => {
-              changeRoute('/');
-            }}
-          >
-            main page
-          </Button>
-          <Button
-            className="ms-2 me-2"
-            onClick={() => {
-              void dispatch(logoutUserAsync());
-            }}
-          >
-            logout
-          </Button>
+      <Row className={style.rowScrollOverflow}>
+        <Col style={{ display: 'flex', flexDirection: 'row' }}>
+          <h1>text</h1>
         </Col>
       </Row>
     </Container>

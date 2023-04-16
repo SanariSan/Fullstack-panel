@@ -18,22 +18,7 @@ const LoginComponent: FC<TLogin> = ({ theme, isLoading, ...rest }) => {
       onSubmit={handleSubmit}
       className={classNames('h-100', 'd-flex', 'flex-column', 'align-items-center', style[theme])}
     >
-      <Row className="w-100" style={{ height: 'min-content' }}>
-        <Col>
-          <Button
-            variant="primary"
-            type="button"
-            className="m-3"
-            disabled={isLoading}
-            onClick={() => {
-              changeRoute('/');
-            }}
-          >
-            Home
-          </Button>
-        </Col>
-      </Row>
-      <Row className="w-100" style={{ height: '20%' }}></Row>
+      <Row className="w-100" style={{ height: '30%' }} />
       <Row className="w-100">
         <Col xs={0} md={3} xl={4}></Col>
         <Col xs={12} md={6} xl={4} className="d-flex flex-column justify-content-center">

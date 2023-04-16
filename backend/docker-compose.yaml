@@ -12,31 +12,7 @@ networks:
     name: inbound
     external: true
 services:
-  nginx:
-    container_name: fullstack_panel_nginx
-    image: sanarisan/fullstack_panel_nginx:1
-    restart: unless-stopped
-    build:
-      context: './'
-      dockerfile: './docker/nginx.Dockerfile'
-      args:
-        BUILD_PATH: '${BUILD_PATH}'
-    networks:
-      - default
-      - inbound
-    volumes:
-      - type: volume
-        source: fullstack-panel-front-build-volume
-        target: '${BUILD_PATH}'
-    environment:
-      VIRTUAL_HOST: '${VIRTUAL_HOST}'
-      LETSENCRYPT_HOST: '${LETSENCRYPT_HOST}'
-      BUILD_PATH: '${BUILD_PATH}'
-    expose:
-      - '80'
-    # ports:
-    #   - '80:80'
-  postgres:
+  fullstack_panel_postgres:
     container_name: fullstack_panel_postgres
     image: sanarisan/fullstack_panel_postgres:1
     restart: unless-stopped
@@ -61,7 +37,7 @@ services:
     # ports:
     #   - '${DB_PORT}:5432'
     command: ['postgres', '-c', 'log_statement=all']
-  redis:
+  fullstack_panel_redis:
     container_name: fullstack_panel_redis
     image: redis:7.0.5-alpine
     restart: unless-stopped
@@ -137,7 +113,7 @@ services:
         '--io-threads-do-reads',
         'no',
       ]
-  app_fullstack_panel_server:
+  fullstack_panel_server:
     container_name: fullstack_panel_server
     image: sanarisan/fullstack_panel_server:1
     restart: unless-stopped
@@ -149,9 +125,8 @@ services:
     networks:
       - default
     depends_on:
-      - nginx
-      - postgres
-      - redis
+      - fullstack_panel_postgres
+      - fullstack_panel_redis
     expose:
       - '${PORT}'
     # ports:
@@ -169,3 +144,29 @@ services:
     # deploy:
     #   mode: replicated
     #   replicas: 2
+  fullstack_panel_nginx:
+    container_name: fullstack_panel_nginx
+    image: sanarisan/fullstack_panel_nginx:1
+    restart: unless-stopped
+    build:
+      context: './'
+      dockerfile: './docker/nginx.Dockerfile'
+      args:
+        BUILD_PATH: '${BUILD_PATH}'
+    networks:
+      - default
+      - inbound
+    depends_on:
+      - fullstack_panel_server
+    volumes:
+      - type: volume
+        source: fullstack-panel-front-build-volume
+        target: '${BUILD_PATH}'
+    environment:
+      VIRTUAL_HOST: '${VIRTUAL_HOST}'
+      LETSENCRYPT_HOST: '${LETSENCRYPT_HOST}'
+      BUILD_PATH: '${BUILD_PATH}'
+    expose:
+      - '80'
+    # ports:
+    #   - '80:80'

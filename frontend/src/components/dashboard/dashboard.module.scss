@@ -1,9 +1,28 @@
 @import '../../scss/index.custom';
 
 .dark {
+  @include darkTheme;
+}
+
+.dark-alt {
   @include darkThemeAlt;
 }
 
 .light {
   @include lightTheme;
+}
+
+.light-alt {
+  @include lightThemeAlt;
+}
+
+.containerScrollOverflow {
+  overflow: auto !important;
+  box-sizing: content-box !important;
+  padding-left: 0px !important;
+}
+
+.rowScrollOverflow {
+  max-width: 100% !important;
+  max-height: 100% !important;
 }

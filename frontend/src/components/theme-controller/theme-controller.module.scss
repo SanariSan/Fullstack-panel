@@ -6,45 +6,26 @@
 
 .dark {
   @include darkTheme;
-  color: map-get($darkThemeAlt, color);
+  // color: map-get($darkThemeAlt, color) !important;
 }
 
 .controllerWrap {
   position: fixed;
-  top: 0;
-  right: 0;
-  background-color: transparent;
+  z-index: 1;
+  top: 1.5%;
+  right: 0.8%;
+  background-color: transparent !important;
+  transition-property: all;
+  transition-duration: 0.15s;
+  transition-timing-function: linear;
 
-  transition-property: transform;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
-  transform: translateX(0px);
+  &:hover {
+    transform: scale(1.25);
+  }
 
-  button {
-    margin-right: 10px;
-    background-color: transparent;
-
-    &.opener {
-      animation: wigle 10s infinite;
-    }
-
-    @keyframes wigle {
-      0% {
-        transform: translateX(0px);
-      }
-      3% {
-        transform: translateX(7px);
-      }
-      6% {
-        transform: translateX(0px);
-      }
-      9% {
-        transform: translateX(7px);
-      }
-      12%,
-      100% {
-        transform: translateX(0px);
-      }
-    }
+  .symbol {
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
   }
 }

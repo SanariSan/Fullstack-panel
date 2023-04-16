@@ -8,7 +8,7 @@ import { DashboardContainer } from './containers/dashboard';
 import { DebugContainer } from './containers/debug';
 import { ErrorBoundaryGenericContainer } from './containers/error-boundary-generic';
 // import { ErrorBoundaryNativeContainer } from './containers/error-boundary-native';
-import { LandingContainer } from './containers/landing';
+import { LandingContainer, LandingNavbarContainer } from './containers/landing';
 import { LoadingTrackerProgressContainer } from './containers/loading-tracker-progress';
 import { LoginContainer } from './containers/login';
 import { RegisterContainer } from './containers/register';
@@ -20,13 +20,20 @@ const App: FC = () => {
 
   return (
     <ErrorBoundaryGenericContainer>
-      <Container fluid className={'h-100 p-0 d-flex align-items-center justify-content-center'}>
+      <Container
+        fluid
+        className={
+          'h-100 p-0 d-flex align-items-center justify-content-center flex-column overflow-hidden'
+        }
+      >
         <LoadingTrackerProgressContainer />
         <Switch>
           <Route exact path="/">
+            <LandingNavbarContainer />
             <LandingContainer />
           </Route>
           <Route exact path="/login">
+            <LandingNavbarContainer />
             <AuthenticatedAccessContainer
               mustBeAuthenticated={false}
               redirectLocation={'/dashboard'}
@@ -35,6 +42,7 @@ const App: FC = () => {
             </AuthenticatedAccessContainer>
           </Route>
           <Route exact path="/register">
+            <LandingNavbarContainer />
             <AuthenticatedAccessContainer
               mustBeAuthenticated={false}
               redirectLocation={'/dashboard'}

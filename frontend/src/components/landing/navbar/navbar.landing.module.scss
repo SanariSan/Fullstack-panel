@@ -1,0 +1,19 @@
+@import '../../../scss/index.custom';
+
+.dark {
+  @include darkTheme;
+  background-color: transparent !important;
+}
+
+.dark-alt {
+  @include darkThemeAlt;
+}
+
+.light {
+  @include lightTheme;
+  background-color: transparent !important;
+}
+
+.light-alt {
+  @include lightThemeAlt;
+}

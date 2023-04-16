@@ -58,6 +58,7 @@ const LoadingTrackerProgressContainer: FC = () => {
             opacity: isLoading ? 0.6 : 0,
             transitionProperty: 'opacity',
             transitionDuration: '0.6s',
+            zIndex: 1000,
           }}
         />
       ) : (
